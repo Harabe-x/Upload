@@ -1,9 +1,9 @@
 <script>
 	import UserProfile from './UserProfile.svelte';
     import { getUserProfileInfo} from "../../js/Userprofile";
+    import cog from '../../assets/cog.svg'
+    
     const userProfile = getUserProfileInfo();
-
-    export let cog; 
 </script>
 
 
@@ -14,7 +14,7 @@
          <div class="ptofile-name"> 
             <p>{$userProfile.profileName}</p>
                 <div class="profile-item"> 
-                    <img src={$userProfile.profilePic} alt="{$userProfile} profile picture"  />
+                    <img src={cog} alt="{$userProfile} profile picture"  />
                 </div>
             </div > 
     </div>
