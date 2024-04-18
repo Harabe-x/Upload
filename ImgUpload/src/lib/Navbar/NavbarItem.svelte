@@ -5,7 +5,8 @@
     function navigate(item)
     {
 
-    }
+    } 
+     
 </script>   
 
 <!-- HTML  -->

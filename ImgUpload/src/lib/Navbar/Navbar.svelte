@@ -5,7 +5,9 @@
 
 <!-- HTML -->
     <div class="nav">
-        <slot />
+        <slot /> 
+  
+        <slot class="profile" name="profile" /> 
     </div>
 
 <style>
@@ -19,6 +21,9 @@
     align-items: center;
     background-color: #151515;
     left: 0;
+ }      
+ .profile { 
+    margin: 90%;
  }
 
 </style>
