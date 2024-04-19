@@ -2,37 +2,23 @@
     export let icon; 
     export let title; 
 
-    function navigate(item)
-    {
 
-    } 
-     
+    import '../../app.css';
+
+
+
 </script>   
 
 <!-- HTML  -->
-    <div class="navItem">
-        <img src={icon} alt="navigation icon"/>
-        <button on:click={navigate}> 
-            <span> {title} </span>
-        </button>
+    <div class="flex">
+        <div class="navbar bg-primary text-primary-content" >
+            <button class="btn btn-ghost text-xl  " >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-5 h-5 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                daisyUI</button>
+          </div>
     </div>
 
 <style>
-    .navItem { 
-        display: flex; 
-        justify-content: center;
-        align-items:c center;
-    }
-    .navItem > button { 
-        all:unset;
-    }
-    .navItem > button:focus,button:hover {
-        outline : revert;
-        color: #ffffff;
-    }
-    .navItem > span { 
-        color: #ececec;
-    }
 
 </style>
 

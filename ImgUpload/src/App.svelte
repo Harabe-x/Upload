@@ -3,28 +3,15 @@
   import viteLogo from '/vite.svg'
   import NavbarItem from './lib/Navbar/NavbarItem.svelte';
   import Navbar from './lib/Navbar/Navbar.svelte'
-  import UserProfile from './lib//Navbar/UserProfile.svelte'
+  import House from './assets/house.svg' 
+ import UserProfile from './lib//Navbar/UserProfile.svelte'
 </script>
 
   <Navbar>
-    <NavbarItem title="Home" icon={viteLogo}> </NavbarItem>
+    <NavbarItem title="Home" icon={House}> </NavbarItem>
     
   </Navbar>
 
 <style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
-  }
+  
 </style>
