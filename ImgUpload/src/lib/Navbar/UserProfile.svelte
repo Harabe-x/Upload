@@ -1,6 +1,7 @@
 <script>
 	import UserProfile from './UserProfile.svelte';
     import { getUserProfileInfo} from "../../js/Userprofile";
+    import horizontalDots from '../../assets/horizontal dots.svg' 
     import cog from '../../assets/cog.svg'
     
     const userProfile = getUserProfileInfo();
@@ -10,33 +11,26 @@
 <div> 
      
     <div class="user-profile" > 
-         <img src={$userProfile.profilePic} alt="Profile of {$userProfile.profileName}" />
-         <div class="ptofile-name"> 
-            <p>{$userProfile.profileName}</p>
-                <div class="profile-item"> 
-                    <img src={cog} alt="{$userProfile} profile picture"  />
-                </div>
-            </div > 
+         <img src={$userProfile.ProfilePic} alt="Profile of {$userProfile.profileName}" />
+        <p> {$userProfile.FirstName} </p> 
+        <img src={horizontalDots} alt="menuIcons" class="icon"/> 
     </div>
      
 </div>
 
 <style> 
 .user-profile { 
+    width: 100%;
     display: flex; 
+    margin-left: auto;
     font-size: 75%; 
 }
 .user-profile > img { 
     border-radius: 50%;
     margin: 5px
 } 
-.profile-name { 
-    display: flex;
-    flex-direction: column;
+.icon { 
+    width: 42px;
+    margin-right: auto;
 }
-.profile-item { 
-  display:flex;
-}
-
-
 </style>

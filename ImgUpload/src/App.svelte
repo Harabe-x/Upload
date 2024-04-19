@@ -9,7 +9,6 @@
   <Navbar>
     <NavbarItem title="Home" icon={viteLogo}> </NavbarItem>
     
-    <UserProfile slot="profile"> </UserProfile> 
   </Navbar>
 
 <style>
