@@ -1,34 +1,33 @@
 <script>
-    import UserProfile from './UserProfile.svelte'
+    import { getUserProfileInfo } from "../../js/UserInfoStore";
+    import getIconStore from "../../js/IconStore";
+    import ProfilePictureDropdown from "../Dropdowns/ProfilePictureDropdown.svelte"
+    const userProfileInfo = getUserProfileInfo();
+    const iconStore = getIconStore(); 
+    const userDropdownItems = [ 
+        {text:"Account",url:"#",icon:$iconStore.User},
+        {text:"Billing",url:"#",icon:$iconStore.CreditCard},
+        {text:"Docs",url:"#",icon:$iconStore.Collection},
+        {text:"API",url:"#",icon:$iconStore.Key},
+        {text:"Logout",url:"#",icon:$iconStore.Logout}        
+    ]
+
 </script>
 
-<!-- HTML -->
-    <div class="bg-primary nav">
-        <div class="user-profile nav" >
-            <slot /> 
-        </div>    
+<!-- HTML 94a0a9 -->
+<div class="navbar bg-base-100">
+  <div class="flex-1">
+    <a class="btn btn-ghost text-xl">ImageVault</a>
+  </div>
+  <div class="flex-none gap-2">
+    <div class="form-control">
+      <input type="text" placeholder="Search" class="input input-bordered w-24 md:w-auto" />
     </div>
-
+        <ProfilePictureDropdown items={userDropdownItems}> </ProfilePictureDropdown>
+  </div>
+</div>
 <style>
   
- .nav { 
-    width: 10%;
-    height: 100%;   
-    position: fixed;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    left: 0;
- }      
-  .user-profile { 
-     margin-top: auto; 
-     margin-bottom: 10%;
-  }  
-  .line { 
-     color: #3c3c3c;
-     
-     height: 0.5px;
-  }
 
 
 </style>

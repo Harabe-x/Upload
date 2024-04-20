@@ -1,10 +1,12 @@
 <script>
-
+  import StatsFrame from "../DataPresenters/Stats/StatsFrame.svelte";
+  import Stat from "../DataPresenters/Stats/Stat.svelte";
 </script>
 
+  <StatsFrame>
+ 
+  </StatsFrame>
 
-
-<p> This is svelte component example </p>
 
 <style>
 
