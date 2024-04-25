@@ -28,7 +28,10 @@
         <ul class="menu menu-compact">
             {#each items as item}
             <li class="mb-2 font-semibold text-m"> 
-                <Icon src={icon} class="w-5 h-5"> item </Icon> </li>
+                <span>
+                    <Icon src={icon} class="w-5 h-5"></Icon>  {item}
+                </span>
+             </li>
             {/each}     
         </ul>
     </div>  
