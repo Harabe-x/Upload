@@ -4,7 +4,7 @@
     export let url = ''
 </script>
 
-<li>
+<li {...$$restProps} >
     <a href={url}>
         <div class="badge badge-{badgeColor}">{badgeText}</div>
             <slot> item </slot>

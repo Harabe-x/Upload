@@ -7,7 +7,7 @@
 </script>
 
     
-<div class="navbar sticky top-0 bg-base-300 z-10">
+<div class="navbar sticky top-0 bg-base-100 z-10">
     
     <div class="flex-1">
         <label for="" class="btn btn-primary drawer-button lg:hidden">
