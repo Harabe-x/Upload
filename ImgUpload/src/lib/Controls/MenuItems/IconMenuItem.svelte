@@ -7,7 +7,7 @@
 </script>
 
 
-<li class="mb-2 font-semibold text-xl">
+<li {... $$restProps} >
     <a class="font-normal" href={url}>  
         {#if icon !== undefined   }
         <Icon src={icon} class="h-{iconSize} w-{iconSize}" />     
@@ -15,7 +15,6 @@
         <slot /> 
     </a>
 </li>
-
 
 
 

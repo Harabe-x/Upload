@@ -1,0 +1,35 @@
+<script>
+    import { XMark,Icon} from "svelte-hero-icons";
+    import Logo from '../../assets/orginal waifu removed bg.png'
+    import { getNavigationBarItems } from "../../js/MenuData/MenuItems";
+    import NavigationBarSubMenu from "./NavigationBarSubMenu.svelte";
+    import NavigationMenuItem from "../Controls/MenuItems/IconMenuItem.svelte";
+  import MenuItem from "../Controls/MenuItems/MenuItem.svelte";
+
+    const navigationBarItems = getNavigationBarItems();
+
+</script>   
+
+<div class="drawer-side z-30">
+    <label class="drawer-overlay"></label> 
+        <ul class="menu  pt-2 w-80 bg-base-300 min-h-full   text-base-content">
+            <button class="btn btn-ghost bg-base-300  btn-circle z-50 top-0 right-0 mt-4 mr-2 absolute lg:hidden">
+                    <Icon src={XMark} class="h-5 inline-block w-5"/>
+                </button>
+                <li class="mb-2 font-semibold text-xl"><a href="/app/welcome"> <img class="mask mask-squircle w-10" src="{Logo}" alt="DashWind Logo">ImageValut</a> </li>
+
+                {#each navigationBarItems as menuItem }
+                        {#if menuItem.SubItems !== undefined}
+                            <li class="mb-2 font-semibold text-xl">
+                                <NavigationBarSubMenu icon={menuItem.Icon} title={menuItem.Title}>
+                                    {#each menuItem.SubItems as subItem }
+                                        <NavigationMenuItem url='' iconSize={5} icon={subItem.Icon}> {subItem.Title} </NavigationMenuItem>
+                                    {/each}
+                                </NavigationBarSubMenu>     
+                            </li>  
+                            {:else}
+                                <NavigationMenuItem icon={menuItem.Icon} url='' class="mb-2 font-semibold text-xl"> {menuItem.Title} </NavigationMenuItem>                
+                        {/if}
+                {/each}
+            </ul>
+</div>

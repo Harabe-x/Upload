@@ -1,8 +1,10 @@
 <script>
-    import NavigationBar from "./lib/v2/NavigationBar.svelte";
+    import NavigationBar from "./lib/NavigationBar/NavigationBar.svelte";
+    import PageContent from "./lib/Containers/PageContent.svelte";
 </script>
 <div class="drawer  lg:drawer-open">
   <input id="left-sidebar-drawer" type="checkbox" class="drawer-toggle" />
+  <PageContent> </PageContent>
   <NavigationBar></NavigationBar>
 </div>
 
