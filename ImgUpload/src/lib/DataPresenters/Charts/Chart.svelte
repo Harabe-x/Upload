@@ -1,30 +1,29 @@
 <script>
     import Chart from 'chart.js/auto'
     import { onMount } from 'svelte';
+    
+    export let data;
+    export let chartType;
 
-    onMount(() => { 
+    onMount(() => {
         new Chart(element, {
-    type: 'bar',
+    type: chartType,
     data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-      datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3,2],
-        borderWidth: 1
-      }]
+      labels: data.labels,
+      datasets: data.datasets
     },
     options: {
         responsive:true,
       scales: {
         y: {
-          beginAtZero: true
+          beginAtZero: false
         }
       }
     }
   });
     })
 
-    let element;
+  let element;
 
 </script>
 

@@ -1,10 +1,10 @@
 <script>
     import Card from "../DataPresenters/Cards/Card.svelte";
-    import LinearChart from "../DataPresenters/Charts/LinearChart.svelte";
+    import Chart from "../DataPresenters/Charts/Chart.svelte";
     import Stat from "../DataPresenters/Cards/Stat.svelte";
     import StatIcon from "../DataPresenters/Cards/StatIcon.svelte";
     import { Server,ServerStack,Photo ,CurrencyDollar } from "svelte-hero-icons";
-
+    import { getChartData } from "../../js/MenuData/ApplicationData/ChartData";    
 
 </script>
 
@@ -20,12 +20,15 @@
 
 <!-- Charts -->
 <div class="grid lg:grid-cols-2 mt-1 md:grid-cols-2 grid-cols-1 gap-6">
-        <Card title="Sample Chart">
-            <LinearChart></LinearChart>
+        <Card title="Uploaded Images">
+            <Chart chartType='line' data={getChartData()}>
+
+            </Chart>
             
         </Card>
-        <Card title="Sample Chart">
-            <LinearChart></LinearChart>
-        </Card>
+        <Card title="Number of requests">
+            <Chart chartType='bar' data={getChartData()}>
+
+            </Chart>        </Card>
 </div>
     
