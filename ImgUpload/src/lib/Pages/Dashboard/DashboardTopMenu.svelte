@@ -9,7 +9,6 @@
     </div>
     <div class="text-right ">
         <button class="btn btn-ghost btn-sm normal-case"><Icon src={ArrowPath} class="w-4 mr-2"/>Refresh Data</button>
-        <button class="btn btn-ghost btn-sm normal-case  ml-2"><Icon src={Share} class="w-4 mr-2"/>Share</button>
 
         <div class="dropdown dropdown-bottom dropdown-end  ml-2">
             <label tabIndex={0} class="btn btn-ghost btn-sm normal-case btn-square "><Icon src={EllipsisVertical} class="w-5"/></label>

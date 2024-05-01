@@ -4,13 +4,18 @@
     
     export let data;
     export let chartType;
+    export let color = 'text-green-500'; 
 
+    
+
+    data.datasets.borderColor = color;
     onMount(() => {
         new Chart(element, {
     type: chartType,
     data: {
       labels: data.labels,
       datasets: data.datasets
+
     },
     options: {
         responsive:true,
