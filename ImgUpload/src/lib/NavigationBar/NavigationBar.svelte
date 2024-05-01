@@ -1,10 +1,10 @@
 <script>
     import { XMark,Icon,LockClosed} from "svelte-hero-icons";
-    import Logo from '../../assets/orginal waifu removed bg.png'
     import { getNavigationBarItems } from "../../js/MenuData/MenuItems";
     import NavigationBarSubMenu from "./NavigationBarSubMenu.svelte";
     import NavigationMenuItem from "../Controls/MenuItems/IconMenuItem.svelte";
-    import MenuItem from "../Controls/MenuItems/MenuItem.svelte";
+    import { getNavigationStore } from "../../js/Temp/NavigationStore";
+
     const navigationBarItems = getNavigationBarItems();
 
 </script>   
@@ -22,12 +22,12 @@
                             <li class="mb-2 font-semibold text-xl">
                                 <NavigationBarSubMenu icon={menuItem.Icon} title={menuItem.Title}>
                                     {#each menuItem.SubItems as subItem }
-                                        <NavigationMenuItem url='' iconSize={5} icon={subItem.Icon}> {subItem.Title} </NavigationMenuItem>
+                                        <NavigationMenuItem name={subItem.Title} iconSize={5} component={subItem.Component} icon={subItem.Icon}> {subItem.Title} </NavigationMenuItem>
                                     {/each}
                                 </NavigationBarSubMenu>     
                             </li>  
                             {:else}
-                                <NavigationMenuItem icon={menuItem.Icon} url='' class="mb-2 font-semibold text-xl"> {menuItem.Title} </NavigationMenuItem>                
+                                <NavigationMenuItem name={menuItem.Title} icon={menuItem.Icon} component={menuItem.Component} class="mb-2 font-semibold text-xl"> {menuItem.Title} </NavigationMenuItem>                
                         {/if}
                 {/each}
             </ul>

@@ -2,13 +2,10 @@
     import Card from "../../DataPresenters/Cards/Card.svelte";
     import Chart from "../../DataPresenters/Charts/Chart.svelte";
     import Stat from "../../DataPresenters/Cards/Stat.svelte";
-    import StatIcon from "../../DataPresenters/Cards/StatIcon.svelte";
-    import { Server,ServerStack,Photo , Banknotes,CloudArrowUp} from "svelte-hero-icons";
-    import { getChartData } from "../../../js/MenuData/ApplicationData/ChartData";    
-    import TextInput from "../../Controls/Inputs/TextInput.svelte";
+    import { ServerStack,Photo, Banknotes,CloudArrowUp} from "svelte-hero-icons";
+    import { getChartData } from "../../../js/ApplicationData/ChartData"
     import DashboardTopMenu from "./DashboardTopMenu.svelte";
-    let value;
-</script>
+</script>   
 
 
 <!-- Card section -->
