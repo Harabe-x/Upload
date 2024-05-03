@@ -4,7 +4,7 @@
     import Stat from "../../DataPresenters/Cards/Stat.svelte";
     import { ServerStack,Photo, Banknotes,CloudArrowUp} from "svelte-hero-icons";
     import { getChartData } from "../../../js/ApplicationData/ChartData"
-    import DashboardTopMenu from "./DashboardTopMenu.svelte";
+    import DashboardTopMenu from "./Components/DashboardTopMenu.svelte";
 </script>   
 
 
