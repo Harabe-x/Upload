@@ -2,11 +2,12 @@
     import { getApiKeys } from "../../../../js/Temp/ApiKeysData";
     import { Pencil,Trash } from "svelte-hero-icons";
     import IconButton from "../../../Controls/Buttons/IconButton.svelte";
+    import ApiKeyEditModal from "./ApiKeyEditModal.svelte";
 
     let data = getApiKeys(); 
     const tableItems = []
     let selectedElement;
-
+    let isModalOpen = false;
     function action(elem)
     {
         tableItems.push(elem)
@@ -21,10 +22,15 @@
 
         selectedElement.classList.add('bg-base-200')
     }
-    function openDialog(item)
+    function openDialog()
     {
-        // TODO
+      isModalOpen = true;
     }
+    function closeModal()
+    {
+      isModalOpen = false;
+    }
+
 </script>
 
 
@@ -41,16 +47,19 @@
       </thead>
       <tbody>
         {#each data as item }
-        <tr use:action on:click={tableRowOnClick} on:dblclick={openDialog(item)}>
+        <tr use:action on:click={tableRowOnClick} on:dblclick={openDialog}>
             <th>{data.indexOf(item) + 1}</th>
             <td>{item.Name}</td>
             <td>{item.Key}</td>
             <td>{item.Storage} GB</td>
             <td>
-                <IconButton icon={Pencil} iconStyle="w-5">Edit</IconButton> 
+                <IconButton on:click={openDialog}  icon={Pencil} iconStyle="w-5">Edit</IconButton> 
             </td>
         </tr>
         {/each}
       </tbody>
     </table>
   </div>
+
+
+  <ApiKeyEditModal {isModalOpen} on:modalClosed={closeModal} ></ApiKeyEditModal>
