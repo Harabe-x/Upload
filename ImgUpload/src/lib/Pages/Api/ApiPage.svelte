@@ -29,7 +29,7 @@
  
 <div class="grid lg:grid-cols-2 mt-2 grid-cols-1 gap-10 mb-10">
     <Card title="Api Keys Usage" > 
-        <DoughnutChart labels={apiKeys.map((item) => item.Name )} values={apiKeys.map((item) => item.Storage)}></DoughnutChart>
+        <DoughnutChart labels={$apiKeys.map((item) => item.Name )} values={$apiKeys.map((item) => item.Storage)}></DoughnutChart>
     </Card>
     
     <Card title="Number of Api Keys" > 
