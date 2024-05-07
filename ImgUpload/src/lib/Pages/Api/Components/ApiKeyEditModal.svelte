@@ -1,37 +1,44 @@
 <script>
-  import { createEventDispatcher } from "svelte";
-  import TextInput from "../../../Controls/Inputs/TextInput.svelte";
-  import IconButton from "../../../Controls/Buttons/IconButton.svelte";
-  import { XMark,Check } from "svelte-hero-icons";
-
-  const dispatcher = createEventDispatcher();
-
-  export let isModalOpen = false ;
-  let apiKeyName  = 'Social Media App'
-  let Key = '61990008-c5da-54a6-ad7e-0cb5536ae398'
-  let storage = '142GB'
-  function closeModal()
-  {
-    isModalOpen = false;
+   import TextInput from "../../../Controls/Inputs/TextInput.svelte";
+   import IconButton from "../../../Controls/Buttons/IconButton.svelte";
+   import { createEventDispatcher } from "svelte";
+   import { XMark, Check } from "svelte-hero-icons";
+   import { getApiKeys } from "../../../../js/Temp/ApiKeysData";
+   const dispatcher = createEventDispatcher();
+   const apiKeysStore = getApiKeys();
+   export let isVisable = false; 
+   export let currentKey;
+  function closeEditModal()
+  { 
     dispatcher('modalClosed')
-
   }
-</script>
- 
- 
-<div class="modal" class:modal-open={isModalOpen}>
-  <div class="modal-box">
-    <h3 class="font-bold text-lg">Edit Key</h3>
+  
+  function saveEditedKey()
+  {
+    apiKeysStore.update(() => { return $apiKeysStore })
+    closeEditModal();
+  }
 
-    <div class="mt-2 p-2">
-      <TextInput label="Name" value={''}></TextInput>
-      <TextInput label="Key" value={''}></TextInput>
-      <TextInput label="Storage" value={''}></TextInput>
-    </div>
 
-    <div class="modal-action">
-        <IconButton buttonStyle="" iconStyle="w-4" icon={XMark} on:click={closeModal}>Close</IconButton>
-        <IconButton buttonStyle="bg-success text-secondary-content" iconStyle="w-4"on:click={closeModal} icon={Check}>Save</IconButton>
+</script> 
+
+
+{#if isVisable}
+<div class="modal modal-open">
+    <div class="modal-box">
+      <h3 class="font-bold text-lg">Add key</h3>
+  
+      <div class="mt-2 p-2">
+        <TextInput bind:value={currentKey.Name}  label="Name"></TextInput>
+        <TextInput bind:value={currentKey.Key} disabled={true} label="Key"></TextInput>
+        <TextInput bind:value={currentKey.Storage}  label="Storage"></TextInput>
+
+      </div>
+  
+      <div class="modal-action"> 
+          <IconButton buttonStyle="" iconStyle="w-4" icon={XMark} on:click={closeEditModal}>Close</IconButton>
+          <IconButton buttonStyle="bg-success text-secondary-content" iconStyle="w-4"on:click={saveEditedKey} icon={Check}>Save</IconButton>
+      </div>
     </div>
   </div>
-</div>
+{/if}

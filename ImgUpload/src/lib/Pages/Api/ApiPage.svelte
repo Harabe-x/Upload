@@ -7,8 +7,17 @@
     import IconButton from '../../Controls/Buttons/IconButton.svelte';
     import DoughnutChart from "../../DataPresenters/Charts/DoughnutChart.svelte";
     import { getApiKeys } from '../../../js/Temp/ApiKeysData';
+    import AddApiKeyModal from './Components/AddApiKeyModal.svelte';
 
     const apiKeys = getApiKeys();
+
+    let isModalVisable = false;   
+
+    function toggleModal()
+    {
+        isModalVisable = !isModalVisable
+    }
+
 </script>
 
 <div class="text-right">
@@ -21,7 +30,7 @@
     <Card title="Api Keys">
         <!-- Title Button  -->
             <div class="flex flex-row ml-auto mr-2" slot="titleControl"> 
-                <IconButton icon={Plus} iconStyle="w-4 h-4"> Add </IconButton> 
+                <IconButton icon={Plus} on:click={() => { toggleModal() }} iconStyle="w-4 h-4"> Add </IconButton> 
             </div>
         <ApiKeysList></ApiKeysList> 
     </Card>
@@ -37,3 +46,6 @@
     </Card>
      
 </div>    
+
+
+<AddApiKeyModal isVisable={isModalVisable} on:modalClosed={() => {toggleModal() }}> </AddApiKeyModal>
