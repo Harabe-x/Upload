@@ -4,6 +4,7 @@
    import { createEventDispatcher } from "svelte";
    import { XMark, Check } from "svelte-hero-icons";
    import { getApiKeys } from "../../../../js/Temp/ApiKeysData";
+   import { validateStorage ,validateName} from "../../../../js/Temp/DataValidator";
    const dispatcher = createEventDispatcher();
    const apiKeysStore = getApiKeys();
    export let isVisable = false; 
@@ -15,8 +16,13 @@
   
   function saveEditedKey()
   {
-    apiKeysStore.update(() => { return $apiKeysStore })
-    closeEditModal();
+    if(validateName(currentKey.Name) && validateStorage(currentKey.Storage))
+    {
+      apiKeysStore.update(() => { return $apiKeysStore })
+      closeEditModal();
+    }
+ 
+   
   }
 
 
@@ -29,9 +35,9 @@
       <h3 class="font-bold text-lg">Add key</h3>
   
       <div class="mt-2 p-2">
-        <TextInput bind:value={currentKey.Name}  label="Name"></TextInput>
+        <TextInput bind:value={currentKey.Name} isError={!validateName(currentKey.Name)} errorMessage="Name can't be empty or white space"  label="Name"></TextInput>
         <TextInput bind:value={currentKey.Key} disabled={true} label="Key"></TextInput>
-        <TextInput bind:value={currentKey.Storage}  label="Storage"></TextInput>
+        <TextInput bind:value={currentKey.Storage} isError={!validateStorage(currentKey.Storage)} errorMessage="Storage have to be a number"  label="Storage"></TextInput>
 
       </div>
   
