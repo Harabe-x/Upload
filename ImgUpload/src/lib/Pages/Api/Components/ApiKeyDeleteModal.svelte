@@ -1,6 +1,6 @@
 <script>
     import { createEventDispatcher } from "svelte";
-    import IconButton from "../../../Controls/Buttons/IconButton.svelte";
+    import IconButton from "../../../Controls/Buttons/IconButton.svelte";  
     import { XMark,Trash } from "svelte-hero-icons";
     import { getApiKeys } from "../../../../js/Temp/ApiKeysData";
 

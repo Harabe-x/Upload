@@ -4,7 +4,6 @@
     import IconButton from "../../../Controls/Buttons/IconButton.svelte";
     import ApiKeyEditModal from "./ApiKeyEditModal.svelte";
     import ApiKeyDeleteModal from './ApiKeyDeleteModal.svelte'
-    import TextInput from "../../../Controls/Inputs/TextInput.svelte";
     
     const apiKeysStore = getApiKeys();
     const apiKeys = $apiKeysStore;
@@ -54,7 +53,7 @@
 
 <div class="overflow-x-auto">
     <table class="table">
-      <!-- head -->
+        <!-- head -->
       <thead>
         <tr>
           <th>No.</th>
@@ -64,7 +63,6 @@
         </tr>
       </thead>
       <tbody>
-          {#key $apiKeysStore}
           {#each  $apiKeysStore as item (item.Id) }
           <tr use:action on:click={tableRowOnClick}  on:dblclick={() => { openEditModal(item)  }}>
               <th>{apiKeys.indexOf(item) + 1}</th>
@@ -72,13 +70,13 @@
               <td>{item.Key}</td>
               <td>{item.Storage} GB</td>
               <td>
+                <div class="flex flex-row gap-2">
                   <IconButton on:click={() => { openEditModal(item) }}  icon={Pencil} iconStyle="w-5">Edit</IconButton>
                   <IconButton on:click={() => { openDeleteModal(item) }}  icon={Trash} iconStyle="w-5">Delete</IconButton> 
-
+                </div>
               </td>
           </tr>
           {/each}
-          {/key}
       </tbody>
     </table>
   </div>

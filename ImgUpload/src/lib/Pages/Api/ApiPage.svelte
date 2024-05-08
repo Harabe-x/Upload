@@ -7,6 +7,7 @@
     import IconButton from '../../Controls/Buttons/IconButton.svelte';
     import DoughnutChart from "../../DataPresenters/Charts/DoughnutChart.svelte";
     import { getApiKeys } from '../../../js/Temp/ApiKeysData';
+    import ApiKeysLogs from './Components/ApiKeysLogs.svelte';
     import AddApiKeyModal from './Components/AddApiKeyModal.svelte';
 
     const apiKeys = getApiKeys();
@@ -41,12 +42,13 @@
     <Card title="Api Keys Usage" > 
         <DoughnutChart labels={$apiKeys.map((item) => item.Name )} values={$apiKeys.map((item) => item.Storage)}></DoughnutChart>
     </Card>
-    
-    <Card title="Number of Api Keys" > 
-        <Chart chartType="bar" data={getChartData()}   > </Chart>
-    </Card>
-    
     {/key}
+<div class="grid gird-cols-1 grid-flow-row">
+    <Card title="Api Key Logs">
+        <ApiKeysLogs apiKeysStore={apiKeys} > </ApiKeysLogs>
+    </Card>
+</div>
+
 </div>    
 
 

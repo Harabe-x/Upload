@@ -6,6 +6,7 @@
     export let icon; 
     export let buttonStyle = null; 
     export let iconStyle = null; 
+    export let flipIcons = false;
 
     function invokeEvent(event)
     {
@@ -15,6 +16,14 @@
 </script>
 
 <button class="btn btn-ghost btn-sm normal-case {buttonStyle}" on:click={invokeEvent}>
+    {#if flipIcons === false}
     <Icon src={icon} class="{iconStyle}"></Icon>
     <slot/>
+    {:else}
+    <slot/>
+    <Icon src={icon} class="{iconStyle}"></Icon>
+    {/if}
+   
+    
+    
 </button> 
