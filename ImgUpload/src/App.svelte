@@ -3,12 +3,13 @@
     import PageContent from "./lib/Containers/PageContent.svelte";
     import DashboardPage from "./lib/Pages/Dashboard/DashboardPage.svelte";
     import { getNavigationStore } from "./js/Temp/NavigationStore";
-    
+    import { getNavBarStateStore } from "./js/Temp/NavbarStateStore";
+    const navbarStateStore = getNavBarStateStore();
     const navigation = getNavigationStore();
 
 
 </script>
-<div class="drawer  lg:drawer-open">
+<div class="drawer  lg:drawer-open" class:drawer-open={$navbarStateStore}>
   <input id="left-sidebar-drawer" type="checkbox" class="drawer-toggle" />
   <PageContent>
       <svelte:component this={$navigation} />

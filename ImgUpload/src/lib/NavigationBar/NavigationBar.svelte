@@ -10,9 +10,9 @@
 </script>   
 
 <div class="drawer-side z-30">
-    <label class="drawer-overlay"></label> 
+    <label  class="drawer-overlay"></label> 
         <ul class="menu  pt-2 w-80 bg-base-100 min-h-full   text-base-content">
-            <button class="btn btn-ghost bg-base-300  btn-circle z-50 top-0 right-0 mt-4 mr-2 absolute lg:hidden">
+            <button class="btn btn-ghost bg-base-100  btn-circle z-50 top-0 right-0 mt-4 mr-2 absolute lg:hidden">
                     <Icon src={XMark} class="h-5 inline-block w-5"/>
                 </button>
                 <li class="mb-2 font-semibold text-xl"><a href="/app/welcome"> <Icon  class="mask mask-squircle w-10 text-blue-400" src={LockClosed}></Icon>  Imagevault </a> </li>

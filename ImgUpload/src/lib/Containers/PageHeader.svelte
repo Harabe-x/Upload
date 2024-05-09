@@ -4,13 +4,22 @@
     import BadgeMenuItem from "../Controls/MenuItems/BadgeMenuItem.svelte";
     import UserProfileDropdown from '../Controls/Dropdowns/UserProfileDropdown.svelte'
     import MrFrost from '../../assets/117171438_10157804750272880_5668855721113743083_n.jpg'
+    import { getNavBarStateStore } from '../../js/Temp/NavbarStateStore'
+
+    const navbarStore = getNavBarStateStore();
+
+    function toggleMenu()
+    {
+       $navbarStore = !$navbarStore;
+    }   
+
 </script>
 
     
 <div class="navbar sticky top-0 bg-base-100 z-10">
     
     <div class="flex-1">
-        <label for="" class="btn btn-primary drawer-button lg:hidden">
+        <label for="" on:click={toggleMenu} class="btn btn-primary drawer-button lg:hidden">
             <Icon src={Bars3} class="h-5 inline-block w-5"></Icon>
         </label>
         <h1 class="text-2xl font-semibold ml-2"> {pageTitle} </h1>
