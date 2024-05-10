@@ -1,6 +1,7 @@
 <script>
  import { Icon } from "svelte-hero-icons";
  import { getNavigationStore } from "../../../js/Temp/NavigationStore";
+ import { toggleNavBar } from "../../../js/Temp/NavbarStateStore";
  import PageHeaderNameStore from "../../../js/Temp/PageHeaderNameStore";
  const navigationStore = getNavigationStore();
  const pageHeaderStore = PageHeaderNameStore();
@@ -14,7 +15,8 @@
   function navigate()
   {
     $navigationStore = component;
-    $pageHeaderStore = name;    
+    $pageHeaderStore = name; 
+    toggleNavBar()
   }
 
 </script>
