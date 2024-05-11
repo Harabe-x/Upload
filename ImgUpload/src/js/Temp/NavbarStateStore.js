@@ -12,7 +12,6 @@ export function toggleNavBar()
 {
     const storeValue = get(navBarStore);
     navBarStore.set(!storeValue)
-    
 }
 
 

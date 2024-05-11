@@ -2,14 +2,25 @@
     import Card from "../../DataPresenters/Cards/Card.svelte";
     import Chart from "../../DataPresenters/Charts/Chart.svelte";
     import Stat from "../../DataPresenters/Cards/Stat.svelte";
-    import { ServerStack,Photo, Banknotes,CloudArrowUp} from "svelte-hero-icons";
+    import { Icon,ServerStack,Photo, Banknotes,CloudArrowUp,ArrowPath,Envelope,EllipsisVertical,ArrowDownTray} from "svelte-hero-icons";
     import { getChartData } from "../../../js/ApplicationData/ChartData"
-    import DashboardTopMenu from "./Components/DashboardTopMenu.svelte";
+    import IconButton from "../../Controls/Buttons/IconButton.svelte";
+    import PageTopMenu from "../../Controls/Shared/PageTopMenu.svelte";
 </script>   
 
 
 <!-- Card section -->
-<DashboardTopMenu> </DashboardTopMenu>
+<PageTopMenu>
+    <IconButton icon={ArrowPath} iconStyle="w-4 mr-2"> Refresh data</IconButton>
+    <div class="dropdown dropdown-bottom dropdown-end  ml-2">
+        <label tabIndex={0} class="btn btn-ghost btn-sm normal-case btn-square "><Icon src={EllipsisVertical} class="w-5"/></label>
+        <ul tabIndex={0} class="dropdown-content menu menu-compact  p-2 shadow bg-base-100 rounded-box w-52">
+            <li><a><Icon src={Envelope} class="w-4"/>Email Digests</a></li>
+            <li><a><Icon src={ArrowDownTray} class="w-4"/>Download</a></li>
+        </ul>
+    </div>
+</PageTopMenu>
+
 <div class="grid lg:grid-cols-4 mt-2 md:grid-cols-2 grid-cols-1 gap-6" >
     <Stat titleTextColor="base-content" 
      icon={ServerStack} 

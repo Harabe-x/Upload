@@ -2,17 +2,19 @@
     import Card from '../../DataPresenters/Cards/Card.svelte'
     import Chart from '../../DataPresenters/Charts/Chart.svelte';
     import { getChartData } from '../../../js/ApplicationData/ChartData';
-    import { ArrowPath,Key,Plus } from 'svelte-hero-icons';
+    import { ArrowPath,Icon,Key,Plus } from 'svelte-hero-icons';
     import ApiKeysList from './Components/ApiKeysList.svelte';
     import IconButton from '../../Controls/Buttons/IconButton.svelte';
     import DoughnutChart from "../../DataPresenters/Charts/DoughnutChart.svelte";
     import { getApiKeys } from '../../../js/Temp/ApiKeysData';
     import ApiKeysLogs from './Components/ApiKeysLogs.svelte';
     import AddApiKeyModal from './Components/AddApiKeyModal.svelte';
+  import PageTopMenu from '../../Controls/Shared/PageTopMenu.svelte';
 
     const apiKeys = getApiKeys();
 
     let isModalVisable = false;   
+
 
     function toggleModal()
     {
@@ -21,10 +23,11 @@
 
 </script>
 
-<div class="text-right">
-<IconButton icon={ArrowPath} iconStyle="w-4 mr-2"> Refresh Data </IconButton>
-</div>
-
+<PageTopMenu>
+    <IconButton iconStyle="w-4 mr-1" icon={ArrowPath}>
+        Refresh
+    </IconButton>
+</PageTopMenu>
 
 <div class="grid mt-1 grid-cols-1">
      
