@@ -13,7 +13,7 @@
      let isPictureModalVisable = false; 
      let selectedPicture; 
      let imgPages = 10; // Here will be method for fetching totalImgPages 
-     
+      
      function changePage(event)
      {
        console.log(event)
