@@ -1,11 +1,9 @@
 <script>
-    import viewport from "../../../../js/Temp/Viewport";
     import { getLogPage } from "../../../../js/Temp/DummyLogEntry";
     import { writable } from "svelte/store";
-    import IconButton from "../../../Controls/Buttons/IconButton.svelte";
-    import { ChevronLeft,ChevronRight } from "svelte-hero-icons";
     import { onMount } from "svelte";
-    
+    import DataPaginator from "../../../Controls/Shared/DataPaginator.svelte";
+
     const logStore = writable([])
     const chunkSize = 15;
     let currentPage = 1;
@@ -55,10 +53,6 @@
           </tbody>
     </table> 
     {#if chunkSize > 5}
-    <div class="flex flex-row  items-center justify-center gap-1">
-        <IconButton iconStyle="w-4" on:click={goToPreviousPage} icon={ChevronLeft}>Previous</IconButton>
-        <span class="font-semibold">{currentPage}</span>
-        <IconButton flipIcons={true} iconStyle="w-4" on:click={goToNextPage} icon={ChevronRight}>Next</IconButton>
-      </div>
+        <DataPaginator on:navigatedToNextPage={goToNextPage} on:navigatedToPreviousPage={goToPreviousPage}></DataPaginator>
     {/if}
 </div>      

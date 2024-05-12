@@ -1,5 +1,5 @@
 <script>
-  import { ArrowPath, ArrowRight } from "svelte-hero-icons";
+     import { ArrowPath, ArrowRight, Plus } from "svelte-hero-icons";
      import PageTopMenu from "../../Controls/Shared/PageTopMenu.svelte";
      import IconButton from "../../Controls/Buttons/IconButton.svelte";
      import Card from "../../DataPresenters/Cards/Card.svelte";
@@ -7,12 +7,19 @@
      import { getPhotoList } from "../../../js/Temp/PhotoPlaceholderApi";
      import ImageFrame from "./Components/ImageFrame.svelte";
      import PictureModal from "./Components/PictureModal.svelte";
-     import { Result } from "postcss";
-     
-     let promise =  getPhotoList(2,32);
+     import DataPaginator from "../../Controls/Shared/DataPaginator.svelte";     
+
+     let promise =  getPhotoList(1,32);
      let isPictureModalVisable = false; 
      let selectedPicture; 
- 
+     let imgPages = 10; // Here will be method for fetching totalImgPages 
+     
+     function changePage(event)
+     {
+       console.log(event)
+       promise = getPhotoList(event.detail,32)
+     }
+
      function openModal(item)
      {
           selectedPicture = item; 
@@ -25,16 +32,19 @@
 
 </script>
 
-
+<div>
 <PageTopMenu> 
      <IconButton iconStyle="w-4 mr-1" icon={ArrowPath}>
           Refresh
      </IconButton>            
 </PageTopMenu>
+</div>
 
 <div class="grid grid-rows-1">
      <Card title="Your collections"> 
-
+          <div slot="titleControl" class="ml-auto">
+               <IconButton icon={Plus} iconStyle="w-4">  Add Collection </IconButton>
+        </div>
           <div class="carousel-with-scroll w-full  max-w p-4 space-x-4 bg-ghost-100 rounded-box  carusel-scroll ">
 
                {#each [1,1,1,1,1,1] as  item}
@@ -46,11 +56,15 @@
                </div>
 
              </div>
-     </Card>
+          </Card>
 </div>    
 
 <div class="grid grid-cols-1 grid-rows-1"> 
      <Card title="All Images"> 
+          <div slot="titleControl" class="ml-auto">
+               <IconButton icon={Plus} iconStyle="w-4">  Add Image </IconButton>
+          </div>
+
           {#await promise }
                Waiting
           {:then result} 
@@ -58,14 +72,20 @@
                {#each result as photo }
                     
                <button on:click={() => { openModal(photo.download_url)}}> 
-                    <ImageFrame imgDescription={photo.author} imgSrc={photo.download_url}></ImageFrame>
+                    <ImageFrame imgTitle={photo.author} imgSrc={photo.download_url}></ImageFrame>
                </button>
                     
                {/each} 
                </div>
           {/await}
+          {#if imgPages > 1}
+          <div class="flex flex-row items-center justify-center mr-4  mt-5">
+          <DataPaginator on:navigatedToNextPage={changePage} on:navigatedToPreviousPage={changePage} ></DataPaginator>
+          </div>
+     {/if}
      </Card> 
 </div>
 
 
 <PictureModal imgSrc={selectedPicture} on:modalClosed={toggleModal} isModalVisable={isPictureModalVisable} ></PictureModal>
+
