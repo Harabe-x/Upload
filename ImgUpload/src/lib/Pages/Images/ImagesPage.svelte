@@ -1,19 +1,22 @@
 <script>
-     import { ArrowPath, ArrowRight, Plus } from "svelte-hero-icons";
      import PageTopMenu from "../../Controls/Shared/PageTopMenu.svelte";
      import IconButton from "../../Controls/Buttons/IconButton.svelte";
      import Card from "../../DataPresenters/Cards/Card.svelte";
      import CollectionCard from "./Components/CollectionCard.svelte";
-     import { getPhotoList } from "../../../js/Temp/PhotoPlaceholderApi";
      import ImageFrame from "./Components/ImageFrame.svelte";
      import PictureModal from "./Components/PictureModal.svelte";
      import DataPaginator from "../../Controls/Shared/DataPaginator.svelte";     
+     import AddImageModal from "./Components/AddImageModal.svelte";
+     import { ArrowPath, ArrowRight, Plus } from "svelte-hero-icons";
+     import { getPhotoList } from "../../../js/Temp/PhotoPlaceholderApi";
 
      let promise =  getPhotoList(1,32);
-     let isPictureModalVisable = false; 
      let selectedPicture; 
      let imgPages = 10; // Here will be method for fetching totalImgPages 
-      
+     let isImageModalVisable = false; 
+     let isAddImageModalVisable = false; 
+     let isAddCollectionModalVisable = false; 
+
      function changePage(event)
      {
        console.log(event)
@@ -23,11 +26,11 @@
      function openModal(item)
      {
           selectedPicture = item; 
-          toggleModal();
+          toggleModal(isImageModalVisable);
      }
-     function toggleModal()
+     function toggleModal(modalFlag)
      {
-          isPictureModalVisable = !isPictureModalVisable;
+          modalFlag = !modalFlag; 
      }
 
 </script>
@@ -62,7 +65,7 @@
 <div class="grid grid-cols-1 grid-rows-1"> 
      <Card title="All Images"> 
           <div slot="titleControl" class="ml-auto">
-               <IconButton icon={Plus} iconStyle="w-4">  Add Image </IconButton>
+               <IconButton icon={Plus} iconStyle="w-4" on:click={() =>{ toggleModal(isAddImageModalVisable) }}>  Add Image </IconButton>
           </div>
 
           {#await promise }
@@ -87,5 +90,5 @@
 </div>
 
 
-<PictureModal imgSrc={selectedPicture} on:modalClosed={toggleModal} isModalVisable={isPictureModalVisable} ></PictureModal>
-
+<PictureModal imgSrc={selectedPicture} on:modalClosed={() => { toggleModal(isImageModalVisable) }} isModalVisable={isImageModalVisable} ></PictureModal>
+<AddImageModal on:modalClosed={() => { toggleModal(isAddImageModalVisable) } } isModalVisable={isAddImageModalVisable}  ></AddImageModal>
