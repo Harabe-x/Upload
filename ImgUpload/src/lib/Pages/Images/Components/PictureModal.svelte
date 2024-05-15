@@ -17,7 +17,7 @@
 
 {#if isModalVisable }
     <div class="modal modal-open">
-        <div class="card card-side bg-base-100 shadow-xl">
+        <div class="card card-side bg-base-100 shadow-xl w-3/4">
             <figure><img class=" max-w-screen-sm max-h-96 object-cover rounded-xl" src={imgSrc} alt="Album"/></figure>
             <div class="card-body">
                 <h2 class="card-title">{title === null ? 'No title' :  title}</h2>

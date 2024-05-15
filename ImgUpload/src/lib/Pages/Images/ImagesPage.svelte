@@ -7,31 +7,36 @@
      import PictureModal from "./Components/PictureModal.svelte";
      import DataPaginator from "../../Controls/Shared/DataPaginator.svelte";     
      import AddImageModal from "./Components/AddImageModal.svelte";
+     import ModalProperties from "../../../js/Classes/ModalProperties";
      import { ArrowPath, ArrowRight, Plus } from "svelte-hero-icons";
      import { getPhotoList } from "../../../js/Temp/PhotoPlaceholderApi";
+     import { writable, get} from "svelte/store";
 
-     let promise =  getPhotoList(1,32);
+     let promise =  getPhotoList(1,256);
      let selectedPicture; 
      let imgPages = 10; // Here will be method for fetching totalImgPages 
-     let isImageModalVisable = false; 
-     let isAddImageModalVisable = false; 
-     let isAddCollectionModalVisable = false; 
+    
+     let imageModalStateStore = writable(false);
+     let addImageModalStateStore = writable(false);
+     let addCollectionModalState = writable(false);
 
      function changePage(event)
      {
        console.log(event)
-       promise = getPhotoList(event.detail,32)
+       promise = getPhotoList(event.detail,256)
      }
 
      function openModal(item)
      {
           selectedPicture = item; 
-          toggleModal(isImageModalVisable);
+          toggleModal(imageModalStateStore);
      }
-     function toggleModal(modalFlag)
+     function toggleModal(modalWindowStore)
      {
-          modalFlag = !modalFlag; 
-     }
+          let storeValue = get(modalWindowStore)
+          modalWindowStore.set(!storeValue)
+     } 
+
 
 </script>
 
@@ -41,6 +46,7 @@
           Refresh
      </IconButton>            
 </PageTopMenu>
+
 </div>
 
 <div class="grid grid-rows-1">
@@ -65,7 +71,7 @@
 <div class="grid grid-cols-1 grid-rows-1"> 
      <Card title="All Images"> 
           <div slot="titleControl" class="ml-auto">
-               <IconButton icon={Plus} iconStyle="w-4" on:click={() =>{ toggleModal(isAddImageModalVisable) }}>  Add Image </IconButton>
+               <IconButton icon={Plus} iconStyle="w-4" on:click={() =>{ toggleModal(addImageModalStateStore) }}>  Add Image </IconButton>
           </div>
 
           {#await promise }
@@ -90,5 +96,6 @@
 </div>
 
 
-<PictureModal imgSrc={selectedPicture} on:modalClosed={() => { toggleModal(isImageModalVisable) }} isModalVisable={isImageModalVisable} ></PictureModal>
-<AddImageModal on:modalClosed={() => { toggleModal(isAddImageModalVisable) } } isModalVisable={isAddImageModalVisable}  ></AddImageModal>
+<PictureModal imgSrc={selectedPicture} on:modalClosed={() => { toggleModal(imageModalStateStore) }} isModalVisable={$imageModalStateStore} ></PictureModal>
+<AddImageModal on:modalClosed={() => { toggleModal(addImageModalStateStore) } } isModalVisable={$addImageModalStateStore}  ></AddImageModal>
+
