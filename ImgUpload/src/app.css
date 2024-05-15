@@ -8,5 +8,5 @@
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     -ms-overflow-style: none;
-    scrollbar-width: 10px;
+    scrollbar-width: thin;
 }

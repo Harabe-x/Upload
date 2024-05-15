@@ -8,6 +8,7 @@
      import DataPaginator from "../../Controls/Shared/DataPaginator.svelte";     
      import AddImageModal from "./Components/AddImageModal.svelte";
      import ModalProperties from "../../../js/Classes/ModalProperties";
+     import ModalWindowManager from "../../Controls/Shared/ModalWindowManager.svelte";
      import { ArrowPath, ArrowRight, Plus } from "svelte-hero-icons";
      import { getPhotoList } from "../../../js/Temp/PhotoPlaceholderApi";
      import { writable, get} from "svelte/store";
@@ -15,10 +16,10 @@
      let promise =  getPhotoList(1,256);
      let selectedPicture; 
      let imgPages = 10; // Here will be method for fetching totalImgPages 
-    
-     let imageModalStateStore = writable(false);
-     let addImageModalStateStore = writable(false);
-     let addCollectionModalState = writable(false);
+
+     let imageModalToggleFunction;
+     let addImageModalToggleFunction;
+     let addCollectionModalToggleFunction;
 
      function changePage(event)
      {
@@ -26,16 +27,7 @@
        promise = getPhotoList(event.detail,256)
      }
 
-     function openModal(item)
-     {
-          selectedPicture = item; 
-          toggleModal(imageModalStateStore);
-     }
-     function toggleModal(modalWindowStore)
-     {
-          let storeValue = get(modalWindowStore)
-          modalWindowStore.set(!storeValue)
-     } 
+     
 
 
 </script>
@@ -71,7 +63,7 @@
 <div class="grid grid-cols-1 grid-rows-1"> 
      <Card title="All Images"> 
           <div slot="titleControl" class="ml-auto">
-               <IconButton icon={Plus} iconStyle="w-4" on:click={() =>{ toggleModal(addImageModalStateStore) }}>  Add Image </IconButton>
+               <IconButton icon={Plus} iconStyle="w-4" on:click={() =>{ addImageModalToggleFunction() }}>  Add Image </IconButton>
           </div>
 
           {#await promise }
@@ -80,7 +72,7 @@
                <div class="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-10"> 
                {#each result as photo }
                     
-               <button on:click={() => { openModal(photo.download_url)}}> 
+               <button on:click={() => { selectedPicture = photo.download_url; imageModalToggleFunction(); console.log(imageModalToggleFunction) }}> 
                     <ImageFrame imgTitle={photo.author} imgSrc={photo.download_url}></ImageFrame>
                </button>
                     
@@ -96,6 +88,5 @@
 </div>
 
 
-<PictureModal imgSrc={selectedPicture} on:modalClosed={() => { toggleModal(imageModalStateStore) }} isModalVisable={$imageModalStateStore} ></PictureModal>
-<AddImageModal on:modalClosed={() => { toggleModal(addImageModalStateStore) } } isModalVisable={$addImageModalStateStore}  ></AddImageModal>
-
+ <ModalWindowManager bind:toggleModal={imageModalToggleFunction} param={selectedPicture} type="PictureModal" ></ModalWindowManager>
+<ModalWindowManager bind:toggleModal={addImageModalToggleFunction} type="AddImageModal" ></ModalWindowManager>

@@ -1,7 +1,5 @@
 <script>
     import Card from '../../DataPresenters/Cards/Card.svelte'
-    import Chart from '../../DataPresenters/Charts/Chart.svelte';
-    import { getChartData } from '../../../js/ApplicationData/ChartData';
     import { ArrowPath,Icon,Key,Plus } from 'svelte-hero-icons';
     import ApiKeysList from './Components/ApiKeysList.svelte';
     import IconButton from '../../Controls/Buttons/IconButton.svelte';
@@ -9,17 +7,12 @@
     import { getApiKeys } from '../../../js/Temp/ApiKeysData';
     import ApiKeysLogs from './Components/ApiKeysLogs.svelte';
     import AddApiKeyModal from './Components/AddApiKeyModal.svelte';
-  import PageTopMenu from '../../Controls/Shared/PageTopMenu.svelte';
+    import ModalWindowManager from "../../Controls/Shared/ModalWindowManager.svelte";
+    import PageTopMenu from '../../Controls/Shared/PageTopMenu.svelte';
 
     const apiKeys = getApiKeys();
 
-    let isModalVisable = false;   
-
-
-    function toggleModal()
-    {
-        isModalVisable = !isModalVisable
-    }
+    let addImageModalToggleFunction;
 
 </script>
 
@@ -34,7 +27,7 @@
     <Card title="Api Keys">
         <!-- Title Button  -->
             <div class="flex flex-row ml-auto mr-2" slot="titleControl"> 
-                <IconButton icon={Plus} on:click={() => { toggleModal() }} iconStyle="w-4 h-4"> Add </IconButton> 
+                <IconButton icon={Plus} on:click={() => {addImageModalToggleFunction(); }}  iconStyle="w-4 h-4"> Add </IconButton>
             </div>
         <ApiKeysList></ApiKeysList> 
     </Card>
@@ -54,5 +47,4 @@
 
 </div>    
 
-
-<AddApiKeyModal isVisable={isModalVisable} on:modalClosed={() => {toggleModal() }}> </AddApiKeyModal>
+<ModalWindowManager type="AddApiKeyModal" bind:toggleModal={addImageModalToggleFunction}></ModalWindowManager>

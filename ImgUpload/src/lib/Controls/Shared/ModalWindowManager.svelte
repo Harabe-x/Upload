@@ -21,9 +21,10 @@
     })
 
     
-    function toggleModal(event)
+   export function toggleModal(event)
     {
-        if(typeof event.detail == 'function')
+        // Event detail is function passed by child as event param;
+        if(event !== undefined && typeof event.detail == 'function')
         {
             const modalAction = event.detail;
             modalAction();
@@ -34,4 +35,6 @@
 
 </script>
 
-<svelte:component on:modalCLosed={toggleModal} {param}   this={componentDictionary.get(type)} ></svelte:component>
+{#if isModalVisable}
+<svelte:component on:modalClosed={toggleModal} {param}  {isModalVisable}  this={componentDictionary.get(type)} ></svelte:component>
+{/if}

@@ -6,7 +6,7 @@
 
     const apiKeysStore = getApiKeys();
     const dispatcher = createEventDispatcher();
-    export let currentKey;
+    export let param;
     export let isVisable = false; 
 
     function closeDeleteModal()
@@ -15,8 +15,8 @@
     }
     function deleteApiKey()
     {
-        $apiKeysStore.splice($apiKeysStore.indexOf(currentKey),1)
-        apiKeysStore.update(() => { return $apiKeysStore } )
+        $apiKeysStore.splice($apiKeysStore.indexOf(param),1)
+        apiKeysStore.update(() => $apiKeysStore )
     
         closeDeleteModal();
     }
@@ -28,7 +28,7 @@
 <div class="modal modal-open">
     <div class="modal-box">
       <h3 class="font-bold text-lg">Delete key </h3>
-      <p class="py-4">Are you sure you want to delete the key named "<span class="font-bold text-primary">{currentKey.Name}</span>" ?</p>
+      <p class="py-4">Are you sure you want to delete the key named "<span class="font-bold text-primary">{param.Name}</span>" ?</p>
       <div class="modal-action">
         <IconButton iconStyle="w-4" icon={XMark} on:click={closeDeleteModal}> Cancle </IconButton>
         <IconButton iconStyle="w-4" buttonStyle="bg-error text-primary-content" on:click={deleteApiKey} icon={Trash}> Delete </IconButton>

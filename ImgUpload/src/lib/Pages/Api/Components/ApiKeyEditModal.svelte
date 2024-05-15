@@ -8,7 +8,7 @@
    const dispatcher = createEventDispatcher();
    const apiKeysStore = getApiKeys();
    export let isVisable = false; 
-   export let currentKey;
+   export let param;
   function closeEditModal()
   { 
     dispatcher('modalClosed')
@@ -16,9 +16,9 @@
   
   function saveEditedKey()
   {
-    if(validateName(currentKey.Name) && validateStorage(currentKey.Storage))
+    if(validateName(param.Name) && validateStorage(param.Storage))
     {
-      apiKeysStore.update(() => { return $apiKeysStore })
+      apiKeysStore.update(() =>  $apiKeysStore )
       closeEditModal();
     }
  
@@ -35,9 +35,9 @@
       <h3 class="font-bold text-lg">Add key</h3>
   
       <div class="mt-2 p-2">
-        <TextInput bind:value={currentKey.Name} isError={!validateName(currentKey.Name)} errorMessage="Name can't be empty or white space"  label="Name"></TextInput>
-        <TextInput bind:value={currentKey.Key} disabled={true} label="Key"></TextInput>
-        <TextInput bind:value={currentKey.Storage} isError={!validateStorage(currentKey.Storage)} errorMessage="Storage have to be a number"  label="Storage"></TextInput>
+        <TextInput bind:value={param.Name} isError={!validateName(param.Name)} errorMessage="Name can't be empty or white space" label="Name"></TextInput>
+        <TextInput bind:value={param.Key} disabled={true} label="Key"></TextInput>
+        <TextInput bind:value={param.Storage} isError={!validateStorage(param.Storage)} errorMessage="Storage have to be a number" label="Storage"></TextInput>
 
       </div>
   
