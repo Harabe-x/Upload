@@ -7,7 +7,7 @@
    import { validateStorage ,validateName} from "../../../../js/Temp/DataValidator";
    const dispatcher = createEventDispatcher();
    const apiKeysStore = getApiKeys();
-   export let isVisable = false; 
+   export let isModalVisable = false; 
    export let param;
   function closeEditModal()
   { 
@@ -29,7 +29,7 @@
 </script> 
 
 
-{#if isVisable}
+{#if isModalVisable}
 <div class="modal modal-open">
     <div class="modal-box">
       <h3 class="font-bold text-lg">Add key</h3>

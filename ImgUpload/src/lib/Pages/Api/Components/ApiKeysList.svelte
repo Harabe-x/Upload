@@ -2,16 +2,20 @@
     import { getApiKeys } from "../../../../js/Temp/ApiKeysData";
     import { Pencil,Trash,XMark,Check } from "svelte-hero-icons";
     import IconButton from "../../../Controls/Buttons/IconButton.svelte";
+    import ModalWindowManager from "../../../Controls/Shared/ModalWindowManager.svelte";
     import ApiKeyEditModal from "./ApiKeyEditModal.svelte";
     import ApiKeyDeleteModal from './ApiKeyDeleteModal.svelte'
     
     const apiKeysStore = getApiKeys();
     const apiKeys = $apiKeysStore;
     const tableRows = []
+   
     let selectedTableRow;
-    let isEditModalVisable = false;
-    let isDeleteModalVisable = false;
     let selectedKey;
+   
+   
+    let editApiKeyModalToggleFunction;
+    let deleteApiKeyModalToggleFunction;
    
     function action(elem)
     {
@@ -27,26 +31,11 @@
 
         selectedTableRow.classList.add('bg-base-200')
     }
-    function toggleEditModal()
-    {
-      isEditModalVisable = !isEditModalVisable;
-    }
-    function toggleDeleteModal()
-    {
-      isDeleteModalVisable = !isDeleteModalVisable;
-    }
     
-    function openEditModal(item)
-    { 
-      selectedKey = item;
-      toggleEditModal();
-    }
-    function openDeleteModal(item)
+    function selectKey(key)
     {
-      selectedKey = item; 
-      toggleDeleteModal()
+      selectedKey = key;
     }
-    
 
 </script>
 
@@ -64,15 +53,15 @@
       </thead>
       <tbody>
           {#each  $apiKeysStore as item (item.Id) }
-          <tr use:action on:click={tableRowOnClick}  on:dblclick={() => { openEditModal(item)  }}>
+          <tr use:action on:click={tableRowOnClick}  on:dblclick={() => { selectKey(item)  }}>
               <th>{apiKeys.indexOf(item) + 1}</th>
               <td>{item.Name}</td>
               <td>{item.Key}</td>
               <td>{item.Storage} GB</td>
               <td>
                 <div class="flex flex-row gap-2">
-                  <IconButton on:click={() => { openEditModal(item) }}  icon={Pencil} iconStyle="w-5">Edit</IconButton>
-                  <IconButton on:click={() => { openDeleteModal(item) }}  icon={Trash} iconStyle="w-5">Delete</IconButton> 
+                  <IconButton on:click={() => { selectKey(item); editApiKeyModalToggleFunction() }}  icon={Pencil} iconStyle="w-5">Edit</IconButton>
+                  <IconButton on:click={() => { selectKey(item); deleteApiKeyModalToggleFunction();}}  icon={Trash} iconStyle="w-5">Delete</IconButton> 
                 </div>
               </td>
           </tr>
@@ -80,6 +69,6 @@
       </tbody>
     </table>
   </div>
-
-  <ApiKeyDeleteModal currentKey={selectedKey}  isVisable={isDeleteModalVisable} on:modalClosed={toggleDeleteModal}></ApiKeyDeleteModal>
-  <ApiKeyEditModal currentKey={selectedKey}  isVisable={isEditModalVisable} on:modalClosed={toggleEditModal} > </ApiKeyEditModal>
+  <ModalWindowManager bind:toggleModal={editApiKeyModalToggleFunction} param={selectedKey} type="ApiKeyEditModal"></ModalWindowManager>
+  <ModalWindowManager bind:toggleModal={deleteApiKeyModalToggleFunction} param={selectedKey} type="ApiKeyDeleteModal"></ModalWindowManager>
+  

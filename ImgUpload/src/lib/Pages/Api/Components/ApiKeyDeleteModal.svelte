@@ -7,7 +7,7 @@
     const apiKeysStore = getApiKeys();
     const dispatcher = createEventDispatcher();
     export let param;
-    export let isVisable = false; 
+    export let isModalVisable = false; 
 
     function closeDeleteModal()
     {
@@ -24,7 +24,7 @@
 </script>
 
 
-{#if isVisable}
+{#if isModalVisable}
 <div class="modal modal-open">
     <div class="modal-box">
       <h3 class="font-bold text-lg">Delete key </h3>
