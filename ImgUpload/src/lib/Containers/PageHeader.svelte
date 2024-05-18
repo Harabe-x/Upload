@@ -12,7 +12,7 @@
 </script>
 
     
-<div class="navbar sticky top-0 bg-base-100 z-10">
+<div class="navbar sticky top-0 bg-base-200 z-10">
     
     <div class="flex-1">
         <label for="" on:click={toggleNavBar} class="btn btn-primary drawer-button lg:hidden">

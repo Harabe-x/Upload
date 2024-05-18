@@ -34,7 +34,7 @@
 
 
 <div class="overflow-auto">
-    <table class="table">
+    <table class="table bg-base-200">
         <thead>
             <tr>
               <th>Date</th>

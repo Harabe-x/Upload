@@ -51,8 +51,8 @@
 </script>
 
 
-<div class="overflow-x-auto">
-    <table class="table">
+<div class="overflow-x-auto bg-base-200">
+    <table class="table bg-base-200">
         <!-- head -->
       <thead>
         <tr>
@@ -64,9 +64,9 @@
       </thead>
       <tbody>
           {#each  $apiKeysStore as item (item.Id) }
-          <tr use:action on:click={tableRowOnClick}  on:dblclick={() => { openEditModal(item)  }}>
-              <th>{apiKeys.indexOf(item) + 1}</th>
-              <td>{item.Name}</td>
+          <tr class="bg-base-200" use:action on:click={tableRowOnClick}  on:dblclick={() => { openEditModal(item)  }}>
+              <th class="bg-base-200">{apiKeys.indexOf(item) + 1}</th>
+              <td >{item.Name}</td>
               <td>{item.Key}</td>
               <td>{item.Storage} GB</td>
               <td>

@@ -4,7 +4,7 @@
      import Card from "../../DataPresenters/Cards/Card.svelte";
      import CollectionCard from "./Components/CollectionCard.svelte";
      import ImageFrame from "./Components/ImageFrame.svelte";
-     import PictureModal from "./Components/PictureModal.svelte";
+     import PictureModal from "./Components/ImageBrowserModal.svelte";
      import DataPaginator from "../../Controls/Shared/DataPaginator.svelte";     
      import AddImageModal from "./Components/AddImageModal.svelte";
      import ModalProperties from "../../../js/Classes/ModalProperties";
@@ -88,5 +88,5 @@
 </div>
 
 
- <ModalWindowManager bind:toggleModal={imageModalToggleFunction} param={selectedPicture} type="PictureModal" ></ModalWindowManager>
+ <ModalWindowManager bind:toggleModal={imageModalToggleFunction} param={selectedPicture} type="ImageBrowserModal" ></ModalWindowManager>
 <ModalWindowManager bind:toggleModal={addImageModalToggleFunction} type="AddImageModal" ></ModalWindowManager>

@@ -8,7 +8,7 @@
 
 <div class="drawer-content flex flex-col">
     <PageHeader pageTitle={$pageHeaderStore}></PageHeader>
-    <main class="flex-1 overflow-y-auto md:pt-4 pt-4 px-6  bg-base-200">
+    <main class="flex-1 overflow-y-auto md:pt-4 pt-4 px-6  bg-base-300">
         <div class="w-full h-screen" >
             <slot> 
                 <LoadingPage> </LoadingPage>

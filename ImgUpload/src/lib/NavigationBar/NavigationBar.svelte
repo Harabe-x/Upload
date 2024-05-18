@@ -12,7 +12,7 @@
 
 <div class="drawer-side z-30">
     <label  class="drawer-overlay"></label> 
-        <ul class="menu  pt-2 w-80 bg-base-100 min-h-full   text-base-content">
+        <ul class="menu  pt-2 w-80 bg-base-200 min-h-full   text-base-content">
             <button on:click={toggleNavBar} class="btn btn-ghost bg-base-100  btn-circle z-50 top-0 right-0 mt-4 mr-2 absolute lg:hidden">
                     <Icon src={XMark} class="h-5 inline-block w-5"/>
                 </button>
