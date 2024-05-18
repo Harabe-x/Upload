@@ -14,7 +14,7 @@
      import { writable, get} from "svelte/store";
 
      let promise =  getPhotoList(1,256);
-     let selectedPicture; 
+     let selectedImage;
      let imgPages = 10; // Here will be method for fetching totalImgPages 
 
      let imageModalToggleFunction;
@@ -72,7 +72,7 @@
                <div class="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-10"> 
                {#each result as photo }
                     
-               <button on:click={() => { selectedPicture = photo.download_url; imageModalToggleFunction(); console.log(imageModalToggleFunction) }}> 
+               <button on:click={() => { selectedImage = photo.download_url; imageModalToggleFunction(); console.log(imageModalToggleFunction) }}>
                     <ImageFrame imgTitle={photo.author} imgSrc={photo.download_url}></ImageFrame>
                </button>
                     
@@ -88,5 +88,5 @@
 </div>
 
 
- <ModalWindowManager bind:toggleModal={imageModalToggleFunction} param={selectedPicture} type="ImageBrowserModal" ></ModalWindowManager>
+ <ModalWindowManager bind:toggleModal={imageModalToggleFunction} param={selectedImage} type="ImageBrowserModal" ></ModalWindowManager>
 <ModalWindowManager bind:toggleModal={addImageModalToggleFunction} type="AddImageModal" ></ModalWindowManager>

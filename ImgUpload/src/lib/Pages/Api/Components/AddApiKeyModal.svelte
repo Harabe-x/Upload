@@ -9,7 +9,7 @@
      const apiKeyStore = getApiKeys();
      const dispatcher = createEventDispatcher();
      
-    export let isVisable = false;
+    export let isModalVisable = false;
 
      let name = ''; 
      let storage = '';
@@ -40,7 +40,7 @@
 
 </script>
 
-{#if isVisable }
+{#if isModalVisable }
 <div class="modal modal-open">
     <div class="modal-box">
       <h3 class="font-bold text-lg">Add key</h3>
