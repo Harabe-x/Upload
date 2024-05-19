@@ -7,7 +7,7 @@
     import { getApiKeys } from '../../../js/Temp/ApiKeysData';
     import ApiKeysLogs from './Components/ApiKeysLogs.svelte';
     import AddApiKeyModal from './Components/AddApiKeyModal.svelte';
-    import ModalWindowManager from "../../Controls/Shared/ModalWindowManager.svelte";
+    import ModalWindow from "../../Controls/Shared/ModalWindow.svelte";
     import PageTopMenu from '../../Controls/Shared/PageTopMenu.svelte';
 
     const apiKeys = getApiKeys();
@@ -47,4 +47,4 @@
 
 </div>    
 
-<ModalWindowManager type="AddApiKeyModal" bind:toggleModal={addImageModalToggleFunction}></ModalWindowManager>
+<ModalWindow type="AddApiKeyModal" bind:toggleModal={addImageModalToggleFunction}></ModalWindow>

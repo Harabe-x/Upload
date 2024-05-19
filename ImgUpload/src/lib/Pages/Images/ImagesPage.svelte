@@ -4,14 +4,10 @@
      import Card from "../../DataPresenters/Cards/Card.svelte";
      import CollectionCard from "./Components/CollectionCard.svelte";
      import ImageFrame from "./Components/ImageFrame.svelte";
-     import PictureModal from "./Components/ImageBrowserModal.svelte";
-     import DataPaginator from "../../Controls/Shared/DataPaginator.svelte";     
-     import AddImageModal from "./Components/AddImageModal.svelte";
-     import ModalProperties from "../../../js/Classes/ModalProperties";
-     import ModalWindowManager from "../../Controls/Shared/ModalWindowManager.svelte";
+     import DataPaginator from "../../Controls/Shared/DataPaginator.svelte";
+     import ModalWindow from "../../Controls/Shared/ModalWindow.svelte";
      import { ArrowPath, ArrowRight, Plus } from "svelte-hero-icons";
      import { getPhotoList } from "../../../js/Temp/PhotoPlaceholderApi";
-     import { writable, get} from "svelte/store";
 
      let promise =  getPhotoList(1,256);
      let selectedImage;
@@ -88,5 +84,5 @@
 </div>
 
 
- <ModalWindowManager bind:toggleModal={imageModalToggleFunction} param={selectedImage} type="ImageBrowserModal" ></ModalWindowManager>
-<ModalWindowManager bind:toggleModal={addImageModalToggleFunction} type="AddImageModal" ></ModalWindowManager>
+ <ModalWindow bind:toggleModal={imageModalToggleFunction} param={selectedImage} type="ImageBrowserModal" ></ModalWindow>
+<ModalWindow bind:toggleModal={addImageModalToggleFunction} type="AddImageModal" ></ModalWindow>

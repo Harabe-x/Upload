@@ -6,19 +6,16 @@
     import { getChartData } from "../../../js/ApplicationData/ChartData"
     import IconButton from "../../Controls/Buttons/IconButton.svelte";
     import PageTopMenu from "../../Controls/Shared/PageTopMenu.svelte";
+    import IconDropdown from "../../Controls/Dropdowns/IconDropdown.svelte";
 </script>   
 
 
 <!-- Card section -->
 <PageTopMenu>
     <IconButton icon={ArrowPath} iconStyle="w-4 mr-2"> Refresh data</IconButton>
-    <div class="dropdown dropdown-bottom dropdown-end  ml-2">
-        <label tabIndex={0} class="btn btn-ghost btn-sm normal-case btn-square "><Icon src={EllipsisVertical} class="w-5"/></label>
-        <ul tabIndex={0} class="dropdown-content menu menu-compact  p-2 shadow bg-base-100 rounded-box w-52">
-            <li><a><Icon src={Envelope} class="w-4"/>Email Digests</a></li>
-            <li><a><Icon src={ArrowDownTray} class="w-4"/>Download</a></li>
-        </ul>
-    </div>
+    <IconDropdown icon={EllipsisVertical}>
+        <li><a><Icon src={ArrowDownTray} class="w-4"/>Download data</a></li>
+    </IconDropdown>
 </PageTopMenu>
 
 <div class="grid lg:grid-cols-4 mt-2 md:grid-cols-2 grid-cols-1 gap-6" >

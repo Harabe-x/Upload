@@ -24,11 +24,11 @@
 
 <li {... $$restProps} >
     <!-- svelte-ignore a11y-missing-attribute -->
-    <a class="font-normal" on:click={navigate} >  
+    <a class="font-normal" on:click={navigate} >
         {#if icon !== null}
-        <Icon src={icon} class="h-{iconSize} w-{iconSize}" />     
+        <Icon src={icon} class="h-{iconSize} w-{iconSize}" />
         {/if}
-        <slot /> 
+        <slot />
     </a>
 </li>
 

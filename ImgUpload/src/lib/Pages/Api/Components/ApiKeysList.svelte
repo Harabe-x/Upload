@@ -4,7 +4,7 @@
     import IconButton from "../../../Controls/Buttons/IconButton.svelte";
     import ApiKeyEditModal from "./ApiKeyEditModal.svelte";
     import ApiKeyDeleteModal from './ApiKeyDeleteModal.svelte'
-    import ModalWindowManager from "../../../Controls/Shared/ModalWindowManager.svelte";
+    import ModalWindow from "../../../Controls/Shared/ModalWindow.svelte";
     
     const apiKeysStore = getApiKeys();
     const apiKeys = $apiKeysStore;
@@ -69,5 +69,5 @@
     </table>
   </div>
 
-<ModalWindowManager bind:toggleModal={editModalToggleFunction} param={selectedKey} type="ApiKeyEditModal" ></ModalWindowManager>
-<ModalWindowManager bind:toggleModal={deleteModalToggleFucntion} param={selectedKey} type="ApiKeyDeleteModal" ></ModalWindowManager>
+<ModalWindow bind:toggleModal={editModalToggleFunction} param={selectedKey} type="ApiKeyEditModal" ></ModalWindow>
+<ModalWindow bind:toggleModal={deleteModalToggleFucntion} param={selectedKey} type="ApiKeyDeleteModal" ></ModalWindow>
