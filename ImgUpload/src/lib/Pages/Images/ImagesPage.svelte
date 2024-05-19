@@ -8,8 +8,9 @@
      import ModalWindow from "../../Controls/Shared/ModalWindow.svelte";
      import { ArrowPath, ArrowRight, Plus } from "svelte-hero-icons";
      import { getPhotoList } from "../../../js/Temp/PhotoPlaceholderApi";
+     import DataFetchingInfo from "../../Controls/Shared/DataFetchingInfo.svelte";
 
-     let promise =  getPhotoList(1,256);
+     let promise =  getPhotoList(1,32);
      let selectedImage;
      let imgPages = 10; // Here will be method for fetching totalImgPages 
 
@@ -20,7 +21,7 @@
      function changePage(event)
      {
        console.log(event)
-       promise = getPhotoList(event.detail,256)
+       promise = getPhotoList(event.detail,32)
      }
 
      
@@ -63,8 +64,8 @@
           </div>
 
           {#await promise }
-               Waiting
-          {:then result} 
+               <DataFetchingInfo> </DataFetchingInfo>
+          {:then result}
                <div class="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-10"> 
                {#each result as photo }
                     
@@ -73,6 +74,11 @@
                </button>
                     
                {/each} 
+               </div>
+
+               {:catch error}
+               <div>
+                    <span> Error occured : {error} </span>
                </div>
           {/await}
           {#if imgPages > 1}
