@@ -20,7 +20,7 @@
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <div class='w-full block' on:click={changeVisability} >
         <Icon src={icon} class="h-6 w-6 inline"></Icon> 
-        <span class="font-normal mb-2"> Settings </span>
+        <span class="font-normal mb-2"> {title} </span>
         <Icon src={ChevronUp} class="w-5 h-5 mt-1 inline float-right  delay-400 duration-500 transition-all {isSubListExtended ? '' : 'rotate-180'} "/>
     </div>
     
