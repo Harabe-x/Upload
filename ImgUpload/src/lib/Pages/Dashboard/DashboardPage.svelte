@@ -15,6 +15,7 @@
     <IconButton icon={ArrowPath} iconStyle="w-4 mr-2"> Refresh data</IconButton>
     <IconDropdown icon={EllipsisVertical}>
         <li><a><Icon src={ArrowDownTray} class="w-4"/>Download data</a></li>
+
     </IconDropdown>
 </PageTopMenu>
 

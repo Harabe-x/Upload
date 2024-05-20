@@ -1,13 +1,17 @@
 <script>
-    export let pageTitle;     
-    import { Icon,Bars3,Sun,Moon,Bell} from "svelte-hero-icons";
+    import IconMenuItem from "../Controls/MenuItems/IconMenuItem.svelte";
+
+    export let pageTitle;
+    import {Icon, Bars3, Sun, Moon, Bell, ArrowRightOnRectangle, ArrowDownTray} from "svelte-hero-icons";
     import BadgeMenuItem from "../Controls/MenuItems/BadgeMenuItem.svelte";
     import UserProfileDropdown from '../Controls/Dropdowns/UserProfileDropdown.svelte'
     import MrFrost from '../../assets/117171438_10157804750272880_5668855721113743083_n.jpg'
     import {toggleNavBar } from '../../js/Temp/NavbarStateStore'
-
-
-    
+    import { onMount} from "svelte";
+    import { themeChange} from "theme-change";
+    onMount(() => {
+        themeChange(false)
+    })
 
 </script>
 
@@ -23,7 +27,7 @@
 
     <div class="flex-none">
         <label class="swap">
-            <input type="checkbox" />
+            <input type="checkbox" data-toggle-theme="light"  />
             <Icon src={Sun} class="fill-current w-6 h-6 swap-on"></Icon>
             <Icon src={Moon} class="fill-current w-6 h-6 swap-off"></Icon>
         </label>
@@ -36,14 +40,8 @@
         </button>
         
             <UserProfileDropdown image={MrFrost}>
-                <BadgeMenuItem badgeText="New" badgeColor="primary" > Item 1 </BadgeMenuItem>
-                <BadgeMenuItem badgeText="New" badgeColor="secondary "  > Item 1 </BadgeMenuItem>
-
+                <li><a><Icon src={ArrowRightOnRectangle} class="w-4"/>Logout</a></li>
             </UserProfileDropdown>
-        
-        
-   
-   
     </div>
 </div>
 

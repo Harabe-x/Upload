@@ -43,7 +43,7 @@
           <div slot="titleControl" class="ml-auto">
                <IconButton icon={Plus} iconStyle="w-4">  Add Collection </IconButton>
         </div>
-          <div class="carousel-with-scroll w-full  max-w p-4 space-x-4 bg-ghost-100 rounded-box  carusel-scroll ">
+          <div class="carousel-with-scroll w-full  h-64 lg:h-56 xl:h-64 sm:h max-w  space-x-4 bg-ghost-100 rounded-box gap-3   carusel-scroll ">
 
                {#each [1,1,1,1,1,1] as  item}
                     <CollectionCard collection={{Name:"Shoes"}} imgSrc="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"> </CollectionCard>   
