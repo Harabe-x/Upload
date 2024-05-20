@@ -24,8 +24,8 @@
     <div class="flex-none">
         <label class="swap">
             <input type="checkbox" />
-            <Icon src={Moon} class="fill-current w-6 h-6 swap-on"></Icon>
-            <Icon src={Sun} class="fill-current w-6 h-6 swap-off"></Icon>
+            <Icon src={Sun} class="fill-current w-6 h-6 swap-on"></Icon>
+            <Icon src={Moon} class="fill-current w-6 h-6 swap-off"></Icon>
         </label>
         
              <!-- TODO : Implement open notification  -->

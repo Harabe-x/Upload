@@ -7,14 +7,14 @@
 
   function navigateToCollection()
   {
-
+    
   }
 </script> 
 
 
-<div class="carousel-item h-1/4 lg:w-1/3 md:w-1/2 sm:w-1/2 relative overflow-hidden hover:cursor-pointer">
+<div class="carousel-item  hover:cursor-pointer">
 
-    <img class="rounded-xl transition-transform duration-300 transform hover:scale-105" src={imgSrc} alt="Collection item" />
+    <img class="rounded-xl h-full w-full transition-transform duration-300 transform object-cover hover:scale-105" src={imgSrc} alt="Collection item" />
     <div class="absolute inset-0 bg-black opacity-0 hover:opacity-75 transition-opacity flex flex-col items-center justify-center">
         <h1 class="text-2xl">{collection.Name}</h1>
     </div>
