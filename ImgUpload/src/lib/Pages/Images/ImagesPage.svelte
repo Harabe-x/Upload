@@ -10,6 +10,7 @@
      import { getPhotoList } from "../../../js/Temp/PhotoPlaceholderApi";
      import DataFetchingInfo from "../../Controls/Shared/DataFetchingInfo.svelte";
      import {onMount} from "svelte";
+     import SelectInput from "../../Controls/Inputs/SelectInput.svelte";
 
      let promise =  getPhotoList(1,32);
      let selectedImage;
@@ -31,10 +32,16 @@
 </script>
 
 <div>
-<PageTopMenu> 
+<PageTopMenu>
+     <div slot="leftSide">
+          <SelectInput title="Selected key:"></SelectInput>
+     </div>
+<div slot="rightSide">
      <IconButton iconStyle="w-4 mr-1" icon={ArrowPath}>
           Refresh
-     </IconButton>            
+     </IconButton>
+</div>
+
 </PageTopMenu>
 
 </div>

@@ -9,6 +9,7 @@
     import AddApiKeyModal from './Components/AddApiKeyModal.svelte';
     import ModalWindow from "../../Controls/Shared/ModalWindow.svelte";
     import PageTopMenu from '../../Controls/Shared/PageTopMenu.svelte';
+    import SelectInput from "../../Controls/Inputs/SelectInput.svelte";
 
     const apiKeys = getApiKeys();
 
@@ -17,9 +18,11 @@
 </script>
 
 <PageTopMenu>
-    <IconButton iconStyle="w-4 mr-1" icon={ArrowPath}>
-        Refresh
-    </IconButton>
+    <div slot="rightSide">
+        <IconButton iconStyle="w-4 mr-1" icon={ArrowPath}>
+            Refresh
+        </IconButton>
+    </div>
 </PageTopMenu>
 
 <div class="grid mt-1 grid-cols-1">

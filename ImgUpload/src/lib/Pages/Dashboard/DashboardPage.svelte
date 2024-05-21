@@ -7,16 +7,20 @@
     import IconButton from "../../Controls/Buttons/IconButton.svelte";
     import PageTopMenu from "../../Controls/Shared/PageTopMenu.svelte";
     import IconDropdown from "../../Controls/Dropdowns/IconDropdown.svelte";
+    import SelectInput from "../../Controls/Inputs/SelectInput.svelte";
 </script>   
 
 
 <!-- Card section -->
 <PageTopMenu>
-    <IconButton icon={ArrowPath} iconStyle="w-4 mr-2"> Refresh data</IconButton>
-    <IconDropdown icon={EllipsisVertical}>
-        <li><a><Icon src={ArrowDownTray} class="w-4"/>Download data</a></li>
-
-    </IconDropdown>
+    <div slot="leftSide">
+        <SelectInput title="Selected key:"></SelectInput>
+    </div>
+    <div slot="rightSide">
+        <IconButton iconStyle="w-4 mr-1" icon={ArrowPath}>
+            Refresh
+        </IconButton>
+    </div>
 </PageTopMenu>
 
 <div class="grid lg:grid-cols-4 mt-2 md:grid-cols-2 grid-cols-1 gap-6" >
