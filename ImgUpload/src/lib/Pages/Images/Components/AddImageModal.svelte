@@ -25,11 +25,11 @@
 
 {#if  isModalVisable}
     <div class="modal modal-open">
-        <div class="modal-box" >
+        <div class="modal-box flex flex-col gap-3 "  >
             <TextInput label="Title" bind:value={title}></TextInput>
             <TextInput label="Description" bind:value={description}></TextInput>
-            <FIleInput></FIleInput>
-            <div class="modal-action">
+            <FIleInput label="Image"></FIleInput>
+            <div class="modal-action  ">
                 <IconButton on:click={closeModal} icon={XMark} iconStyle="w-4 ml-1" >Close</IconButton>
                 <IconButton on:click={savePhoto}  icon={Check} iconStyle="w-4 ml-1" buttonStyle="bg-success text-primary-content"> Save </IconButton>
             </div>

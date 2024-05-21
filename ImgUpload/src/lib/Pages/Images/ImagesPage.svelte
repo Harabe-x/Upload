@@ -25,9 +25,7 @@
        promise = getPhotoList(event.detail,32)
      }
 
-     onMount(() => {
-          alert(JSON.stringify(localStorage))
-     })
+
 
 
 </script>
@@ -44,7 +42,7 @@
 <div class="grid grid-rows-1">
      <Card title="Your collections"> 
           <div slot="titleControl" class="ml-auto">
-               <IconButton on:click={() => { localStorage.getItem('data-key')}} icon={Plus} iconStyle="w-4">  Add Collection </IconButton>
+               <IconButton on:click={() => { addCollectionModalToggleFunction(); }} icon={Plus} iconStyle="w-4">  Add Collection </IconButton>
         </div>
           <div class="carousel-with-scroll w-full  h-64 lg:h-56 xl:h-64 sm:h max-w  space-x-4 bg-ghost-100 rounded-box gap-3   carusel-scroll ">
 
@@ -72,7 +70,7 @@
                <div class="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-10"> 
                {#each result as photo }
                     
-               <button on:click={() => { selectedImage = photo.download_url; imageModalToggleFunction(); console.log(imageModalToggleFunction) }}>
+               <button on:click={() => { selectedImage = photo.download_url; imageModalToggleFunction(); }}>
                     <ImageFrame imgTitle={photo.author} imgSrc={photo.download_url}></ImageFrame>
                </button>
                     
@@ -95,3 +93,4 @@
 
  <ModalWindow bind:toggleModal={imageModalToggleFunction} param={selectedImage} type="ImageBrowserModal" ></ModalWindow>
 <ModalWindow bind:toggleModal={addImageModalToggleFunction} type="AddImageModal" ></ModalWindow>
+<ModalWindow bind:toggleModal={addCollectionModalToggleFunction} type="AddCollectionModal"></ModalWindow>

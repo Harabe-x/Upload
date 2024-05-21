@@ -4,6 +4,7 @@
     import ApiKeyDeleteModal from "../../Pages/Api/Components/ApiKeyDeleteModal.svelte";
     import AddImageModal from "../../Pages/Images/Components/AddImageModal.svelte";
     import ImageBrowserModal from "../../Pages/Images/Components/ImageBrowserModal.svelte";
+    import AddCollectionModal from "../../Pages/Images/Components/AddCollectionModal.svelte";
     import { onMount } from "svelte";
     
     export let type; 
@@ -18,6 +19,7 @@
         componentDictionary.set('ApiKeyDeleteModal',ApiKeyDeleteModal)
         componentDictionary.set('AddImageModal',AddImageModal)
         componentDictionary.set('ImageBrowserModal',ImageBrowserModal)
+        componentDictionary.set('AddCollectionModal',AddCollectionModal)
     })
 
     

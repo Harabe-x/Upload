@@ -17,7 +17,7 @@
         <label>
             <span class="label-text text-base-content"> {label} </span>
         </label>
-    <input  use:setInputTypeAction {placeholder} {disabled} bind:value={value} class="input  input-bordered w-ful" class:border-error={isError} /> 
+    <input  use:setInputTypeAction {placeholder} {disabled} bind:value={value} class="input  input-bordered w-ful" class:border-error={isError} />
         {#if isError}
         <span class="text-error text-xs">{errorMessage}</span>
         {/if}
