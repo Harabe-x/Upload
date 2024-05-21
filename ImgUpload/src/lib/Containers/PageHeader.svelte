@@ -9,29 +9,43 @@
     import {toggleNavBar } from '../../js/Temp/NavbarStateStore'
     import { onMount} from "svelte";
     import { themeChange} from "theme-change";
+    import {getThemeStore} from "../../js/Temp/ThemeStore.js";
+
+    const themeStore= getThemeStore();
+
     onMount(() => {
         themeChange(false)
+
+        if(localStorage.getItem('theme') === 'light')
+            isLightThemeTurnOn = true;
+        $themeStore = 'light';
     })
+    function updateThemeStore()
+    {
+        $themeStore = $themeStore === 'dark' ? 'light' : 'dark';
+    }
+
+    let isLightThemeTurnOn = false;
+
 
 </script>
 
-    
+
 <div class="navbar sticky top-0 bg-base-200 z-10">
-    
+
     <div class="flex-1">
-        <label for="" on:click={toggleNavBar} class="btn btn-primary drawer-button lg:hidden">
-            <Icon src={Bars3} class="h-5 inline-block w-5"></Icon>
+        <label for="navbar"  on:click={toggleNavBar} class="btn btn-primary drawer-button lg:hidden">
+            <Icon src={Bars3}   class="h-5 inline-block w-5"></Icon>
         </label>
         <h1 class="text-2xl font-semibold ml-2"> {pageTitle} </h1>
-    </div>  
+    </div>
 
     <div class="flex-none">
-        <label class="swap">
-            <input type="checkbox" data-toggle-theme="light"  />
-            <Icon src={Sun} class="fill-current w-6 h-6 swap-on"></Icon>
+        <label class="swap swap-rotate"  >
+            <input type="checkbox" on:click={updateThemeStore}  bind:checked={isLightThemeTurnOn} data-toggle-theme="light"/>
             <Icon src={Moon} class="fill-current w-6 h-6 swap-off"></Icon>
+            <Icon src={Sun} class="fill-current w-6 h-6 swap-on" ></Icon>
         </label>
-        
              <!-- TODO : Implement open notification  -->
         <button class="btn btn-ghost ml-4  btn-circle">
             <div class="indicator">

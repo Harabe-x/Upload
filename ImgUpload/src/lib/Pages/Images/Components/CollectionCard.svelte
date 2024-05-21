@@ -4,7 +4,7 @@
 
     export let collection;
     export let imgSrc;
-    let displayImage = false;
+    export let displayImage = true;
 
     function navigateToCollection() {
         // Logika nawigacji do kolekcji
