@@ -11,7 +11,11 @@
      import DataFetchingInfo from "../../Controls/Shared/DataFetchingInfo.svelte";
      import {onMount} from "svelte";
      import SelectInput from "../../Controls/Inputs/SelectInput.svelte";
+     import CollectionBrowser from "./Components/CollectionBrowser.svelte";
+     import { getNavigationStore } from "../../../js/Temp/NavigationStore";
 
+
+     const navigationStore = getNavigationStore();
      let promise =  getPhotoList(1,32);
      let selectedImage;
      let imgPages = 10; // Here will be method for fetching totalImgPages 
@@ -22,11 +26,13 @@
 
      function changePage(event)
      {
-       console.log(event)
        promise = getPhotoList(event.detail,32)
      }
-
-
+     function openCollection()
+     {
+   
+     }
+        
 
 
 </script>
@@ -54,7 +60,7 @@
           <div class="carousel-with-scroll w-full  h-64 lg:h-56 xl:h-64 sm:h max-w  space-x-4 bg-ghost-100 rounded-box gap-3   carusel-scroll ">
 
                {#each [1,1,1,1,1,1] as  item}
-                    <CollectionCard collection={{Name:"Shoes"}} imgSrc="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"> </CollectionCard>   
+                              <CollectionCard collection={{Name:"Shoes"}} imgSrc="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"> </CollectionCard>   
                {/each}
 
                <div class="flex items-center">
