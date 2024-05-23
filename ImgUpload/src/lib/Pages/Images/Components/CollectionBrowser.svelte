@@ -1,72 +1,89 @@
-<script>
-    import { ArrowLeft, ArrowPath } from "svelte-hero-icons";
+  <script>
+    import {ArrowLeft, ArrowPath, Icon, Plus} from "svelte-hero-icons";
     import { getPhotoList } from "../../../../js/Temp/PhotoPlaceholderApi";
-    import PageContent from "../../../Containers/PageContent.svelte";
     import IconButton from "../../../Controls/Buttons/IconButton.svelte";
     import PageTopMenu from "../../../Controls/Shared/PageTopMenu.svelte";
     import DataFetchingInfo from "../../../Controls/Shared/DataFetchingInfo.svelte";
     import ImageFrame from "./ImageFrame.svelte";
     import ModalWindow from "../../../Controls/Shared/ModalWindow.svelte";
     import DataPaginator from "../../../Controls/Shared/DataPaginator.svelte";
+    import Card from "../../../DataPresenters/Cards/Card.svelte";
+    import {onMount} from "svelte";
+    import PageHeaderNameStore from "../../../../js/Temp/PageHeaderNameStore.js";
+    import pageHeaderNameStore from "../../../../js/Temp/PageHeaderNameStore.js";
+    import {getSelectedCollectionDataStore} from "../../../../js/Temp/SelectedCollectionStore.js";
+    import ImagesPage from "../ImagesPage.svelte";
+    import {getNavigationStore} from "../../../../js/Temp/NavigationStore.js";
 
-    let currentPage = 5; 
-    let imagesPerPage = 32;
-    
-    let promise =  getPhotoList(currentPage,imagesPerPage)
+    const selectedPageStore = getSelectedCollectionDataStore();
+    const pageHeaderStore = pageHeaderNameStore()
+    const navigationStore = getNavigationStore()
+    const imagesPerPage = 32;
+
+    let promise =   getPhotoList(1,imagesPerPage);;
     let imageModalToggleFunction;
+    let addImageModalToggleFunction;
     let selectedImage;
 
-    export let collection = null;
 
-    function IncrementPage()
+    onMount(() => {
+        $pageHeaderStore = $selectedPageStore.CollectionName + ' Collection';
+    })
+
+    function goBack()
     {
-        currentPage += 1;
-        flipPage();
+        $pageHeaderStore = "Images"
+        $navigationStore = ImagesPage;
     }
+
     function selectImage(image)
     {
         selectedImage = image;
     }
-    function decrementPage()
+
+    function changePage(event)
     {
-        if(currentPage - 1 < 1 ) return; 
-        currentPage -= 1;
-        flipPage();
-    }
-    function flipPage()
-    {
-        promise = getPhotoList(currentPage,imagesPerPage)
+       promise = getPhotoList(event.detail,imagesPerPage)
     }
 
 </script>
 
-<PageContent>
-     <div slot="leftSide">
-            <IconButton icon={ArrowLeft} iconStyle="w-4 ml-1 ">Back</IconButton>
-     </div>
+<PageTopMenu>
+    <div slot="leftSide">
+        <IconButton icon={ArrowLeft} on:click={goBack} iconStyle="w-4 ml-1 ">Back</IconButton>
+    </div>
 
-     <div slot="rightSide">
+    <div slot="rightSide">
         <IconButton icon={ArrowPath} iconStyle="w-4 ml-1 ">Refresh</IconButton>
-     </div>
-</PageContent>
+    </div>
+</PageTopMenu>
 
-<div class="grid grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-10">
-    {#await promise }
-        <DataFetchingInfo></DataFetchingInfo>
-    {:then result } 
-        
+<div class="grid grid-rows-1">
+    <Card title="Collection Images" >
+        <div  slot="titleControl" class="ml-auto">
+            <IconButton icon={Plus} iconStyle="w-4" on:click={addImageModalToggleFunction} > Add Image  </IconButton>
+        </div>
+        <div class="grid lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-1 gap-10">
+            {#await promise }
+                <DataFetchingInfo></DataFetchingInfo>
+            {:then result }
 
-      {#each result as item }
 
-            <button on:click={() => { selectImage(item.download_url); imageModalToggleFunction(); }}>
-                <ImageFrame imgSrc={item.download_url}></ImageFrame>
-            </button>
-      {/each}   
+                {#each result as item }
+                    <button on:click={() => { selectImage(item.download_url); imageModalToggleFunction(); }}>
+                        <ImageFrame imgSrc={item.download_url}></ImageFrame>
+                    </button>
+                {/each}
 
-    {:catch error}
-        Something went wrong 
-    {/await}
-<DataPaginator on:navigatedToNextPage={IncrementPage} on:navigatedToPreviousPage={decrementPage} ></DataPaginator>
+            {:catch error}
+                Something went wrong
+            {/await}
+        </div>
+        <div class="flex flex-row items-center justify-center mr-4  mt-5">
+            <DataPaginator on:navigatedToNextPage={changePage} on:navigatedToPreviousPage={changePage} ></DataPaginator>
+        </div>
+    </Card>
 </div>
 
-<ModalWindow type="imageBrowserModal" bind:toggleModal={imageModalToggleFunction} param={selectedImage}> </ModalWindow>
+<ModalWindow type="AddImageModal" bind:toggleModal={addImageModalToggleFunction} ></ModalWindow>
+<ModalWindow type="ImageBrowserModal" bind:toggleModal={imageModalToggleFunction} param={selectedImage}> </ModalWindow>

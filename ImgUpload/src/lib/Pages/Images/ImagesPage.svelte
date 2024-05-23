@@ -5,16 +5,16 @@
      import CollectionCard from "./Components/CollectionCard.svelte";
      import ImageFrame from "./Components/ImageFrame.svelte";
      import DataPaginator from "../../Controls/Shared/DataPaginator.svelte";
-     import ModalWindow from "../../Controls/Shared/ModalWindow.svelte";
-     import { ArrowPath, ArrowRight, Plus } from "svelte-hero-icons";
-     import { getPhotoList } from "../../../js/Temp/PhotoPlaceholderApi";
      import DataFetchingInfo from "../../Controls/Shared/DataFetchingInfo.svelte";
-     import {onMount} from "svelte";
      import SelectInput from "../../Controls/Inputs/SelectInput.svelte";
      import CollectionBrowser from "./Components/CollectionBrowser.svelte";
+     import ModalWindow from "../../Controls/Shared/ModalWindow.svelte";;
+     import { ArrowPath, ArrowRight, Plus } from "svelte-hero-icons";
+     import { getPhotoList } from "../../../js/Temp/PhotoPlaceholderApi";
      import { getNavigationStore } from "../../../js/Temp/NavigationStore";
+     import {getSelectedCollectionDataStore} from "../../../js/Temp/SelectedCollectionStore.js";
 
-
+     const selectedCollectionDataStore = getSelectedCollectionDataStore()
      const navigationStore = getNavigationStore();
      let promise =  getPhotoList(1,32);
      let selectedImage;
@@ -24,13 +24,18 @@
      let addImageModalToggleFunction;
      let addCollectionModalToggleFunction;
 
+
+     // Sample data
+     var collectionData = [ {CollectionName:'Shoes', someFutureProperty: 'foo' },{CollectionName:'Almond Blossom', someFutureProperty: 'foo' },{CollectionName:'Forerst', someFutureProperty: 'Coffee' },{CollectionName:'Laptop', someFutureProperty: 'foo' }  ]
+
      function changePage(event)
      {
        promise = getPhotoList(event.detail,32)
      }
-     function openCollection()
+     function openCollection(collectionData)
      {
-   
+        $selectedCollectionDataStore = collectionData;
+        $navigationStore =  CollectionBrowser;
      }
         
 
@@ -59,8 +64,8 @@
         </div>
           <div class="carousel-with-scroll w-full  h-64 lg:h-56 xl:h-64 sm:h max-w  space-x-4 bg-ghost-100 rounded-box gap-3   carusel-scroll ">
 
-               {#each [1,1,1,1,1,1] as  item}
-                              <CollectionCard collection={{Name:"Shoes"}} imgSrc="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"> </CollectionCard>   
+               {#each collectionData as item}
+                    <CollectionCard on:click={() => { openCollection(item) }}  collection={{CollectionName: item.CollectionName}} imgSrc="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"></CollectionCard>
                {/each}
 
                <div class="flex items-center">
