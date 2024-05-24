@@ -4,6 +4,37 @@
     import TextInput  from "../../../Controls/Inputs/TextInput.svelte";
     import FIleInput from "../../../Controls/Inputs/FIleInput.svelte";
     import SelectInput from "../../../Controls/Inputs/SelectInput.svelte";
+    import {onMount} from "svelte";
+    import {themeChange} from "theme-change";
+    import {getThemeStore} from "../../../../js/Temp/ThemeStore.js";
+
+    const themeStore = getThemeStore();
+
+    const themes = [];
+
+
+    onMount(() => {
+        themeChange(false);
+    })
+
+    function updateTheme(event)
+    {
+        themeStore.update(_ => {
+           return  event.target.value
+        })
+
+        themes.forEach((element) => { element.removeAttribute('selected') })
+
+       const selectedTheme =  themes.find(theme => theme.value === event.target.value)
+
+        selectedTheme.setAttribute('selected');
+    }
+
+    function addThemeAction(element)
+    {
+        themes.push(element)
+    }
+
 
 </script>
 
@@ -26,10 +57,15 @@
 <Card title="Preferences">
 
     <div  class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <SelectInput title="Application Theme">
-            <option> Dark</option>
-            <option selected> Light </option>
-            <option> Cupcake </option>
+        <SelectInput on:select={updateTheme} title="Application Theme" data-choose-theme>
+            <option use:addThemeAction  value="light"> Light </option>
+            <option use:addThemeAction  value="dark"> Dark </option>
+            <option use:addThemeAction  value="cupcake"> Cupcake </option>
+            <option use:addThemeAction  value="dracula"> Dracula </option>
+            <option use:addThemeAction  value="black"> Black </option>
+            <option use:addThemeAction  value="nord"> Nord </option>
+            <option use:addThemeAction  value="aqua"> Aqua </option>
+            <option use:addThemeAction value="lemonade"> Lemonade </option>
         </SelectInput>
 
         <SelectInput title="Application Language">
