@@ -37,10 +37,10 @@
             <span  class="text-white">{collection.CollectionName}</span>
         </div>
     {:else}
-              <button class="carousel-item max-h-full h-full w-full"  on:click={dispatchEvent}  >
+              <button class="carousel-item max-h-full h-full w-full"  on:click={dispatchEvent}>
                   <div class="flex flex-col  justify-center items-center max-h-full h-full w-full bg-base-300 rounded-md  max-w-[60%] lg:max-w-full md:max-w-full ">
                       <span class="font-semibold ">{collection.CollectionName}</span>
-                  </div>>
+                  </div>
               </button>
     {/if}
 

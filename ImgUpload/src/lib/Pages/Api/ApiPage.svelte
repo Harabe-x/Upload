@@ -1,9 +1,9 @@
 <script>
-    import Card from '../../DataPresenters/Cards/Card.svelte'
+    import Card from '../../Controls/Cards/Card.svelte'
     import { ArrowPath,Icon,Key,Plus } from 'svelte-hero-icons';
     import ApiKeysList from './Components/ApiKeysList.svelte';
     import IconButton from '../../Controls/Buttons/IconButton.svelte';
-    import DoughnutChart from "../../DataPresenters/Charts/DoughnutChart.svelte";
+    import DoughnutChart from "../../Controls/Charts/DoughnutChart.svelte";
     import { getApiKeys } from '../../../js/Temp/ApiKeysData';
     import ApiKeysLogs from './Components/ApiKeysLogs.svelte';
     import AddApiKeyModal from './Components/AddApiKeyModal.svelte';

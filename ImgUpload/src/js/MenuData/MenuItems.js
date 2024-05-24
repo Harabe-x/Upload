@@ -16,7 +16,7 @@ const navigationMenuItems = [
             { Title:'Endpoints',Icon:ComputerDesktop,Component:ProfilePage},
         ]  },
     { Title:'Settings',Icon:Cog, SubItems: [
-        { Title:'Profile',Icon:User,Component:ProfilePage},
+        { Title:'Profile & Preferences',Icon:User,Component:ProfilePage},
         { Title:'Billing',Icon:Wallet,Component:BillingPage},
     ]  }
 

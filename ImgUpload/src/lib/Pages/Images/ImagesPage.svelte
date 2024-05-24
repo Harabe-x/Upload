@@ -1,7 +1,7 @@
 <script>
      import PageTopMenu from "../../Controls/Shared/PageTopMenu.svelte";
      import IconButton from "../../Controls/Buttons/IconButton.svelte";
-     import Card from "../../DataPresenters/Cards/Card.svelte";
+     import Card from "../../Controls/Cards/Card.svelte";
      import CollectionCard from "./Components/CollectionCard.svelte";
      import ImageFrame from "./Components/ImageFrame.svelte";
      import DataPaginator from "../../Controls/Shared/DataPaginator.svelte";
@@ -65,7 +65,7 @@
           <div class="carousel-with-scroll w-full  h-64 lg:h-56 xl:h-64 sm:h max-w  space-x-4 bg-ghost-100 rounded-box gap-3   carusel-scroll ">
 
                {#each collectionData as item}
-                    <CollectionCard on:click={() => { openCollection(item) }}  collection={{CollectionName: item.CollectionName}} imgSrc="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"></CollectionCard>
+                    <CollectionCard on:click={() => { openCollection(item) }}  collection={{CollectionName: item.CollectionName}} imgSrc="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"> </CollectionCard>
                {/each}
 
                <div class="flex items-center">

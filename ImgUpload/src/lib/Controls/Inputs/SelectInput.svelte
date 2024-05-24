@@ -2,10 +2,10 @@
     export let title;
 </script>
 
-<div class="mr-1">
+<div>
     <label>
         <span class="text-sm">{title}</span> <br>
-        <select class="select select-info  w-36">
+        <select class="select w-full ">
             <slot>
                 <option selected> Main </option>
                 <option> Main </option>

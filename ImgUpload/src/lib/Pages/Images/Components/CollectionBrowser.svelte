@@ -7,7 +7,7 @@
     import ImageFrame from "./ImageFrame.svelte";
     import ModalWindow from "../../../Controls/Shared/ModalWindow.svelte";
     import DataPaginator from "../../../Controls/Shared/DataPaginator.svelte";
-    import Card from "../../../DataPresenters/Cards/Card.svelte";
+    import Card from "../../../Controls/Cards/Card.svelte";
     import {onMount} from "svelte";
     import PageHeaderNameStore from "../../../../js/Temp/PageHeaderNameStore.js";
     import pageHeaderNameStore from "../../../../js/Temp/PageHeaderNameStore.js";

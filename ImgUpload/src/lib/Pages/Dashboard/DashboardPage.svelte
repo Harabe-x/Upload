@@ -1,7 +1,7 @@
 <script>
-    import Card from "../../DataPresenters/Cards/Card.svelte";
-    import Chart from "../../DataPresenters/Charts/Chart.svelte";
-    import Stat from "../../DataPresenters/Cards/Stat.svelte";
+    import Card from "../../Controls/Cards/Card.svelte";
+    import Chart from "../../Controls/Charts/Chart.svelte";
+    import Stat from "../../Controls/Cards/Stat.svelte";
     import { Icon,ServerStack,Photo, Banknotes,CloudArrowUp,ArrowPath,Envelope,EllipsisVertical,ArrowDownTray} from "svelte-hero-icons";
     import { getChartData } from "../../../js/ApplicationData/ChartData"
     import IconButton from "../../Controls/Buttons/IconButton.svelte";

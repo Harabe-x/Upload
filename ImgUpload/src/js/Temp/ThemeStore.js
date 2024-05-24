@@ -1,11 +1,19 @@
-import {writable} from "svelte/store";
-
+import { writable } from "svelte/store";
 
 const theme = localStorage.getItem('theme');
 
-const themeStore = writable(theme == null ? 'dark' : theme)
+const themeStore = writable(theme ? theme : 'dark');
 
-export function getThemeStore()
-{
+themeStore.subscribe(value => {
+    localStorage.setItem('theme', value);
+});
+
+export function getThemeStore() {
     return themeStore;
+}
+
+export function isDarkMode() {
+    let currentTheme;
+    themeStore.subscribe(value => currentTheme = value)();
+    return currentTheme === 'dark';
 }

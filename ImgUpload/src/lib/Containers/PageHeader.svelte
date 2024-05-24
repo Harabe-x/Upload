@@ -22,7 +22,7 @@
     })
     function updateThemeStore()
     {
-        $themeStore = $themeStore === 'dark' ? 'light' : 'dark';
+        themeStore.update(value => value === 'dark' ? 'light' : 'dark');
     }
 
     let isLightThemeTurnOn = false;
@@ -41,11 +41,7 @@
     </div>
 
     <div class="flex-none">
-        <label class="swap swap-rotate"  >
-            <input type="checkbox" on:click={updateThemeStore}  bind:checked={isLightThemeTurnOn} data-toggle-theme="light"/>
-            <Icon src={Moon} class="fill-current w-6 h-6 swap-off"></Icon>
-            <Icon src={Sun} class="fill-current w-6 h-6 swap-on" ></Icon>
-        </label>
+
              <!-- TODO : Implement open notification  -->
         <button class="btn btn-ghost ml-4  btn-circle">
             <div class="indicator">

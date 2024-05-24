@@ -1,6 +1,7 @@
 <script>
     import { Icon } from "svelte-hero-icons";
-    import {getThemeStore} from "../../../js/Temp/ThemeStore.js";
+    import {getThemeStore  } from "../../../js/Temp/ThemeStore.js";
+
 
      export let title;
      export let value; 
@@ -17,14 +18,14 @@
 
 <div class="stats shadow">
     <div class="stat bg-base-200">
-        <div class="stat-figure {$themeStore === 'light' ? 'text-primary' : '' } ">
+        <div class="stat-figure">
             <Icon src={icon}  class="w-12 h-12" ></Icon>
          </div>
         <div class="stat-title font-semibold">
-            <span class="{$themeStore == 'dark' ? 'text-gray-300' : '' }  "> {title} </span>
+            <span class="{$themeStore === 'dark' ? 'text-gray-300' : '' }  "> {title} </span>
         </div>
         <div class="stat-value  text-s">
-            <span class="{$themeStore == 'light' ? 'text-primary' : '' }"> {value} </span>
+            <span> {value} </span>
         </div>
         <div class="stat-desc">{description}</div>
     </div>
