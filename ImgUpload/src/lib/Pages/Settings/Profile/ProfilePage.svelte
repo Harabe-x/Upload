@@ -54,6 +54,10 @@
 
     <div class="mt-16"> <button class="btn btn-primary float-right w-36">Update</button></div>
 </Card>
+
+
+
+
 <Card title="Preferences">
 
     <div  class="grid grid-cols-1 md:grid-cols-2 gap-6">
