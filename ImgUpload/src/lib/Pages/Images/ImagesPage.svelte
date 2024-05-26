@@ -13,24 +13,29 @@
      import { getPhotoList } from "../../../js/Temp/PhotoPlaceholderApi";
      import { getNavigationStore } from "../../../js/Temp/NavigationStore";
      import {getSelectedCollectionDataStore} from "../../../js/Temp/SelectedCollectionStore.js";
+     import createImageBrowserStore from "../../../js/ImageBrowserStore.js";
+     import {onMount} from "svelte";
 
+
+     const imageBrowserStore = createImageBrowserStore('')
      const selectedCollectionDataStore = getSelectedCollectionDataStore()
      const navigationStore = getNavigationStore();
+     const collectionData = [ {CollectionName:'Shoes', someFutureProperty: 'foo' },{CollectionName:'Almond Blossom', someFutureProperty: 'foo' },{CollectionName:'Forerst', someFutureProperty: 'Coffee' },{CollectionName:'Laptop', someFutureProperty: 'foo' }  ]
+
      let promise =  getPhotoList(1,32);
      let selectedImage;
-     let imgPages = 10; // Here will be method for fetching totalImgPages 
-
+     let imgPages = 10; // Here will be method for fetching totalImgPages
      let imageModalToggleFunction;
      let addImageModalToggleFunction;
      let addCollectionModalToggleFunction;
 
-
-     // Sample data
-     var collectionData = [ {CollectionName:'Shoes', someFutureProperty: 'foo' },{CollectionName:'Almond Blossom', someFutureProperty: 'foo' },{CollectionName:'Forerst', someFutureProperty: 'Coffee' },{CollectionName:'Laptop', someFutureProperty: 'foo' }  ]
+     onMount(() => {
+          imageBrowserStore.fetchImages(32);
+     })
 
      function changePage(event)
      {
-       promise = getPhotoList(event.detail,32)
+          imageBrowserStore.goToSelectedPage(event.detail)
      }
      function openCollection(collectionData)
      {
@@ -82,24 +87,17 @@
                <IconButton icon={Plus} iconStyle="w-4" on:click={() =>{ addImageModalToggleFunction() }}>  Add Image </IconButton>
           </div>
 
-          {#await promise }
-               <DataFetchingInfo> </DataFetchingInfo>
-          {:then result}
-               <div class="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-10"> 
-               {#each result as photo }
-                    
-               <button on:click={() => { selectedImage = photo.download_url; imageModalToggleFunction(); }}>
-                    <ImageFrame imgTitle={photo.author} imgSrc={photo.download_url}></ImageFrame>
-               </button>
-                    
-               {/each} 
-               </div>
+          <div class="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-10">
+               {#each $imageBrowserStore.images as image (image)}
 
-               {:catch error}
-               <div>
-                    <span> Error occured : {error} </span>
-               </div>
-          {/await}
+                    <button on:click={() => { imageBrowserStore.selectImage(image) ; imageModalToggleFunction(); }}>
+                         <ImageFrame imgSrc={image}></ImageFrame>
+                    </button>
+
+               {/each}
+          </div>
+
+
           {#if imgPages > 1}
           <div class="flex flex-row items-center justify-center mr-4  mt-5">
           <DataPaginator on:navigatedToNextPage={changePage} on:navigatedToPreviousPage={changePage} ></DataPaginator>
@@ -109,6 +107,6 @@
 </div>
 
 
- <ModalWindow bind:toggleModal={imageModalToggleFunction} param={selectedImage} type="ImageBrowserModal" ></ModalWindow>
+ <ModalWindow bind:toggleModal={imageModalToggleFunction} param={imageBrowserStore} type="ImageBrowserModal" ></ModalWindow>
 <ModalWindow bind:toggleModal={addImageModalToggleFunction} type="AddImageModal" ></ModalWindow>
 <ModalWindow bind:toggleModal={addCollectionModalToggleFunction} type="AddCollectionModal"></ModalWindow>

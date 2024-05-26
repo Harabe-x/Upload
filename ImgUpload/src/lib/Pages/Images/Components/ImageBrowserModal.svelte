@@ -56,16 +56,18 @@
 
             <div class="h-[70%] w-full flex flex-row">
                 <div class="h-full w-[15%] flex flex-col items-center justify-center">
-                    <IconButton icon={ChevronLeft} iconStyle="w-8"></IconButton>
+                    <IconButton on:click={() => { param.previousImage(); }} icon={ChevronLeft} iconStyle="w-8"></IconButton>
                 </div>
 
                 <div class="w-[70%] flex justify-center items-center overflow-hidden">
-                    <img src={param} alt="There should be an img here but something went wrong" class="max-w-full max-h-full h-full w-full object-contain rounded-xl overflow-auto">
+                    {#key $param.currentImage}
+                        <img src={param.getCurrentImage()} alt="There should be an img here but something went wrong" class="max-w-full max-h-full h-full w-full object-contain rounded-xl overflow-auto">
+                    {/key}
                 </div>
 
 
                 <div class="h-full w-[15%] flex flex-col items-center justify-center">
-                    <IconButton icon={ChevronRight} iconStyle="w-8"></IconButton>
+                    <IconButton on:click={() => { param.nextImage() }} icon={ChevronRight} iconStyle="w-8"></IconButton>
                 </div>
             </div>
 
