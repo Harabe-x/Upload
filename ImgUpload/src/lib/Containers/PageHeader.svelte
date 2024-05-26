@@ -7,26 +7,6 @@
     import UserProfileDropdown from '../Controls/Dropdowns/UserProfileDropdown.svelte'
     import MrFrost from '../../assets/117171438_10157804750272880_5668855721113743083_n.jpg'
     import {toggleNavBar } from '../../js/Temp/NavbarStateStore'
-    import { onMount} from "svelte";
-    import { themeChange} from "theme-change";
-    import {getThemeStore} from "../../js/Temp/ThemeStore.js";
-
-    const themeStore= getThemeStore();
-
-    onMount(() => {
-        themeChange(false)
-
-        if(localStorage.getItem('theme') === 'light')
-            isLightThemeTurnOn = true;
-        $themeStore = 'light';
-    })
-    function updateThemeStore()
-    {
-        themeStore.update(value => value === 'dark' ? 'light' : 'dark');
-    }
-
-    let isLightThemeTurnOn = false;
-
 
 </script>
 
