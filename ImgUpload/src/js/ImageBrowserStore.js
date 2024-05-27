@@ -1,8 +1,11 @@
+import PreviousMap from "postcss/lib/previous-map";
 import { writable, get } from "svelte/store";
 
 export default function createImageBrowserStore(apiKey) {
     const store = writable({
         images: [],
+        nextPageCallback: () => { },
+        previousPageCallback: () => { },
         currentImage: 0,
         currentPage: 1,
     });
@@ -33,6 +36,8 @@ export default function createImageBrowserStore(apiKey) {
                 const nextImage = state.currentImage + 1;
                 if (nextImage >= state.images.length) {
                     state.currentPage += 1;
+                    const _store = get(store);
+                    _store.nextPageCallback();
                     fetchImages(32);
                     return state;
                 }
@@ -46,6 +51,8 @@ export default function createImageBrowserStore(apiKey) {
                 if (prevImage < 0) {
                     if (state.currentPage > 1) {
                         state.currentPage -= 1;
+                        const _store = get(store);
+                        _store.previousPageCallback();
                         fetchImages(32);
                         return state;
                     }
@@ -83,7 +90,20 @@ export default function createImageBrowserStore(apiKey) {
                 ...state ,
                 currentImage: state.images.indexOf(imageUrl),
             }))
+        },
+        setNextPageCallback : function(func) { 
+            store.update(state => ({
+                ...state ,
+                nextPageCallback:func,
+            }))
+         },
+        setPreviousPageCallback : function(func) { 
+            store.update(state => ({
+                ...state,
+                previousPageCallback : func
+            })) 
         }
+        
     };
 }
 

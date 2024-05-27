@@ -10,13 +10,13 @@
     const dispatcher = createEventDispatcher();
 
     // Returns pageNumber as event.detail
-    function nextPage()
+    export function nextPage()
     {   
         currentPage += 1; 
         dispatcher('navigatedToNextPage',currentPage)
     }
     // Returns pageNumber as event.detail   
-    function previousPage()
+     export function previousPage()
     {
         if(currentPage - 1 < 1) return; 
 

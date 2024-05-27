@@ -22,8 +22,8 @@
      const navigationStore = getNavigationStore();
      const collectionData = [ {CollectionName:'Shoes', someFutureProperty: 'foo' },{CollectionName:'Almond Blossom', someFutureProperty: 'foo' },{CollectionName:'Forerst', someFutureProperty: 'Coffee' },{CollectionName:'Laptop', someFutureProperty: 'foo' }  ]
 
-     let promise =  getPhotoList(1,32);
-     let selectedImage;
+     let nextPageFunction; 
+     let previousPageFunction;
      let imgPages = 10; // Here will be method for fetching totalImgPages
      let imageModalToggleFunction;
      let addImageModalToggleFunction;
@@ -31,6 +31,8 @@
 
      onMount(() => {
           imageBrowserStore.fetchImages(32);
+          imageBrowserStore.setPreviousPageCallback(previousPageFunction)
+          imageBrowserStore.setNextPageCallback(nextPageFunction);
      })
 
      function changePage(event)
@@ -100,7 +102,7 @@
 
           {#if imgPages > 1}
           <div class="flex flex-row items-center justify-center mr-4  mt-5">
-          <DataPaginator on:navigatedToNextPage={changePage} on:navigatedToPreviousPage={changePage} ></DataPaginator>
+          <DataPaginator bind:nextPage={nextPageFunction} bind:previousPage={previousPageFunction} on:navigatedToNextPage={changePage} on:navigatedToPreviousPage={changePage} ></DataPaginator>
           </div>
      {/if}
      </Card> 
