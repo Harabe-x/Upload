@@ -7,7 +7,7 @@
      import DataPaginator from "../../Controls/Shared/DataPaginator.svelte";
      import DataFetchingInfo from "../../Controls/Shared/DataFetchingInfo.svelte";
      import SelectInput from "../../Controls/Inputs/SelectInput.svelte";
-     import CollectionBrowser from "./Components/CollectionBrowser.svelte";
+     import CollectionBrowser from "./CollectionBrowser.svelte";
      import ModalWindow from "../../Controls/Shared/ModalWindow.svelte";;
      import { ArrowPath, ArrowRight, Plus } from "svelte-hero-icons";
      import { getPhotoList } from "../../../js/Temp/PhotoPlaceholderApi";

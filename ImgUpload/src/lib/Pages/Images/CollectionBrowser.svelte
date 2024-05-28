@@ -1,19 +1,19 @@
   <script>
     import {ArrowLeft, ArrowPath, Icon, Plus} from "svelte-hero-icons";
-    import { getPhotoList } from "../../../../js/Temp/PhotoPlaceholderApi";
-    import IconButton from "../../../Controls/Buttons/IconButton.svelte";
-    import PageTopMenu from "../../../Controls/Shared/PageTopMenu.svelte";
-    import DataFetchingInfo from "../../../Controls/Shared/DataFetchingInfo.svelte";
-    import ImageFrame from "./ImageFrame.svelte";
-    import ModalWindow from "../../../Controls/Shared/ModalWindow.svelte";
-    import DataPaginator from "../../../Controls/Shared/DataPaginator.svelte";
-    import Card from "../../../Controls/Cards/Card.svelte";
+    import { getPhotoList } from "../../../js/Temp/PhotoPlaceholderApi.js";
+    import IconButton from "../../Controls/Buttons/IconButton.svelte";
+    import PageTopMenu from "../../Controls/Shared/PageTopMenu.svelte";
+    import DataFetchingInfo from "../../Controls/Shared/DataFetchingInfo.svelte";
+    import ImageFrame from "./Components/ImageFrame.svelte";
+    import ModalWindow from "../../Controls/Shared/ModalWindow.svelte";
+    import DataPaginator from "../../Controls/Shared/DataPaginator.svelte";
+    import Card from "../../Controls/Cards/Card.svelte";
     import {onMount} from "svelte";
-    import PageHeaderNameStore from "../../../../js/Temp/PageHeaderNameStore.js";
-    import pageHeaderNameStore from "../../../../js/Temp/PageHeaderNameStore.js";
-    import {getSelectedCollectionDataStore} from "../../../../js/Temp/SelectedCollectionStore.js";
-    import ImagesPage from "../ImagesPage.svelte";
-    import {getNavigationStore} from "../../../../js/Temp/NavigationStore.js";
+    import PageHeaderNameStore from "../../../js/Temp/PageHeaderNameStore.js";
+    import pageHeaderNameStore from "../../../js/Temp/PageHeaderNameStore.js";
+    import {getSelectedCollectionDataStore} from "../../../js/Temp/SelectedCollectionStore.js";
+    import ImagesPage from "./ImagesPage.svelte";
+    import {getNavigationStore} from "../../../js/Temp/NavigationStore.js";
 
     const selectedPageStore = getSelectedCollectionDataStore();
     const pageHeaderStore = pageHeaderNameStore()
@@ -63,22 +63,21 @@
         <div  slot="titleControl" class="ml-auto">
             <IconButton icon={Plus} iconStyle="w-4" on:click={addImageModalToggleFunction} > Add Image  </IconButton>
         </div>
-        <div class="grid lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-1 gap-10">
             {#await promise }
                 <DataFetchingInfo></DataFetchingInfo>
             {:then result }
 
+                <div class="grid lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-1 gap-10">
 
                 {#each result as item }
                     <button on:click={() => { selectImage(item.download_url); imageModalToggleFunction(); }}>
                         <ImageFrame imgSrc={item.download_url}></ImageFrame>
                     </button>
                 {/each}
-
+                </div>
             {:catch error}
                 Something went wrong
             {/await}
-        </div>
         <div class="flex flex-row items-center justify-center mr-4  mt-5">
             <DataPaginator on:navigatedToNextPage={changePage} on:navigatedToPreviousPage={changePage} ></DataPaginator>
         </div>
