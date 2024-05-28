@@ -20,7 +20,8 @@ export default function createImageBrowserStore(apiKey) {
 
             store.update(state => ({
                 ...state,
-                images: state.images.concat(imageUrls)
+                currentImage: 0,
+                images: imageUrls
                ,
             }));
         } catch (error) {
@@ -56,7 +57,7 @@ export default function createImageBrowserStore(apiKey) {
                         fetchImages(32);
                         return state;
                     }
-                    return state;
+                    return state;``
                 }
                 return { ...state, currentImage: prevImage };
             });
