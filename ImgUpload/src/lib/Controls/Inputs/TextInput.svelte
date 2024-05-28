@@ -6,6 +6,7 @@
     export let disabled = false;
     export let isError = false;
     export let errorMessage = '';
+
     function setInputTypeAction(node)
     {
         node.type = type.length === 0 ? 'text' : type ;

@@ -5,7 +5,6 @@
     let isSubListExtended = false; 
     export let icon;
     export let title;
-    export let items = []
 
     function changeVisability()
     {

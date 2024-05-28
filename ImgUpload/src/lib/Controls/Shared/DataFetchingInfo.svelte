@@ -1,6 +1,5 @@
 <script>
     import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
-    import { Icon, Cog} from "svelte-hero-icons";
 </script>
 
 

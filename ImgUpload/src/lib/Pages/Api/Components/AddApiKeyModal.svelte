@@ -25,7 +25,7 @@
         const newApiKey = { Id: $apiKeyStore.length, Name: name, Key: getRandomGuid(), Storage: storage };
         $apiKeyStore.push(newApiKey); 
         // IDK why this is wokring 
-        apiKeyStore.update(() => { return $apiKeyStore })
+        apiKeyStore.update(() => {  })
 
       closeModal();
       }
