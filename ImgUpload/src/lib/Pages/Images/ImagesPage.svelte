@@ -89,6 +89,8 @@
                <IconButton icon={Plus} iconStyle="w-4" on:click={() =>{ addImageModalToggleFunction() }}>  Add Image </IconButton>
           </div>
 
+
+
           <div class="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-10">
                {#each $imageBrowserStore.images as image (image)}
 
@@ -97,6 +99,7 @@
                     </button>
 
                {/each}
+
           </div>
 
 
