@@ -15,8 +15,9 @@
      import {getSelectedCollectionDataStore} from "../../../js/Temp/SelectedCollectionStore.js";
      import createImageBrowserStore from "../../../js/ImageBrowserStore.js";
      import {onMount} from "svelte";
+     import {getApiKeys} from "../../../js/Temp/ApiKeysData.js";
 
-
+     const apiKeyStore = getApiKeys();
      const imageBrowserStore = createImageBrowserStore('')
      const selectedCollectionDataStore = getSelectedCollectionDataStore()
      const navigationStore = getNavigationStore();
@@ -33,6 +34,7 @@
           imageBrowserStore.fetchImages(32);
           imageBrowserStore.setPreviousPageCallback(previousPageFunction)
           imageBrowserStore.setNextPageCallback(nextPageFunction);
+          apiKeyStore.fetchKeys();
      })
 
      function changePage(event)
@@ -44,6 +46,10 @@
         $selectedCollectionDataStore = collectionData;
         $navigationStore =  CollectionBrowser;
      }
+     function selectKey(event)
+     {
+          apiKeyStore.selectKey(event.detail.target.value);
+     }
         
 
 
@@ -52,7 +58,11 @@
 <div>
 <PageTopMenu>
      <div slot="leftSide">
-          <SelectInput title="Selected key:"></SelectInput>
+          <SelectInput on:change={selectKey}  title="Selected key:">
+               {#each $apiKeyStore.apiKeys as key}
+                    <option selected={key.Name === $apiKeyStore.selectedApiKey.Name} value={key.Name}> {key.Name} </option>
+               {/each}
+          </SelectInput>
      </div>
 <div slot="rightSide">
      <IconButton iconStyle="w-4 mr-1" icon={ArrowPath}>

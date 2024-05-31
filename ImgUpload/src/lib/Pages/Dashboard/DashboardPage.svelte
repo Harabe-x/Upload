@@ -8,13 +8,34 @@
     import PageTopMenu from "../../Controls/Shared/PageTopMenu.svelte";
     import IconDropdown from "../../Controls/Dropdowns/IconDropdown.svelte";
     import SelectInput from "../../Controls/Inputs/SelectInput.svelte";
-</script>   
+    import {getApiKeys} from "../../../js/Temp/ApiKeysData.js";
+    import {onMount} from "svelte";
+
+
+    const apiKeyStore = getApiKeys();
+
+    onMount(() => {
+        apiKeyStore.fetchKeys();
+    })
+
+
+    function selectKey(event)
+    {
+        apiKeyStore.selectKey(event.detail.target.value);
+    }
+
+
+</script>
 
 
 <!-- Card section -->
 <PageTopMenu>
     <div slot="leftSide">
-        <SelectInput title="Selected key:"></SelectInput>
+        <SelectInput on:change={selectKey} title="Selected key:">
+            {#each $apiKeyStore.apiKeys as key}
+                <option  selected={key.Name === $apiKeyStore.selectedApiKey.Name} value={key.Name}> {key.Name} </option>
+            {/each}
+        </SelectInput>
     </div>
     <div slot="rightSide">
         <IconButton iconStyle="w-4 mr-1" icon={ArrowPath}>

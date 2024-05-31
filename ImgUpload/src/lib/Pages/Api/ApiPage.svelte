@@ -39,7 +39,7 @@
 <div class="grid lg:grid-cols-2 mt-2 grid-cols-1 gap-10 mb-10">
     {#key $apiKeys}
     <Card title="Api Keys Usage" > 
-        <DoughnutChart labels={$apiKeys.map((item) => item.Name )} values={$apiKeys.map((item) => item.Storage)}></DoughnutChart>
+        <DoughnutChart labels={$apiKeys.apiKeys.map((item) => item.Name )} values={$apiKeys.apiKeys.map((item) => item.Storage)}></DoughnutChart>
     </Card>
     {/key}
 <div class="grid gird-cols-1 grid-flow-row">

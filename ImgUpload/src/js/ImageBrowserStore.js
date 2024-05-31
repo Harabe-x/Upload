@@ -8,21 +8,26 @@ export default function createImageBrowserStore(apiKey) {
         previousPageCallback: () => { },
         currentImage: 0,
         currentPage: 1,
+        isLoading: false,
     });
 
-    async function fetchImages(limit) {
+    async function fetchImages(limit,currentImage = 0) {
         if (limit === undefined) return;
+
         try {
             const { currentPage } = get(store);
+
+            store.update(state => ({ ...state, isLoading: true    }))
+
             const response = await fetch(`https://picsum.photos/v2/list?page=${currentPage}&limit=${limit}`);
             const data = await response.json();
             const imageUrls = data.map(item => item.download_url);
 
             store.update(state => ({
                 ...state,
-                currentImage: 0,
-                images: imageUrls
-               ,
+                images: imageUrls,
+                currentImage: currentImage,
+                isLoading: false
             }));
         } catch (error) {
             console.error("Error fetching images:", error);
@@ -34,11 +39,12 @@ export default function createImageBrowserStore(apiKey) {
 
         nextImage: function () {
             store.update(state => {
+
+                if(state.isLoading) return ;
                 const nextImage = state.currentImage + 1;
                 if (nextImage >= state.images.length) {
                     state.currentPage += 1;
-                    const _store = get(store);
-                    _store.nextPageCallback();
+                    state.nextPageCallback();
                     fetchImages(32);
                     return state;
                 }
@@ -48,13 +54,15 @@ export default function createImageBrowserStore(apiKey) {
 
         previousImage: function () {
             store.update(state => {
+
+                if(state.isLoading)  return;
+
                 const prevImage = state.currentImage - 1;
                 if (prevImage < 0) {
                     if (state.currentPage > 1) {
                         state.currentPage -= 1;
-                        const _store = get(store);
-                        _store.previousPageCallback();
-                        fetchImages(32);
+                        state.previousPageCallback();
+                        fetchImages(32,state.images.length - 1);
                         return state;
                     }
                     return state;``
@@ -74,12 +82,16 @@ export default function createImageBrowserStore(apiKey) {
         fetchImages: fetchImages,
         goToSelectedPage : function(pageNumber)
         {
-            store.update(state => ({
-                ...state,
-                images: [],
-                currentImage: 0,
-                currentPage: pageNumber
-            }));
+
+            store.update(state => {
+
+                if(state.isLoading)  return;
+
+                return {...state,
+                    images: [],
+                    currentImage: 0,
+                    currentPage: pageNumber}
+            });
             fetchImages(32);
         },
         selectImage: function(imageUrl)
@@ -92,19 +104,19 @@ export default function createImageBrowserStore(apiKey) {
                 currentImage: state.images.indexOf(imageUrl),
             }))
         },
-        setNextPageCallback : function(func) { 
+        setNextPageCallback : function(func) {
             store.update(state => ({
                 ...state ,
                 nextPageCallback:func,
             }))
-         },
-        setPreviousPageCallback : function(func) { 
+        },
+        setPreviousPageCallback : function(func) {
             store.update(state => ({
                 ...state,
                 previousPageCallback : func
-            })) 
+            }))
         }
-        
+
     };
 }
 

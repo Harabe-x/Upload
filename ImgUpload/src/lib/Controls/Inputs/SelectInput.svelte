@@ -14,7 +14,7 @@
 <div>
     <label>
         <span class="text-sm">{title}</span> <br>
-        <select on:select={dispatchEvent} class="select w-full"  {...$$restProps}>
+        <select on:change={dispatchEvent}  class="select w-full"  {...$$restProps}>
             <slot>
                 <option selected> Main </option>
                 <option> Main </option>
