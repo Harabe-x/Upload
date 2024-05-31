@@ -51,9 +51,9 @@
         </tr>
       </thead>
       <tbody>
-          {#each  $apiKeysStore as key (key.Id) }
+          {#each  $apiKeysStore.apiKeys as key,index (key.Id)}
           <tr class="bg-base-200" use:action on:click={tableRowOnClick}  on:dblclick={() => { selectKey(key); editModalToggleFunction();  }}>
-              <th class="bg-base-200">{apiKeys.indexOf(key) + 1}</th>
+              <th class="bg-base-200">{index + 1}</th>
               <td >{key.Name}</td>
               <td>{key.Key}</td>
               <td>{key.Storage} GB</td>

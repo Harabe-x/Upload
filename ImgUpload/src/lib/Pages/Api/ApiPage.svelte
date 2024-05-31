@@ -13,7 +13,7 @@
 
     const apiKeys = getApiKeys();
 
-    let addImageModalToggleFunction;
+    let addApiKeyModalToggleFunction;
 
 </script>
 
@@ -30,7 +30,7 @@
     <Card title="Api Keys">
         <!-- Title Button  -->
             <div class="flex flex-row ml-auto mr-2" slot="titleControl"> 
-                <IconButton icon={Plus} on:click={() => {addImageModalToggleFunction(); }}  iconStyle="w-4 h-4"> Add </IconButton>
+                <IconButton icon={Plus} on:click={() => {addApiKeyModalToggleFunction(); }} iconStyle="w-4 h-4"> Add </IconButton>
             </div>
         <ApiKeysList></ApiKeysList> 
     </Card>
@@ -44,10 +44,10 @@
     {/key}
 <div class="grid gird-cols-1 grid-flow-row">
     <Card title="Api Key Logs">
-        <ApiKeysLogs apiKeysStore={apiKeys} > </ApiKeysLogs>
+        <ApiKeysLogs> </ApiKeysLogs>
     </Card>
 </div>
 
 </div>    
 
-<ModalWindow type="AddApiKeyModal" bind:toggleModal={addImageModalToggleFunction}></ModalWindow>
+<ModalWindow type="AddApiKeyModal" bind:toggleModal={addApiKeyModalToggleFunction}></ModalWindow>

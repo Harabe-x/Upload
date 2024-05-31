@@ -14,14 +14,13 @@
         logStore.set($logStore);
     }
 
-    function goToNextPage() {
-        currentPage += 1;
+    function goToNextPage(event) {
+        currentPage = event.detail;
         fetchLogs();
     }
 
-    function goToPreviousPage() {
-        if (currentPage - 1 < 1) return;
-        currentPage -= 1;
+    function goToPreviousPage(event) {
+        currentPage = event.detail
         fetchLogs();
     }
 
