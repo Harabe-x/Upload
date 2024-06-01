@@ -15,9 +15,8 @@
     }
     function deleteApiKey()
     {
-        $apiKeysStore.splice($apiKeysStore.indexOf(param),1)
-        apiKeysStore.update(() => $apiKeysStore )
-    
+        apiKeysStore.deleteKey(param);
+
         closeDeleteModal();
     }
 

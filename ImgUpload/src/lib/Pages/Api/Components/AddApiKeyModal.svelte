@@ -22,12 +22,9 @@
     {
       if(validateName(name) && validateStorage(storage))
       {
-        const newApiKey = { Id: $apiKeyStore.length, Name: name, Key: getRandomGuid(), Storage: storage };
-        $apiKeyStore.push(newApiKey); 
-        // IDK why this is wokring 
-        apiKeyStore.update(() => {  })
 
-      closeModal();
+          apiKeyStore.addApiKey(name,storage)
+          closeModal();
       }
      clearTextBoxes();
 

@@ -42,6 +42,45 @@ function selectKey (name) {
     }))
 }
 
+function deleteKey(key)
+{
+    // This function will delete keys from the cloud and fetch data
+
+    store.update(state =>  {
+        state.apiKeys.splice(state.apiKeys.indexOf(name), 1);
+        return state;
+    })
+
+}
+
+function addApiKey(name,storage)
+{
+       store.update(state => {
+
+          state.apiKeys.push({Id:state.apiKeys.length,Name:name,Key:chance.guid(),Storage:storage})
+
+
+           return state;
+       })
+}
+function updateKey(key, newName, newStorageValue) {
+    store.update(state => {
+
+        const index = state.apiKeys.indexOf(key)
+
+
+        if (index !== -1) {
+            state.apiKeys[index] = {
+                ...state.apiKeys[index],
+                Name: newName,
+                Storage: newStorageValue
+            };
+        }
+
+        return state;
+    });
+}
+
 export function getApiKeys()
 {
 
@@ -49,6 +88,11 @@ export function getApiKeys()
 
         subscribe : store.subscribe,
 
+        updateKey:updateKey,
+
+        deleteKey:deleteKey,
+
+        addApiKey:addApiKey,
 
         fetchKeys : fetchKeys,
 

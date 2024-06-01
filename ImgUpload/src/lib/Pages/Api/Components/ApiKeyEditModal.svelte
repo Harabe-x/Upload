@@ -7,6 +7,7 @@
    import { validateStorage ,validateName} from "../../../../js/Temp/DataValidator";
    const dispatcher = createEventDispatcher();
    const apiKeysStore = getApiKeys();
+
    export let isModalVisable = false;
    export let param;
   function closeEditModal()
@@ -18,11 +19,9 @@
   {
     if(validateName(param.Name) && validateStorage(param.Storage))
     {
-      apiKeysStore.update(() =>  $apiKeysStore )
+      apiKeysStore.updateKey(param,param.Name,param.Storage)
       closeEditModal();
     }
- 
-   
   }
 
 
@@ -31,7 +30,7 @@
 
 {#if isModalVisable}
 <div class="modal modal-open">
-    <div class="modal-box">
+    <div  class="modal-box">
       <h3 class="font-bold text-lg">Add key</h3>
   
       <div class="mt-2 p-2">
