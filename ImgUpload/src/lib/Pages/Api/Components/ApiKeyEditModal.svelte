@@ -5,6 +5,8 @@
    import { XMark, Check } from "svelte-hero-icons";
    import { getApiKeys } from "../../../../js/Temp/ApiKeysData";
    import { validateStorage ,validateName} from "../../../../js/Temp/DataValidator";
+   import {onEscapeAction,onEnterAction} from "../../../../js/Actions/ModalActions.js";
+
    const dispatcher = createEventDispatcher();
    const apiKeysStore = getApiKeys();
 
@@ -29,7 +31,7 @@
 
 
 {#if isModalVisable}
-<div class="modal modal-open">
+<div class="modal modal-open" use:onEscapeAction  use:onEnterAction on:enter={saveEditedKey} on:escape={closeEditModal}>
     <div  class="modal-box">
       <h3 class="font-bold text-lg">Add key</h3>
   

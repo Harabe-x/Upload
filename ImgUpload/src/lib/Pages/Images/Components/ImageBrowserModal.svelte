@@ -12,6 +12,8 @@
     } from "svelte-hero-icons";
     import IconDropdown from "../../../Controls/Dropdowns/IconDropdown.svelte";
     import DataFetchingInfo from "../../../Controls/Shared/DataFetchingInfo.svelte";
+    import {onEscapeAction,onEnterAction} from "../../../../js/Actions/ModalActions.js";
+
     export let isModalVisable = false;
     export let param;
     let isError = false;
@@ -32,7 +34,7 @@
 </script>
 
 {#if isModalVisable }
-    <div class="modal modal-open flex flex-col justify-center items-center">
+    <div class="modal modal-open flex flex-col justify-center items-center"  use:onEscapeAction on:escape={closeModal}  >
         <div class="w-3/4 h-3/4 bg-base-300 rounded-xl">
             <!-- Top Panel  -->
             <div class="flex flex-row w-full h-[15%]">

@@ -4,6 +4,7 @@
     import FIleInput from "../../../Controls/Inputs/FIleInput.svelte";
     import {createEventDispatcher} from "svelte";
     import {Check, XMark} from "svelte-hero-icons";
+    import {onEscapeAction,onEnterAction} from "../../../../js/Actions/ModalActions.js";
 
     const dispatcher = createEventDispatcher();
     export let isModalVisable = false;
@@ -26,7 +27,7 @@
 
 {#if isModalVisable}
 
-    <div class="modal modal-open">
+    <div class="modal modal-open" use:onEnterAction use:onEscapeAction  on:enter={addCollection} on:escape={closeModal} >
         <div class="modal-box flex flex-col gap-3 "  >
             <TextInput label="Collection title" bind:value={title}></TextInput>
             <TextInput label="Collection description" bind:value={description}></TextInput>

@@ -4,7 +4,7 @@
     import FIleInput from "../../../Controls/Inputs/FIleInput.svelte";
     import IconButton from "../../../Controls/Buttons/IconButton.svelte";
     import { Check, Icon, XMark } from "svelte-hero-icons";
-
+    import { onEnterAction,onEscapeAction} from "../../../../js/Actions/ModalActions.js";
 
     let title = '';
     let description = '';
@@ -24,7 +24,7 @@
 </script>
 
 {#if  isModalVisable}
-    <div class="modal modal-open">
+    <div class="modal modal-open" use:onEnterAction use:onEscapeAction on:enter={savePhoto} on:escape={closeModal}>
         <div class="modal-box flex flex-col gap-3 "  >
             <TextInput label="Title" bind:value={title}></TextInput>
             <TextInput label="Description" bind:value={description}></TextInput>

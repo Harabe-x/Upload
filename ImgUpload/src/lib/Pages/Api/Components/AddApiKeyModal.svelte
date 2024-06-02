@@ -4,8 +4,10 @@
      import { XMark , Plus } from "svelte-hero-icons";
      import { createEventDispatcher } from "svelte";
      import { getApiKeys } from "../../../../js/Temp/ApiKeysData";
-     import { getRandomGuid } from "../../../../js/Temp/DummyDataGenerator";
      import { validateName,validateStorage } from "../../../../js/Temp/DataValidator";
+     import { onEscapeAction,onEnterAction} from "../../../../js/Actions/ModalActions.js";
+     import { focusAction } from "../../../../js/Actions/StateAction.js";
+
      const apiKeyStore = getApiKeys();
      const dispatcher = createEventDispatcher();
      
@@ -38,12 +40,12 @@
 </script>
 
 {#if isModalVisable }
-<div class="modal modal-open">
+<div use:onEscapeAction on:enter={addApiKeyToTheStore} on:escape={closeModal} use:onEnterAction  class="modal modal-open">
     <div class="modal-box">
       <h3 class="font-bold text-lg">Add key</h3>
   
       <div class="mt-2 p-2">
-        <TextInput bind:value={name} isError={!validateName(name)} errorMessage="Name can't be empty or white space" label="Name"></TextInput>
+        <TextInput  bind:value={name} isError={!validateName(name)} errorMessage="Name can't be empty or white space" label="Name"></TextInput>
         <TextInput bind:value={storage} isError={!validateStorage(storage)} errorMessage="Storage have to be a number" label="Storage"></TextInput>
       </div>
   

@@ -3,7 +3,7 @@
     import IconButton from "../../../Controls/Buttons/IconButton.svelte";  
     import { XMark,Trash } from "svelte-hero-icons";
     import { getApiKeys } from "../../../../js/Temp/ApiKeysData";
-
+    import {onEscapeAction} from "../../../../js/Actions/ModalActions.js";
     const apiKeysStore = getApiKeys();
     const dispatcher = createEventDispatcher();
     export let param;
@@ -24,7 +24,7 @@
 
 
 {#if isModalVisable}
-<div class="modal modal-open">
+<div class="modal modal-open" use:onEscapeAction  on:escape={closeDeleteModal}>
     <div class="modal-box">
       <h3 class="font-bold text-lg">Delete key </h3>
       <p class="py-4">Are you sure you want to delete the key named "<span class="font-bold text-primary">{param.Name}</span>" ?</p>
