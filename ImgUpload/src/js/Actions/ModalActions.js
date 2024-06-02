@@ -2,40 +2,39 @@
 
 export function onEnterAction(element)
 {
-
-    document.body.addEventListener("keydown", keyDownEventHandler);
-
-    function keyDownEventHandler(event)
-    {
-        if(event.key === "Enter") {
-            element.dispatchEvent(new CustomEvent("enter"));
-        }
-    }
-
-    return {
-        destroy()
-        {
-            document.body.removeEventListener("keydown", keyDownEventHandler)
-        }
-    }
+    return onKeyDown(element,"Enter","enter")
 }
 
 export function onEscapeAction(element)
 {
-    document.body.addEventListener("keydown",keyDownEventHandler)
+    return onKeyDown(element,"Escape","escape")
+}
+export function onArrowLeftAction(element)
+{
+    return onKeyDown(element,"ArrowLeft","arrowLeft")
+}
+export function onArrowRight(element)
+{
+  return  onKeyDown(element,"ArrowRight","arrowRight")
+}
 
-    function keyDownEventHandler(event)
+
+function onKeyDown(element,key,eventName)
+{
+    document.body.addEventListener("keydown", keyDownEventHandler)
+
+    function  keyDownEventHandler(event)
     {
-        if(event.code === "Escape") {
-            element.dispatchEvent(new CustomEvent("escape"));
+
+        if(event.key === key )
+        {
+            element.dispatchEvent(new CustomEvent(eventName));
         }
     }
 
     return {
-        destroy()
-        {
+        destroy() {
             document.body.removeEventListener("keydown", keyDownEventHandler)
         }
     }
 }
-

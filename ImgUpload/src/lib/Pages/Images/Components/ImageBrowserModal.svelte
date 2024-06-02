@@ -12,7 +12,7 @@
     } from "svelte-hero-icons";
     import IconDropdown from "../../../Controls/Dropdowns/IconDropdown.svelte";
     import DataFetchingInfo from "../../../Controls/Shared/DataFetchingInfo.svelte";
-    import {onEscapeAction,onEnterAction} from "../../../../js/Actions/ModalActions.js";
+    import {onEscapeAction,onArrowLeftAction,onArrowRight} from "../../../../js/Actions/ModalActions.js";
 
     export let isModalVisable = false;
     export let param;
@@ -31,6 +31,16 @@
     function closeModal() {
         dispatcher('modalClosed');
     }
+    function nextImage()
+    {
+        param.nextImage();
+    }
+    function previousImage()
+    {
+        param.previousImage();
+    }
+
+
 </script>
 
 {#if isModalVisable }
@@ -67,8 +77,8 @@
             </div>
 
             <div class="h-[70%] w-full flex flex-row">
-                <div class="h-full w-[15%] flex flex-col items-center justify-center">
-                    <IconButton on:click={() => { param.previousImage(); }} icon={ChevronLeft} iconStyle="w-8"></IconButton>
+                <div class="h-full w-[15%] flex flex-col items-center justify-center" use:onArrowLeftAction on:arrowLeft={previousImage}  >
+                    <IconButton on:click={previousImage} icon={ChevronLeft} iconStyle="w-8"></IconButton>
                 </div>
 
                 <div class="w-[70%] flex justify-center items-center overflow-hidden">
@@ -81,8 +91,8 @@
                 </div>
 
 
-                <div class="h-full w-[15%] flex flex-col items-center justify-center">
-                    <IconButton on:click={() => { param.nextImage() }} icon={ChevronRight} iconStyle="w-8"></IconButton>
+                <div class="h-full w-[15%] flex flex-col items-center justify-center" use:onArrowRight on:arrowRight={nextImage}  >
+                    <IconButton on:click={nextImage} icon={ChevronRight} iconStyle="w-8"></IconButton>
                 </div>
             </div>
 

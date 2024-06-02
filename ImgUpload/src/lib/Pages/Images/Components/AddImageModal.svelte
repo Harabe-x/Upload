@@ -12,7 +12,7 @@
     const dispatcher = createEventDispatcher()
 
     function closeModal()
-    {
+    {e
         dispatcher('modalClosed')
     }
     function savePhoto()
