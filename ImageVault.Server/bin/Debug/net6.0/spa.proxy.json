@@ -1,0 +1,8 @@
+{
+"SpaProxyServer": {
+"ServerUrl": "https://localhost:5173",
+"LaunchCommand": "npm run dev",
+"WorkingDirectory": "C:\\Users\\xgra5\\Desktop\\Upload\\ImageVault.Server\\..\\imagevault.client",
+"MaxTimeoutInSeconds": "120"
+}
+}
