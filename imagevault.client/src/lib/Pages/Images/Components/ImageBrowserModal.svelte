@@ -11,7 +11,7 @@
         XMark
     } from "svelte-hero-icons";
     import IconDropdown from "../../../Controls/Dropdowns/IconDropdown.svelte";
-    import DataFetchingInfo from "../../../Controls/Shared/DataFetchingInfo.svelte";
+    import DataFetchingPage from "@/lib/Pages/InfoPages/DataFetchingPage.svelte";
     import {onEscapeAction,onArrowLeftAction,onArrowRight} from "../../../../js/Actions/ModalActions.js";
 
     export let isModalVisable = false;
@@ -85,7 +85,7 @@
                     {#key $param.currentImage}
                         <img src={param.getCurrentImage()} on:load={imageLoaded}  class:hidden={isError}  on:error={showLoadingAnimation} alt=" " class="max-w-full max-h-full h-full w-full object-contain rounded-xl overflow-auto">
                         {#if isError}
-                                <DataFetchingInfo></DataFetchingInfo>
+                                <DataFetchingPage></DataFetchingPage>
                         {/if}
                     {/key}
                 </div>

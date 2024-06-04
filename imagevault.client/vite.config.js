@@ -46,10 +46,14 @@ export default defineConfig({
             '^/weatherforecast': {
                 target,
                 secure: false
+            },
+            '^/ChartData': {
+                target: 'https://localhost:7110/',
+                secure: false
             }
         },
-        port: 5173,
-        https: {
+        port: 5174,
+        https: { 
             key: fs.readFileSync(keyFilePath),
             cert: fs.readFileSync(certFilePath),
         }

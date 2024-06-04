@@ -11,7 +11,7 @@
     import ImagesPage from "@/lib/Pages/Images/ImagesPage.svelte";
     import ProfilePage from "@/lib/Pages/Settings/Profile/ProfilePage.svelte";
     import BillingPage from "@/lib/Pages/Settings/Billing/BillingPage.svelte";
-    import DataFetchingInfo from "@/lib/Controls/Shared/DataFetchingInfo.svelte";
+    import NotFoundPage from "@/lib/Pages/InfoPages/NotFoundPage.svelte";
     
     const navbarStateStore = getNavBarStateStore();
     const navigation = getNavigationStore();
@@ -30,11 +30,11 @@
           <Route path="/images" component={ImagesPage}></Route>
           <Route path="/settings/profile" component={ProfilePage}></Route>
           <Route path="/settings/billing" component={BillingPage}></Route>
-          <Route path="*" component={DataFetchingInfo}></Route>
+          <Route path="*" component={NotFoundPage}></Route>
 
       </Router>
   </PageContent>
-  <NavigationBar></NavigationBar>
+  <NavigationBar></NavigationBar>-->
 </div>
 
 

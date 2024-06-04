@@ -8,22 +8,28 @@ function generateRandomNumberArray(length)
     }
     return array;
 }
-function getChartDataFromApi(count) {
-    return fetch(`https://localhost:7110/ChartData?count=7`, {
+async function getChartDataFromApi(count) {
+    const promise = fetch(`https://localhost:7110/ChartData?count=7`, {
         method: 'GET',
         headers: {
-            'Accept': 'text/plain'
+            'Accept': 'text/json'
         }
-    }).then(response => response.text());
+    });
+    
+    return (await promise).json()
+    
 }
-export  function getChartData()
+export async  function getChartData()
 {
+    
+    const chartData  = await getChartDataFromApi();
+    
     
     return { 
         labels : ['29/04/2024','30/04/2024','01/05/2024','02/05/2024','03/05/2024','04/05/2024','05/05/2024',],
         datasets : [{
             label : 'Number of requests',
-            data: generateRandomNumberArray(7) 
+            data: chartData.chartData
 
         }  ]
     }

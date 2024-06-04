@@ -5,11 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cab59d70-257f-4959-914d-493c114a433a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Upload.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImageVault.Server/bin/Debug/net6.0/ImageVault.Server.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ImageVault.Server/bin/Debug/net6.0/ImageVault.Server.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImageVault.Server/bin/Debug/net6.0/ImageVault.Server.exe" beforeDir="false" afterPath="$PROJECT_DIR$/ImageVault.Server/bin/Debug/net6.0/ImageVault.Server.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImageVault.Server/bin/Debug/net6.0/ImageVault.Server.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/ImageVault.Server/bin/Debug/net6.0/ImageVault.Server.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImageVault.Server/obj/Debug/net6.0/ImageVault.Server.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ImageVault.Server/obj/Debug/net6.0/ImageVault.Server.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImageVault.Server/obj/Debug/net6.0/ImageVault.Server.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/ImageVault.Server/obj/Debug/net6.0/ImageVault.Server.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImageVault.Server/obj/Debug/net6.0/ImageVault.Server.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ImageVault.Server/obj/Debug/net6.0/ImageVault.Server.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImageVault.Server/obj/Debug/net6.0/ImageVault.Server.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/ImageVault.Server/obj/Debug/net6.0/ImageVault.Server.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImageVault.Server/obj/Debug/net6.0/ImageVault.Server.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/ImageVault.Server/obj/Debug/net6.0/ImageVault.Server.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImageVault.Server/obj/Debug/net6.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/ImageVault.Server/obj/Debug/net6.0/apphost.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImageVault.Server/obj/Debug/net6.0/ref/ImageVault.Server.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ImageVault.Server/obj/Debug/net6.0/ref/ImageVault.Server.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ImageVault.Server/obj/Debug/net6.0/refint/ImageVault.Server.dll" beforeDir="false" afterPath="$PROJECT_DIR$/ImageVault.Server/obj/Debug/net6.0/refint/ImageVault.Server.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imagevault.client/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/imagevault.client/vite.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,22 +26,22 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Harabe-x"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Harabe-x&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Harabe-x/Upload.git",
-    "accountId": "0d186b7c-a3c3-4332-9b30-549f593cbfa2"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Harabe-x/Upload.git&quot;,
+    &quot;accountId&quot;: &quot;0d186b7c-a3c3-4332-9b30-549f593cbfa2&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 2
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 2
+}</component>
   <component name="ProjectId" id="2hNVCL61COCcHw28FowR1H8UvAX" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -42,6 +49,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Node.js.vite.config.js.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
     "node.js.detected.package.eslint": "true",
@@ -69,6 +77,7 @@
       <option name="presentableId" value="Default" />
       <updated>1717434395299</updated>
       <workItem from="1717434396541" duration="1655000" />
+      <workItem from="1717594340443" duration="240000" />
     </task>
     <servers />
   </component>

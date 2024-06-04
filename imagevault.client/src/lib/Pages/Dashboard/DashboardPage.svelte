@@ -10,6 +10,8 @@
     import SelectInput from "../../Controls/Inputs/SelectInput.svelte";
     import {getApiKeys} from "../../../js/Temp/ApiKeysData.js";
     import {onMount} from "svelte";
+    import DataFetchingPage from "@/lib/Pages/InfoPages/DataFetchingPage.svelte";
+    import {get} from "svelte/store";
 
 
     const apiKeyStore = getApiKeys();
@@ -23,7 +25,9 @@
     {
         apiKeyStore.selectKey(event.detail.target.value);
     }
-
+    
+    const promise = getChartData();
+    const promise2 = getChartData();
 </script>
 
 
@@ -71,11 +75,24 @@
 <!-- Charts -->
 <div class="grid lg:grid-cols-2 mt-1 md:grid-cols-2 grid-cols-1 gap-6">
         <Card title="Uploaded Images">
-            <Chart data={getChartData()} chartType="line"></Chart>
+
+            {#await promise2}
+                <DataFetchingPage></DataFetchingPage>
+            {:then resolvedData}
+                <Chart data={resolvedData} chartType="line"></Chart>
+
+            {/await}
+            
         </Card>
     
         <Card title="Number of requests">
-            <Chart data={getChartData()} chartType="line"></Chart>
+            {#await promise}
+                <DataFetchingPage></DataFetchingPage>
+
+                {:then resolvedData}
+                <Chart data={resolvedData} chartType="line"></Chart>
+
+            {/await}
         </Card>
 </div>
     

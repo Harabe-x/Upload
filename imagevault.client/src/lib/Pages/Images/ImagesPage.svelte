@@ -5,7 +5,6 @@
      import CollectionCard from "./Components/CollectionCard.svelte";
      import ImageFrame from "./Components/ImageFrame.svelte";
      import DataPaginator from "../../Controls/Shared/DataPaginator.svelte";
-     import DataFetchingInfo from "../../Controls/Shared/DataFetchingInfo.svelte";
      import SelectInput from "../../Controls/Inputs/SelectInput.svelte";
      import CollectionBrowser from "./CollectionBrowser.svelte";
      import ModalWindow from "../../Controls/Shared/ModalWindow.svelte";
