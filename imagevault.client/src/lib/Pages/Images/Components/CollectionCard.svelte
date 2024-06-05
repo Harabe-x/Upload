@@ -5,7 +5,7 @@
 
     export let collection;
     export let imgSrc;
-    export let displayImage = false;
+    export let displayImage = true;
 
     const dispatcher = createEventDispatcher();
 
