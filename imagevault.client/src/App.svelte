@@ -24,25 +24,27 @@
     })
 
 </script>
-      <Router>
-<div class="drawer  lg:drawer-open" class:drawer-open={$navbarStateStore}>
-  <input id="left-sidebar-drawer" type="checkbox" class="drawer-toggle" />
-  <PageContent>
-          <Route path="/" component={DashboardPage}></Route>
-          <Route path="/api" component={ApiPage}></Route>
-          <Route path="/images" component={ImagesPage}></Route>
-          <Route path="/settings/profile" component={ProfilePage}></Route>
-          <Route path="/settings/billing"  component={BillingPage}></Route>
-          <Route path="*" component={NotFoundPage}></Route>
-        <Route path="/login" component={LoginPage}></Route>
-        
-  </PageContent>
-  <NavigationBar></NavigationBar>
-</div>
-          <Route path="/login" component={LoginPage}></Route>
-      </Router>
+<!--      <Router>-->
+<!--<div class="drawer  lg:drawer-open" class:drawer-open={$navbarStateStore}>-->
+<!--  <input id="left-sidebar-drawer" type="checkbox" class="drawer-toggle" />-->
+<!--  <PageContent>-->
+<!--          <Route path="/" component={DashboardPage}></Route>-->
+<!--          <Route path="/api" component={ApiPage}></Route>-->
+<!--          <Route path="/images" component={ImagesPage}></Route>-->
+<!--          <Route path="/settings/profile" component={ProfilePage}></Route>-->
+<!--          <Route path="/settings/billing"  component={BillingPage}></Route>-->
+<!--          <Route path="*" component={NotFoundPage}></Route>-->
+<!--        <Route path="/login" component={LoginPage}></Route>-->
+<!--        -->
+<!--  </PageContent>-->
+<!--  <NavigationBar></NavigationBar>-->
+<!--</div>-->
+<!--          <Route path="/login" component={LoginPage}></Route>-->
+<!--      </Router>-->
+<LoginPage> 
 
+</LoginPage>
 
 <style>
-  
+            
 </style>
