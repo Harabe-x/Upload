@@ -13,6 +13,7 @@
     import BillingPage from "@/lib/Pages/Settings/Billing/BillingPage.svelte";
     import NotFoundPage from "@/lib/Pages/InfoPages/NotFoundPage.svelte";
     import LoginPage from "@/lib/Pages/UserAuth/LoginPage.svelte";
+    import RegisterPage from "@/lib/Pages/UserAuth/RegisterPage.svelte";
     
     
     
@@ -41,9 +42,9 @@
 <!--</div>-->
 <!--          <Route path="/login" component={LoginPage}></Route>-->
 <!--      </Router>-->
-<LoginPage> 
+<RegisterPage>
 
-</LoginPage>
+</RegisterPage>
 
 <style>
             
