@@ -1,9 +1,10 @@
 import { writable } from "svelte/store";
 
-const theme = localStorage.getItem('theme');
+let theme = localStorage.getItem('theme');
 
+theme = theme === null ? 'dark' : theme
 
-const themeStore = writable(theme === null ? 'dark' : theme) ;
+const themeStore = writable(theme) ;
 
 
 function setDataTheme(value)
@@ -25,6 +26,7 @@ export function getThemeStore() {
             themeStore.update(value => {
                 const newValue = fn(value);
                 setDataTheme(newValue);
+                return newValue;
             })
         }
     };
