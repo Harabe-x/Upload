@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "/X7c0Yr2XltTKcde+U8QpQ2URRErj/5kx/nlw7Y0yIw=",
+  "Hash": "nwB6C6W8BskME5iFzWfjOTRY5lqO1PKQcV/M2vqEaFw=",
   "Source": "ImageVault.Server",
   "BasePath": "_content/ImageVault.Server",
   "Mode": "Default",
@@ -11,10 +11,10 @@
       "Version": 2,
       "Source": "imagevault.client",
       "GetPublishAssetsTargets": "GetCurrentProjectPublishStaticWebAssetItems",
-      "AdditionalPublishProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalPublishProperties": "",
       "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained",
       "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
-      "AdditionalBuildProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalBuildProperties": "",
       "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained"
     }
   ],

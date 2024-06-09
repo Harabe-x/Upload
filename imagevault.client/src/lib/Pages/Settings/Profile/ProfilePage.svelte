@@ -7,6 +7,7 @@
     import {onMount} from "svelte";
     import {themeChange} from "theme-change";
     import {getThemeStore} from "../../../../js/Temp/ThemeStore.js";
+    import {get} from "svelte/store";
 
     const themeStore = getThemeStore();
 
@@ -19,15 +20,19 @@
 
     function updateTheme(event)
     {
-        themeStore.update(_ => {
-           return  event.target.value
+
+      themeStore.update(_ => {
+           return  event.detail.target.value;
         })
 
         themes.forEach((element) => { element.removeAttribute('selected') })
 
-       const selectedTheme =  themes.find(theme => theme.value === event.target.value)
+       const selectedTheme =  themes.find(theme => theme.value === event.detail.target.value)
 
-        selectedTheme.setAttribute('selected');
+        selectedTheme.setAttribute('selected','');
+
+
+      console.log(get(themeStore))
     }
 
     function addThemeAction(element)
@@ -61,7 +66,7 @@
 <Card title="Preferences">
 
     <div  class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <SelectInput on:select={updateTheme} title="Application Theme" data-choose-theme>
+        <SelectInput on:change={updateTheme} title="Application Theme" data-choose-theme>
             <option use:addThemeAction  value="light"> Light </option>
             <option use:addThemeAction  value="dark"> Dark </option>
             <option use:addThemeAction  value="cupcake"> Cupcake </option>
