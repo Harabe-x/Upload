@@ -7,7 +7,7 @@ namespace ImageVault.Server.Controllers;
 [Route("[Controller]")]
 public class ChartDataController
 {   
-    [HttpGet(Name = "GetDummyChartData")]
+    [HttpGet("GetDummyChartData")]
     public ChartDataModel Get(int count)
     {
         return new ChartDataModel()
