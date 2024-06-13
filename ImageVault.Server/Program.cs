@@ -52,7 +52,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddScoped<IImageCollectionRepository, ImageCollectionRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserAuthenticationRepository, UserAuthenticationRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

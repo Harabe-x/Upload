@@ -12,10 +12,10 @@ namespace ImageVault.Server.Controllers;
 [Controller]
 public class UserController : ControllerBase
 {
-    public UserController(IUserRepository userRepository,UserManager<ApplicationUser> userManager,ITokenService tokenService)
+    public UserController(IUserAuthenticationRepository userAuthenticationRepository,UserManager<ApplicationUser> userManager,ITokenService tokenService)
     {
         _userManager = userManager;
-        _userRepository = userRepository;
+        _userAuthenticationRepository = userAuthenticationRepository;
         _tokenService = tokenService;
     }
     
@@ -26,29 +26,55 @@ public class UserController : ControllerBase
         {
             if (!ModelState.IsValid) return BadRequest("Invalid Data");
 
-            var registrationResult = await _userRepository.CreateAccount(accountData);
+            var accountRegistrationResult = await _userAuthenticationRepository.CreateAccount(accountData);
 
-            if (!registrationResult.IsSuccess) return BadRequest("Invalid Data");
+            if (!accountRegistrationResult.IsSuccess) return BadRequest("Invalid Data");
 
-            var newUserDto = new NewUserDto
+            var authenticationResultDto = new AuthenticationResultDto
             {
-                Email = registrationResult.User.Email,
-                Name = registrationResult.User.FirstName, 
-                Token = _tokenService.CreateToken(registrationResult.User)
+                Email = accountRegistrationResult.User.Email,
+                Name = accountRegistrationResult.User.FirstName, 
+                Token = _tokenService.CreateToken(accountRegistrationResult.User)
             };
 
-            return Ok(newUserDto);
+            return Ok(authenticationResultDto);
         }
         catch (Exception e)
         {
             return StatusCode(500, "Internal Server Error");
         }
+    }
+    
+    [HttpPost("Login")]
+    public async Task<IActionResult> Login([FromBody] LoginDto loginData)
+    {
+        try
+        { 
+            var loginResult = await  _userAuthenticationRepository.LoginUser(loginData);
 
+            if (!loginResult.IsSuccess || loginResult.User == null) return Unauthorized("Login failed");
+
+             var loggedUser =  new AuthenticationResultDto
+            {
+                Email = loginResult.User.Email,
+                Name = loginResult.User.FirstName,
+                Token = _tokenService.CreateToken(loginResult.User)
+            };
+
+             return Ok(loggedUser);
+
+        }
+        catch (Exception e)
+        {
+            return Unauthorized("Login failed");
+        }
+        
+        
     }
 
     private readonly ITokenService _tokenService; 
     
-    private readonly IUserRepository _userRepository;
+    private readonly IUserAuthenticationRepository _userAuthenticationRepository;
 
     private readonly UserManager<ApplicationUser> _userManager;
 }

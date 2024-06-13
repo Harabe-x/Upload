@@ -1,6 +1,6 @@
 namespace ImageVault.Server.Data.Dtos;
 
-public class NewUserDto
+public class AuthenticationResultDto
 {
     public string Name { get; set; }
 
