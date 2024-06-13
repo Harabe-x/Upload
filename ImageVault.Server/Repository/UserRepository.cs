@@ -16,7 +16,7 @@ public class UserRepository : IUserRepository
         _userManager = userManager;
     }
 
-    public async Task<bool> CreateAccount(UserAccountDto accountDto)
+    public async Task<RegistrationResultDto> CreateAccount(UserAccountDto accountDto)
     {
         var user = accountDto.MapUser();
 
@@ -27,12 +27,20 @@ public class UserRepository : IUserRepository
         {
             _logger.LogWarning($"User registration data validation failed \nError:{string.Join("\n", identityResult.Errors.Select(x => x.Code))} ");
 
-            return false;
+            return new RegistrationResultDto
+            {
+                User = user,
+                IsSuccess = false
+            };
         }
        
         var addingRoleResult = await  _userManager.AddToRoleAsync(user,"User");
 
-        return addingRoleResult.Succeeded;
+        return new RegistrationResultDto
+        {
+            User = user,
+            IsSuccess = addingRoleResult.Succeeded
+        };
     }
 
     private readonly ILogger<UserRepository> _logger;
