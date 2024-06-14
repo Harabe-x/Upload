@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using ImageVault.Server.Data.Dtos;
 using ImageVault.Server.Data.Interfaces;
 using ImageVault.Server.Data.Mappers;
@@ -45,7 +46,7 @@ public class UserController : ControllerBase
         }
     }
     
-    [HttpPost("Login")]
+    [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto loginData)
     {
         try
@@ -68,10 +69,19 @@ public class UserController : ControllerBase
         {
             return Unauthorized("Login failed");
         }
-        
-        
     }
 
+    [HttpPost("validateLogin")]
+    public async Task<IActionResult> ValidateToken([FromBody] string token)
+    {
+        var tokenDto = _tokenService.ValidateToken(token);
+
+        Console.WriteLine(tokenDto.Claims.FindFirst(ClaimTypes.Email).Value);
+        
+        return tokenDto.IsSuccess ? Ok("Approved") : BadRequest("Invalid Token"); 
+    }
+    
+    
     private readonly ITokenService _tokenService; 
     
     private readonly IUserAuthenticationRepository _userAuthenticationRepository;

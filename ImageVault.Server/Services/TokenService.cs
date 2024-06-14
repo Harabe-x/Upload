@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using ImageVault.Server.Data.Dtos;
 using ImageVault.Server.Data.Interfaces;
 using ImageVault.Server.Models;
 using Microsoft.IdentityModel.Tokens;
@@ -15,14 +16,14 @@ public class TokenService : ITokenService
         _configuration = configuration;
         _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:SigningKey"]));
     }
-    
+
     public string CreateToken(ApplicationUser user)
     {
 
         var claims = new List<Claim>
         {
-            new (JwtRegisteredClaimNames.Email,user.Email),
-            new (JwtRegisteredClaimNames.Sub,user.Id),
+            new(JwtRegisteredClaimNames.Email, user.Email),
+            new(JwtRegisteredClaimNames.Sub, user.Id),
         };
 
         var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512);
@@ -39,8 +40,53 @@ public class TokenService : ITokenService
         var tokenHandler = new JwtSecurityTokenHandler();
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
-        
+
         return tokenHandler.WriteToken(token);
+    }
+
+
+    public TokenValidationDto ValidateToken(string token)
+    {
+
+        var validationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = _configuration["JWT:Issuer"],
+            ValidAudience = _configuration["JWT:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:SigningKey"]))
+        };
+
+        try
+        {        
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var tokenClaimsPrincipal = tokenHandler.ValidateToken(token, validationParameters, out var securityToken);
+
+            if (tokenClaimsPrincipal == null)
+            {
+                return new TokenValidationDto
+                {
+                    Claims = null,
+                    IsSuccess = false
+                };
+            }
+            return new TokenValidationDto
+            {
+                Claims = tokenClaimsPrincipal,
+                IsSuccess = true
+            };
+        }
+        catch(Exception e)
+        {
+            return new TokenValidationDto
+            {
+                Claims = null,
+                IsSuccess = false
+            };
+        }
+        
     }
 
     private readonly IConfiguration _configuration;

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ImageVault.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+666f55063b88e0411ed72e832ed147eaa0f22261")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dde4384a8720afccae39f017d4cbaf49c5048426")]
 [assembly: System.Reflection.AssemblyProductAttribute("ImageVault.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ImageVault.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
