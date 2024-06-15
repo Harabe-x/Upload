@@ -9,4 +9,3 @@ export default {
     themes: ["dark","light","aqua","cupcake","black","nord","dracula","lemonade"],
   }
 }
-

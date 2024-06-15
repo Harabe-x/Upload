@@ -5,7 +5,7 @@ namespace ImageVault.Server.Data.Interfaces;
 
 public interface IUserAuthenticationRepository
 {
-    public  Task<UserDatabaseOperationResultDto> CreateAccount(UserAccountDto accountDto);
+    public  Task<UserDatabaseOperationResultDto> CreateAccount(RegisterAccountDto accountDto);
 
     public Task<UserDatabaseOperationResultDto> LoginUser(LoginDto loginDto);
 }

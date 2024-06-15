@@ -9,7 +9,7 @@ function generateRandomNumberArray(length)
     return array;
 }
 async function getChartDataFromApi(count) {
-    const promise = fetch(`https://localhost:7110/ChartData?count=7`, {
+    const promise = fetch(`https://localhost:7110/ChartData/GetDummyChartData?count=7`, {
         method: 'GET',
         headers: {
             'Accept': 'text/json'

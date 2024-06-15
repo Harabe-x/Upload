@@ -1,9 +1,13 @@
 using System.Security.Claims;
 using ImageVault.Server.Data.Dtos;
+using ImageVault.Server.Data.Enums;
 using ImageVault.Server.Data.Interfaces;
 using ImageVault.Server.Data.Mappers;
+using ImageVault.Server.ExtensionMethods;
 using ImageVault.Server.Models;
+using ImageVault.Server.Repository;
 using ImageVault.Server.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,15 +17,15 @@ namespace ImageVault.Server.Controllers;
 [Controller]
 public class UserController : ControllerBase
 {
-    public UserController(IUserAuthenticationRepository userAuthenticationRepository,UserManager<ApplicationUser> userManager,ITokenService tokenService)
+    public UserController(IUserAuthenticationRepository userAuthenticationRepository,ITokenService tokenService,IUserRepository userRepository)
     {
-        _userManager = userManager;
         _userAuthenticationRepository = userAuthenticationRepository;
+        _userRepository = userRepository; 
         _tokenService = tokenService;
     }
     
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] UserAccountDto accountData )
+    public async Task<IActionResult> Register([FromBody] RegisterAccountDto accountData )
     {
         try
         {
@@ -71,20 +75,62 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpPost("validateLogin")]
-    public async Task<IActionResult> ValidateToken([FromBody] string token)
+    [Authorize]
+    [HttpGet("GetUserData")]
+    public async Task<IActionResult> GetUserData([FromHeader]string token)
     {
-        var tokenDto = _tokenService.ValidateToken(token);
+        var tokenDto  =   _tokenService.ValidateToken(token);
 
-        Console.WriteLine(tokenDto.Claims.FindFirst(ClaimTypes.Email).Value);
-        
-        return tokenDto.IsSuccess ? Ok("Approved") : BadRequest("Invalid Token"); 
+        if (!tokenDto.IsSuccess) return Unauthorized();
+
+        var email = tokenDto.Claims.GetClaimValue(ClaimTypes.Email);
+
+        if (email == null) return StatusCode(500, "Internal Server Error");
+
+        var userData = await _userRepository.GetUserData(email);
+
+        return Ok(userData);
+    }
+   
+    [HttpDelete("DeleteUser")]
+    [Authorize]
+    public async Task<IActionResult> DeleteUser([FromBody]string token)
+    {
+        var tokenDto  =   _tokenService.ValidateToken(token);
+
+        if (!tokenDto.IsSuccess) return Unauthorized();
+
+        var email = tokenDto.Claims.GetClaimValue(ClaimTypes.Email);
+
+        if (email == null) return StatusCode(500, "Internal Server Error");
+
+        var result = await _userRepository.DeleteUser(email);
+
+        return result ? Ok("Success") : BadRequest("Error"); 
     }
     
     
+    [HttpPatch("UpdateUser")]
+    [Authorize]
+    public async Task<IActionResult> DeleteUser([FromBody]UpdateUserProfileDto profileDto,[FromHeader]string token)
+    {
+        var tokenDto  =   _tokenService.ValidateToken(token);
+
+        if (!tokenDto.IsSuccess) return Unauthorized();
+
+        var email = tokenDto.Claims.GetClaimValue(ClaimTypes.Email);
+
+        if (email == null) return StatusCode(500, "Internal Server Error");
+
+        var result = await _userRepository.UpdateUserData(profileDto, email);
+
+        return result ? Ok("Success") : BadRequest("Error"); 
+    }
+
+
     private readonly ITokenService _tokenService; 
     
     private readonly IUserAuthenticationRepository _userAuthenticationRepository;
 
-    private readonly UserManager<ApplicationUser> _userManager;
+    private IUserRepository _userRepository; 
 }

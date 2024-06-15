@@ -17,7 +17,7 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
         _signInManager = signInManager; 
     }
 
-    public async Task<UserDatabaseOperationResultDto> CreateAccount(UserAccountDto accountDto)
+    public async Task<UserDatabaseOperationResultDto> CreateAccount(RegisterAccountDto accountDto)
     {
         var user = accountDto.MapUser();
 
