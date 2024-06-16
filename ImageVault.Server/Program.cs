@@ -5,11 +5,14 @@ using ImageVault.Server.Data.Interfaces;
 using ImageVault.Server.Models;
 using ImageVault.Server.Repository;
 using ImageVault.Server.Services;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +26,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 });
+
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
@@ -54,7 +58,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddSwaggerGen(c => {
     c.SwaggerDoc("v1", new OpenApiInfo {
-        Title = "JWTToken_Auth_API", Version = "v1"
+        Title = "UsersAPI", Version = "v1"
     });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme() {
         Name = "Authorization",

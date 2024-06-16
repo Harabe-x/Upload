@@ -1,9 +1,9 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageVault.Server", "ImageVault.Server\ImageVault.Server.csproj", "{30EE9A78-AA7E-4DA6-944B-711A69C5B84F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageVault.Server", "ImageVault.Server\ImageVault.Server.csproj", "{30EE9A78-AA7E-4DA6-944B-711A69C5B84F}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "imagevault.client", "imagevault.client\imagevault.client.esproj", "{21A6C5FE-40CF-463E-80E2-7EB91011BF6A}"
 EndProject
