@@ -16,17 +16,4 @@ public static class UserMapper
         
     }
 
-    public static UserProfileDto MapToUserProfileDto(this ApplicationUser applicationUser)
-    {
-        return new UserProfileDto
-        { 
-            Email =     applicationUser.Email,
-            FirstName=  applicationUser.FirstName,
-            LastName =     applicationUser.LastName,
-            PreferedColorSchema = applicationUser.PreferedColorSchema,
-            ProfilePicture =    applicationUser.ProfilePicture
-        };
-
-    }
-
 }

@@ -62,29 +62,18 @@ public class TokenService : ITokenService
         {        
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            var tokenClaimsPrincipal = tokenHandler.ValidateToken(token, validationParameters, out var securityToken);
+            var tokenClaimsPrincipal = tokenHandler.ValidateToken(token, validationParameters, out _ );
 
             if (tokenClaimsPrincipal == null)
             {
-                return new TokenValidationDto
-                {
-                    Claims = null,
-                    IsSuccess = false
-                };
+                return new TokenValidationDto(null, false);
             }
-            return new TokenValidationDto
-            {
-                Claims = tokenClaimsPrincipal,
-                IsSuccess = true
-            };
+
+            return new TokenValidationDto(tokenClaimsPrincipal, true);
         }
         catch(Exception e)
         {
-            return new TokenValidationDto
-            {
-                Claims = null,
-                IsSuccess = false
-            };
+            return new TokenValidationDto(null, false);
         }
         
     }

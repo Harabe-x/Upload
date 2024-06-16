@@ -22,26 +22,17 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
         var user = accountDto.MapUser();
 
         var identityResult = await _userManager.CreateAsync(user, accountDto.Password);
-            
         
         if (!identityResult.Succeeded)
         {
             _logger.LogWarning($"User registration data validation failed \nError:{string.Join("\n", identityResult.Errors.Select(x => x.Code))} ");
-
-            return new UserDatabaseOperationResultDto
-            {
-                User = user,
-                IsSuccess = false
-            };
+            
+            return new UserDatabaseOperationResultDto(user, false);
         }
        
         var addingRoleResult = await  _userManager.AddToRoleAsync(user,"User");
 
-        return new UserDatabaseOperationResultDto
-        {
-            User = user,
-            IsSuccess = addingRoleResult.Succeeded
-        };
+        return new UserDatabaseOperationResultDto(user, addingRoleResult.Succeeded);
     }
 
     public async Task<UserDatabaseOperationResultDto> LoginUser(LoginDto loginDto)
@@ -49,20 +40,11 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
         var user = await _userManager.FindByEmailAsync(loginDto.Email);
 
         if (user == null)
-            return new UserDatabaseOperationResultDto
-            {
-                User = null,
-                IsSuccess = false
-            };
-            
+            return new UserDatabaseOperationResultDto(null, false);
+
         var isLoginSucceeded = await _signInManager.CheckPasswordSignInAsync(user,loginDto.Password, false);
 
-        return new UserDatabaseOperationResultDto
-        {
-            IsSuccess = isLoginSucceeded.Succeeded,
-            User = user
-        };
-
+        return new UserDatabaseOperationResultDto(user, isLoginSucceeded.Succeeded);
     }
     
     

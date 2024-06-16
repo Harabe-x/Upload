@@ -5,8 +5,7 @@ using ImageVault.Server.Data.Interfaces;
 using ImageVault.Server.Models;
 using ImageVault.Server.Repository;
 using ImageVault.Server.Services;
-using ImageVault.Server.Validation;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -79,12 +78,8 @@ builder.Services.AddSwaggerGen(c => {
 });
 
 
-builder.Services.AddScoped<IImageCollectionRepository, ImageCollectionRepository>();
 builder.Services.AddScoped<IUserAuthenticationRepository, UserAuthenticationRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IUserProfileValidation, UserProfileValidation>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCors(options =>
 {
