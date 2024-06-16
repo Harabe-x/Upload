@@ -81,6 +81,18 @@ builder.Services.AddSwaggerGen(c => {
     });
 });
 
+builder.Services.AddRateLimiter(builder => builder.AddFixedWindowLimiter("login", options =>
+{
+    options.Window = TimeSpan.FromMinutes(1);
+    options.PermitLimit = 10;
+    options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+    options.QueueLimit = 1;
+}).AddFixedWindowLimiter("register", options =>
+{
+    options.Window = TimeSpan.FromMinutes(5);
+    options.PermitLimit = 1;
+    options.QueueLimit = 0;
+}));
 
 builder.Services.AddScoped<IUserAuthenticationRepository, UserAuthenticationRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();

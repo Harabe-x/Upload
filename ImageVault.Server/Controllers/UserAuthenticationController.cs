@@ -10,6 +10,7 @@ using ImageVault.Server.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace ImageVault.Server.Controllers;
 
@@ -24,7 +25,9 @@ public class UserController : ControllerBase
         _tokenService = tokenService;
     }
     
+    
     [HttpPost("register")]
+    [EnableRateLimiting("register") ]
     public async Task<IActionResult> Register([FromBody] RegisterAccountDto accountData )
     {
         try
@@ -46,8 +49,8 @@ public class UserController : ControllerBase
             return StatusCode(500, "Internal Server Error");
         }
     }
-    
     [HttpPost("login")]
+    [EnableRateLimiting("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto loginData)
     {
         try
