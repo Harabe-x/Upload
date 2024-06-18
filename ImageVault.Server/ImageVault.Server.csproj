@@ -19,6 +19,7 @@
     <PackageReference Include="System.Threading.RateLimiting" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ImageVault.ClassLibrary\ImageVault.ClassLibrary.csproj" />
     <ProjectReference Include="..\imagevault.client\imagevault.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>

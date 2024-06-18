@@ -145,3 +145,5 @@ C:\Users\xgra5\Desktop\Upload\ImageVault.Server\obj\Debug\net8.0\refint\ImageVau
 C:\Users\xgra5\Desktop\Upload\ImageVault.Server\obj\Debug\net8.0\ImageVault.Server.pdb
 C:\Users\xgra5\Desktop\Upload\ImageVault.Server\obj\Debug\net8.0\ImageVault.Server.genruntimeconfig.cache
 C:\Users\xgra5\Desktop\Upload\ImageVault.Server\obj\Debug\net8.0\ref\ImageVault.Server.dll
+C:\Users\xgra5\Desktop\Upload\ImageVault.Server\bin\Debug\net8.0\ImageVault.ClassLibrary.dll
+C:\Users\xgra5\Desktop\Upload\ImageVault.Server\bin\Debug\net8.0\ImageVault.ClassLibrary.pdb

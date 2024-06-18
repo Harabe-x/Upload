@@ -1652,6 +1652,16 @@
             "rid": "win"
           }
         }
+      },
+      "ImageVault.ClassLibrary/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/ImageVault.ClassLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ImageVault.ClassLibrary.dll": {}
+        }
       }
     }
   },
@@ -4450,10 +4460,16 @@
         "system.windows.extensions.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "ImageVault.ClassLibrary/1.0.0": {
+      "type": "project",
+      "path": "../ImageVault.ClassLibrary/ImageVault.ClassLibrary.csproj",
+      "msbuildProject": "../ImageVault.ClassLibrary/ImageVault.ClassLibrary.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "ImageVault.ClassLibrary >= 1.0.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 8.0.6",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 8.0.6",
       "Microsoft.AspNetCore.SpaProxy >= 8.0.6",
@@ -4501,7 +4517,11 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\xgra5\\Desktop\\Upload\\ImageVault.ClassLibrary\\ImageVault.ClassLibrary.csproj": {
+              "projectPath": "C:\\Users\\xgra5\\Desktop\\Upload\\ImageVault.ClassLibrary\\ImageVault.ClassLibrary.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

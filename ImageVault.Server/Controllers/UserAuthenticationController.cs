@@ -1,14 +1,8 @@
 using System.Security.Claims;
+using ImageVault.ClassLibrary.Validation.Interfaces;
 using ImageVault.Server.Data.Dtos;
-using ImageVault.Server.Data.Enums;
 using ImageVault.Server.Data.Interfaces;
-using ImageVault.Server.Data.Mappers;
-using ImageVault.Server.ExtensionMethods;
-using ImageVault.Server.Models;
-using ImageVault.Server.Repository;
-using ImageVault.Server.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 
@@ -77,5 +71,4 @@ public class UserController : ControllerBase
     private readonly ITokenService _tokenService; 
     
     private readonly IUserAuthenticationRepository _userAuthenticationRepository;
-
 }

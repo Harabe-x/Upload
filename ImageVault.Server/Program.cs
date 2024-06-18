@@ -11,6 +11,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Threading.RateLimiting;
+using ImageVault.ClassLibrary.Validation.Classes;
+using ImageVault.ClassLibrary.Validation.Interfaces;
+using ImageVault.Server.Configuration;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Options;
 
@@ -96,6 +99,11 @@ builder.Services.AddRateLimiter(builder => builder.AddFixedWindowLimiter("login"
 
 builder.Services.AddScoped<IUserAuthenticationRepository, UserAuthenticationRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+
+var validator = new DataValidator();
+DataValidationRules.AddRules(validator);
+
+builder.Services.AddSingleton<IDataValidator>(validator);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCors(options =>
 {
@@ -108,6 +116,7 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
 
 app.UseDefaultFiles();
 app.UseStaticFiles();

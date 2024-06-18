@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageVault.Server", "ImageV
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "imagevault.client", "imagevault.client\imagevault.client.esproj", "{21A6C5FE-40CF-463E-80E2-7EB91011BF6A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageVault.ClassLibrary", "ImageVault.ClassLibrary\ImageVault.ClassLibrary.csproj", "{A5B77F89-430D-4E2E-B8CC-FD0FE46BC864}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{21A6C5FE-40CF-463E-80E2-7EB91011BF6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21A6C5FE-40CF-463E-80E2-7EB91011BF6A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{21A6C5FE-40CF-463E-80E2-7EB91011BF6A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{A5B77F89-430D-4E2E-B8CC-FD0FE46BC864}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5B77F89-430D-4E2E-B8CC-FD0FE46BC864}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5B77F89-430D-4E2E-B8CC-FD0FE46BC864}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5B77F89-430D-4E2E-B8CC-FD0FE46BC864}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

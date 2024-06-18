@@ -1,10 +1,8 @@
 namespace ImageVault.ClassLibrary.Validation.Interfaces;
 
-public interface IDataValidatorc
+public interface IDataValidator
 {
-    public void AddValidationRule<T>(string name, Func<bool, bool> validationRule);
+    public void AddCustomValidationRule<T>(string name, Predicate<T> validationRule);
 
-    public bool ValidateData<T>(string name,T validationData);
-
-    public Func<bool, bool> GetValidationRule(string ruleName);
+    public bool ValidateData<T>(string name, T validationData);
 }
