@@ -43,41 +43,7 @@ public class TokenService : ITokenService
 
         return tokenHandler.WriteToken(token);
     }
-
-
-    public TokenValidationDto ValidateToken(string token)
-    {
-
-        var validationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = _configuration["JWT:Issuer"],
-            ValidAudience = _configuration["JWT:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:SigningKey"]))
-        };
-
-        try
-        {        
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            var tokenClaimsPrincipal = tokenHandler.ValidateToken(token, validationParameters, out _ );
-
-            if (tokenClaimsPrincipal == null)
-            {
-                return new TokenValidationDto(null, false);
-            }
-
-            return new TokenValidationDto(tokenClaimsPrincipal, true);
-        }
-        catch(Exception e)
-        {
-            return new TokenValidationDto(null, false);
-        }
-        
-    }
-
+    
     private readonly IConfiguration _configuration;
 
     private readonly SymmetricSecurityKey _key; 

@@ -4,7 +4,7 @@
 
     public class ApplicationUser : IdentityUser
     {
-        public string? PreferedColorSchema { get; set; } = "light";
+        public string PreferedColorSchema { get; set; } = "light";
 
         public string? ProfilePicture { get; set; }
 
@@ -14,12 +14,13 @@
         
         public override string Email { get; set; }
 
+        public string? CountryOfOrigin { get; set; } 
+        
         public override string? UserName
         {
             get => Email;
             set => base.UserName = value;
         }
 
-        public string? CountryOfOrigin { get; set; } 
         
     }

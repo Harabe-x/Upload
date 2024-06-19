@@ -1,4 +1,5 @@
 using ImageVault.Server.Data.Dtos;
+using ImageVault.Server.Data.Dtos.UserDtos;
 using ImageVault.Server.Models;
 
 namespace ImageVault.Server.Data.Mappers;
@@ -13,7 +14,12 @@ public static class UserMapper
             LastName = account.LastName,
             Email = account.Email,
         };
-        
+    }
+
+    public static UserDataDto MapToUserData(this ApplicationUser applicationUser)
+    {
+        return new UserDataDto(applicationUser.FirstName, applicationUser.LastName, 
+            applicationUser.PreferedColorSchema, applicationUser.ProfilePicture);
     }
 
 }

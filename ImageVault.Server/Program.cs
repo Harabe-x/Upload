@@ -14,6 +14,7 @@ using System.Threading.RateLimiting;
 using ImageVault.ClassLibrary.Validation.Classes;
 using ImageVault.ClassLibrary.Validation.Interfaces;
 using ImageVault.Server.Configuration;
+using ImageVault.Server.Data.Interfaces.User;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Options;
 
@@ -99,6 +100,7 @@ builder.Services.AddRateLimiter(builder => builder.AddFixedWindowLimiter("login"
 
 builder.Services.AddScoped<IUserAuthenticationRepository, UserAuthenticationRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var validator = new DataValidator();
 DataValidationRules.AddRules(validator);

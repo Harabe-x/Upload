@@ -11,9 +11,9 @@ namespace ImageVault.Server.Controllers;
 [Route("api/auth")]
 [Controller]
 [AllowAnonymous]
-public class UserController : ControllerBase
+public class UserAuthenticationController : ControllerBase
 {
-    public UserController(IUserAuthenticationRepository userAuthenticationRepository,ITokenService tokenService)
+    public UserAuthenticationController(IUserAuthenticationRepository userAuthenticationRepository,ITokenService tokenService)
     {
         _userAuthenticationRepository = userAuthenticationRepository;
         _tokenService = tokenService;

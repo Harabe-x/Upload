@@ -1,3 +1,4 @@
+using ImageVault.ClassLibrary.Validation.Interfaces;
 using ImageVault.Server.Data.Dtos;
 using ImageVault.Server.Data.Interfaces;
 using ImageVault.Server.Data.Mappers;
@@ -10,17 +11,21 @@ namespace ImageVault.Server.Repository;
 public class UserAuthenticationRepository : IUserAuthenticationRepository   
 {
 
-    public UserAuthenticationRepository(UserManager<ApplicationUser> userManager,ILogger<UserAuthenticationRepository> logger,SignInManager<ApplicationUser> signInManager)
+    public UserAuthenticationRepository(UserManager<ApplicationUser> userManager,ILogger<UserAuthenticationRepository> logger,SignInManager<ApplicationUser> signInManager,IDataValidator dataValidator)
     {
         _logger = logger; 
         _userManager = userManager;
-        _signInManager = signInManager; 
+        _signInManager = signInManager;
+        _dataValidator = dataValidator; 
     }
 
     public async Task<UserDatabaseOperationResultDto> CreateAccount(RegisterAccountDto accountDto)
     {
-        var user = accountDto.MapUser();
 
+        if (!ValidateRegisterDto(accountDto)) return new UserDatabaseOperationResultDto(null,false);
+        
+        var user = accountDto.MapUser();
+        
         var identityResult = await _userManager.CreateAsync(user, accountDto.Password);
         
         if (!identityResult.Succeeded)
@@ -46,7 +51,15 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
 
         return new UserDatabaseOperationResultDto(user, isLoginSucceeded.Succeeded);
     }
-    
+
+    private bool ValidateRegisterDto(RegisterAccountDto accountDto)
+    {
+        return _dataValidator.ValidateData("ValidateName", accountDto.FirstName)
+               && _dataValidator.ValidateData("ValidateName",accountDto.LastName)
+               && _dataValidator.ValidateData("ValidatePassword",accountDto.Password); 
+    }
+
+    private readonly IDataValidator _dataValidator;
     
     private readonly ILogger<UserAuthenticationRepository> _logger;
 
