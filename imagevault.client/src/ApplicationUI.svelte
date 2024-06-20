@@ -16,12 +16,10 @@
     import LoginPage from "@/lib/Pages/UserAuth/LoginPage.svelte";
     import RegisterPage from "@/lib/Pages/UserAuth/RegisterPage.svelte";
     import {getContext} from "svelte";
-    import ApplicationMenu from "@/ApplicationUI.svelte";
-    import {getAuthStore} from "@/js/State/Auth/AuthStore.js";
 
     const navbarStateStore = getNavBarStateStore();
     const navigation = getNavigationStore();
-    const authStore = getAuthStore();
+
     let currentLocation;
 
     onMount(() => {
@@ -32,13 +30,18 @@
 
 </script>
 <Router>
-    <Route path="/login" component={LoginPage}></Route>
-    <Route path="/register" component={RegisterPage}></Route>
-    <Route path="*" component={LoginPage}></Route>
-
-    {#if $authStore.isLoggedIn}
-        <Route path="/app/*"  component={ApplicationMenu}></Route>
-        {/if}
+    <div class="drawer  lg:drawer-open" class:drawer-open={$navbarStateStore}>
+        <input id="left-sidebar-drawer" type="checkbox" class="drawer-toggle" />
+        <PageContent>
+            <Route path="/" component={DashboardPage}></Route>
+            <Route path="/api" component={ApiPage}></Route>
+            <Route path="/images" component={ImagesPage}></Route>
+            <Route path="/settings/profile" component={ProfilePage}></Route>
+            <Route path="/settings/billing"  component={BillingPage}></Route>
+            <Route path="/login" component={LoginPage}></Route>
+        </PageContent>
+        <NavigationBar></NavigationBar>
+    </div>
 </Router>
 
 <style>

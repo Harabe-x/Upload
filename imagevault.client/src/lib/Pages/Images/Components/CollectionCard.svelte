@@ -23,7 +23,7 @@
      }
 </script>
 
-<div class="carousel-item w-full h-full lg:w-1/3  rounded-xl sm:w-full  cursor-pointer relative">
+<div class="carousel-item w-full h-full lg:w-fit  rounded-xl sm:w-fit  cursor-pointer relative">
     {#if displayImage}
         <button on:click={dispatchEvent}>
             <img

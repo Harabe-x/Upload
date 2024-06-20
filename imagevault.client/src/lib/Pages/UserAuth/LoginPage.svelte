@@ -1,6 +1,25 @@
 ﻿<script>
     import TextInput from "@/lib/Controls/Inputs/TextInput.svelte";
     import {LottiePlayer} from "@lottiefiles/svelte-lottie-player";
+    import {getAuthStore} from "@/js/State/Auth/AuthStore.js";
+    import { navigate} from "svelte-routing";
+    import { get } from "svelte/store";
+
+    const authStore = getAuthStore();
+
+    let email;
+    let password;
+
+    function logIn()
+    {
+        authStore.login(email,password)
+
+        var store = get(authStore)
+
+        if(!store.isLoggedIn) return;
+
+        navigate("/app/")
+    }
 </script>
 
 <div class="min-h-screen bg-base-200 flex items-center">
@@ -8,12 +27,12 @@
         <div class="grid md:grid-cols-2 grid-cols-1">
             <div class="py-24 px-10">
                 <p class="text-center text-3xl font-semibold mb-4">Login</p>
-                <form class="form-control gap-3">
-                    <TextInput label="Email" placeholder="email"></TextInput>
-                    <TextInput label="Password" placeholder="password"></TextInput>
+                <div class="form-control gap-3">
+                    <TextInput bind:value={email} label="Email" placeholder="email"></TextInput>
+                    <TextInput bind:value={password}   label="Password" placeholder="password"></TextInput>
                     <p class="text-xs link">Forgot password?</p>
-                    <button class="btn btn-primary mt-10">Login</button>
-                </form>
+                    <button on:click={logIn} class="btn btn-primary mt-10">Login</button>
+                </div>
             </div>
 
             <div class="hero min-h-full rounded-l-xl bg-base-200 hidden sm:block">
