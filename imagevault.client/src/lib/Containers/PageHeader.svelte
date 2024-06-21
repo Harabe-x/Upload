@@ -1,13 +1,21 @@
 <script>
     import IconMenuItem from "../Controls/MenuItems/IconMenuItem.svelte";
 
-    export let pageTitle;
     import {Icon, Bars3, Sun, Moon, Bell, ArrowRightOnRectangle, ArrowDownTray} from "svelte-hero-icons";
     import BadgeMenuItem from "../Controls/MenuItems/BadgeMenuItem.svelte";
     import UserProfileDropdown from '../Controls/Dropdowns/UserProfileDropdown.svelte'
     import MrFrost from '../../assets/117171438_10157804750272880_5668855721113743083_n.jpg'
     import {toggleNavBar } from '../../js/Temp/NavbarStateStore'
+    import {getAuthStore} from "@/js/State/Auth/AuthStore.js";
 
+    export let pageTitle;
+
+    const authStore = getAuthStore();
+
+    function logout()
+    {
+        authStore.logout()
+    }
 </script>
 
 
@@ -30,7 +38,7 @@
         </button>
         
             <UserProfileDropdown image={MrFrost}>
-                <li><a><Icon src={ArrowRightOnRectangle} class="w-4"/>Logout</a></li>
+                <li on:click={logout}><a><Icon src={ArrowRightOnRectangle} class="w-4"/>Logout</a></li>
             </UserProfileDropdown>
     </div>
 </div>

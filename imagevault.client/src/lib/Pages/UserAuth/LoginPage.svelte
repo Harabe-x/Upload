@@ -4,11 +4,16 @@
     import {getAuthStore} from "@/js/State/Auth/AuthStore.js";
     import { navigate} from "svelte-routing";
     import { get } from "svelte/store";
+    import {onMount} from "svelte";
 
     const authStore = getAuthStore();
 
     let email;
     let password;
+
+    onMount(() => {
+        checkIfUserLoggedIn()
+    })
 
     function logIn()
     {
@@ -20,6 +25,17 @@
 
         navigate("/app/")
     }
+
+    function checkIfUserLoggedIn()
+    {
+        var store = get(authStore)
+
+        if(store.isLoggedIn)
+        {
+            navigate("/app/")
+        }
+    }
+
 </script>
 
 <div class="min-h-screen bg-base-200 flex items-center">
@@ -29,7 +45,7 @@
                 <p class="text-center text-3xl font-semibold mb-4">Login</p>
                 <div class="form-control gap-3">
                     <TextInput bind:value={email} label="Email" placeholder="email"></TextInput>
-                    <TextInput bind:value={password}   label="Password" placeholder="password"></TextInput>
+                    <TextInput type="password" bind:value={password}   label="Password" placeholder="password"></TextInput>
                     <p class="text-xs link">Forgot password?</p>
                     <button on:click={logIn} class="btn btn-primary mt-10">Login</button>
                 </div>
