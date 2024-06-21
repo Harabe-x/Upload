@@ -3,7 +3,7 @@
 "ServerUrl": "https://localhost:5174",
 "RedirectUrl": "",
 "LaunchCommand": "npm run dev",
-"WorkingDirectory": "C:\\Users\\xgra5\\Desktop\\Upload\\ImageVault.Server\\..\\imagevault.client",
+"WorkingDirectory": "C:\\Users\\xgra5\\Desktop\\Upload\\imagevault.server\\..\\imagevault.client",
 "MaxTimeoutInSeconds": "120",
 "KeepRunning": "false"
 }

@@ -1,6 +1,7 @@
 import { writable } from "svelte/store";
 import axios from "axios";
 import { UserDataModel } from "@/js/Models/UserDataModel.js";
+import { setAuthToken } from "@/js/Configuration/AxiosDefaultConfig.js";
 
 const store = writable({
     userDataModel: null,
@@ -15,6 +16,10 @@ if (storedData !== null) {
 }
 
 export function getAuthStore() {
+
+    const HTTP_STATUS_OK = 200;
+    const HTTP_STATUS_UNAUTHORIZED = 401;
+
     return {
         subscribe: store.subscribe,
 
@@ -24,19 +29,24 @@ export function getAuthStore() {
             localStorage.setItem("userData", json);
         },
 
-        login(email, password) {
-            axios.post("https://localhost:7110/api/auth/login", { email: email, password: password })
-                .then(function (response) {
-                    if (response.status !== 200) return;
+        async login(email, password) {
+            try {
+                const response = await axios.post("/auth/login", { email, password });
 
-                    this.set({
-                        userDataModel: new UserDataModel(response.data.token, response.data.name, response.data.name, response.data.email, "darl"),
-                        isLoggedIn: true
-                    });
-                }.bind(this))
-                .catch(function (error) {
-                    console.error("Error during login:", error);
+                if (response.status !== HTTP_STATUS_OK) return;
+
+                setAuthToken(response.data.token);
+
+
+                this.set({
+                    userDataModel: new UserDataModel(response.data.token, response.data.name, response.data.name, response.data.email, "darl"),
+                    isLoggedIn: true
                 });
+
+            } catch (error) {
+                console.error("Error during login:", error);
+                return false;
+            }
         },
 
         logout() {
@@ -46,16 +56,38 @@ export function getAuthStore() {
             });
         },
 
-        register(email, password, firstName, lastName) {
-            axios.post("https://localhost:7110/api/auth/register", { firstName: firstName, lastName: lastName, email: email, password: password })
-                .then(function (response) {
-                    if (response.status !== 200) return;
+        async register( firstName, lastName,email, password) {
+            try {
+                const response = await axios.post("/auth/register", { firstName, lastName, email, password });
 
-                    this.login(email, password);
-                }.bind(this))
-                .catch(function (error) {
-                    console.error("Error during registration:", error);
-                });
+                if (response.status !== HTTP_STATUS_OK) return;
+
+                await this.login(email, password);
+            } catch (error) {
+                console.error("Error during registration:", error);
+            }
+        },
+
+        async pingAuth() {
+            const updateState = async (state) => {
+                if (!state.isLoggedIn) return state;
+
+                try {
+                    const response = await axios.post("/auth/pingauth");
+
+                    if (response.status === HTTP_STATUS_OK) {
+                        return { ...state, isLoggedIn: true };
+                    }
+
+                    return { isLoggedIn: false, userDataModel: null };
+
+                } catch (error) {
+                    console.error("Ping auth failed:", error);
+                    return { isLoggedIn: false, userDataModel: null };
+                }
+            };
+
+            store.update(updateState);
         }
     };
 }

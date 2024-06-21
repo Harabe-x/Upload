@@ -2,39 +2,52 @@
     import TextInput from "@/lib/Controls/Inputs/TextInput.svelte";
     import {LottiePlayer} from "@lottiefiles/svelte-lottie-player";
     import {getAuthStore} from "@/js/State/Auth/AuthStore.js";
-    import { navigate} from "svelte-routing";
+    import {Link, navigate} from "svelte-routing";
     import { get } from "svelte/store";
     import {onMount} from "svelte";
+    import { link } from 'svelte-routing'
+    import {ArrowPath, Icon} from "svelte-hero-icons";
+    import {checkIfUserIsLoggedIn} from "@/js/State/Auth/AuthHelpers.js";
 
-    const authStore = getAuthStore();
 
     let email;
     let password;
+    let isLoggingIn = false;
+    let isError = false;
+
 
     onMount(() => {
-        checkIfUserLoggedIn()
+
+        checkIfUserIsLoggedIn(() => {
+            navigate("/app")
+        })
     })
 
-    function logIn()
+   async function login()
     {
-        authStore.login(email,password)
+         isLoggingIn = true;
 
-        var store = get(authStore)
+        const authStore = getAuthStore();
 
-        if(!store.isLoggedIn) return;
+        await  authStore.login(email,password)
+        
+        const store = get(authStore)
+
+        if(!store.isLoggedIn)
+        {
+         isError = true;
+         isLoggingIn = false;
+         return;
+        }
 
         navigate("/app/")
     }
-
-    function checkIfUserLoggedIn()
+    function cancelError()
     {
-        var store = get(authStore)
-
-        if(store.isLoggedIn)
-        {
-            navigate("/app/")
-        }
+        isError = false;
     }
+
+
 
 </script>
 
@@ -44,10 +57,16 @@
             <div class="py-24 px-10">
                 <p class="text-center text-3xl font-semibold mb-4">Login</p>
                 <div class="form-control gap-3">
-                    <TextInput bind:value={email} label="Email" placeholder="email"></TextInput>
-                    <TextInput type="password" bind:value={password}   label="Password" placeholder="password"></TextInput>
+                    <TextInput on:focus={cancelError}  {isError} bind:value={email} label="Email" placeholder="email"></TextInput>
+                    <TextInput on:focus={cancelError}   {isError} errorMessage="Invalid email or password" type="password" bind:value={password}   label="Password" placeholder="password"></TextInput>
                     <p class="text-xs link">Forgot password?</p>
-                    <button on:click={logIn} class="btn btn-primary mt-10">Login</button>
+                    <button on:click={login} class="btn btn-primary mt-10">
+                        {#if isLoggingIn}
+                                <Icon src={ArrowPath} class="w-6 animate-spin" ></Icon>
+                            {:else }
+                                Login
+                            {/if}
+                    </button>
                 </div>
             </div>
 
@@ -64,7 +83,7 @@
                                     src="https://lottie.host/708d3e2c-2c70-4d28-8eae-7cff3c174380/UmvDwCf4xw.json">
                             </LottiePlayer>
                         </div>
-                        <p>Don’t have an account yet? <a class="link" href="#">Register</a></p>
+                        <p>Don’t have an account yet? <a class="link" href="/register" use:link> Register </a> </p>
                     </div>
                 </div>
             </div>

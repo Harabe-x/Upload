@@ -2,20 +2,21 @@ import {getAuthStore} from "@/js/State/Auth/AuthStore.js";
 import {get} from "svelte/store";
 import axios from 'axios'
 
-const authStore = getAuthStore();
-const applicationData = get(authStore);
 
 
-axios.defaults.baseURL = 'http://localhost:7110';
+axios.defaults.baseURL = 'https://localhost:7110/api';
 
-if(applicationData.isLoggedIn)
-{
-    const token = applicationData.userDataModel.token;
-
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-}
 
 const setAuthToken = (token) => {
+
+    const authStore = getAuthStore();
+
+    authStore.pingAuth();
+
+    const store = get(authStore);
+
+    if(!store.isLoggedIn) return;
+
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 }
 
