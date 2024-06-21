@@ -10,7 +10,6 @@ namespace ImageVault.Server.Controllers;
 
 [Route("api/auth")]
 [Controller]
-[AllowAnonymous]
 public class UserAuthenticationController : ControllerBase
 {
     public UserAuthenticationController(IUserAuthenticationRepository userAuthenticationRepository,ITokenService tokenService)
@@ -19,8 +18,8 @@ public class UserAuthenticationController : ControllerBase
         _tokenService = tokenService;
     }
     
-    
     [HttpPost("register")]
+    [AllowAnonymous]
     [EnableRateLimiting("register") ]
     public async Task<IActionResult> Register([FromBody] RegisterAccountDto accountData )
     {
@@ -43,6 +42,8 @@ public class UserAuthenticationController : ControllerBase
             return StatusCode(500, "Internal Server Error");
         }
     }
+    
+    [AllowAnonymous]
     [HttpPost("login")]
     [EnableRateLimiting("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto loginData)
@@ -66,7 +67,14 @@ public class UserAuthenticationController : ControllerBase
             return Unauthorized("Login failed");
         }
     }
-
+    
+    [Authorize]
+    [HttpGet("pingAuth")] 
+    [EnableRateLimiting("login")]
+    public IActionResult PingAuth()
+    {
+        return Ok();
+    }
     
     private readonly ITokenService _tokenService; 
     

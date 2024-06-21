@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ImageVault.ClassLibrary")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fdb3c63e66b3bacf893f652df097c2688f85663e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ca72f28b1bbdcd69a287754c2ae9935f512bce17")]
 [assembly: System.Reflection.AssemblyProductAttribute("ImageVault.ClassLibrary")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ImageVault.ClassLibrary")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
