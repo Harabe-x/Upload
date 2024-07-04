@@ -57,8 +57,8 @@
             <div class="py-24 px-10">
                 <p class="text-center text-3xl font-semibold mb-4">Login</p>
                 <div class="form-control gap-3">
-                    <TextInput on:focus={cancelError}  {isError} bind:value={email} label="Email" placeholder="email"></TextInput>
-                    <TextInput on:focus={cancelError}   {isError} errorMessage="Invalid email or password" type="password" bind:value={password}   label="Password" placeholder="password"></TextInput>
+                    <TextInput on:focus={cancelError}  {isError} bind:value={email} label="Email" placeholder="Email"></TextInput>
+                    <TextInput on:focus={cancelError}   {isError} errorMessage="Invalid email or password" type="password" bind:value={password}   label="Password" placeholder="Password"></TextInput>
                     <p class="text-xs link">Forgot password?</p>
                     <button on:click={login} class="btn btn-primary mt-10">
                         {#if isLoggingIn}

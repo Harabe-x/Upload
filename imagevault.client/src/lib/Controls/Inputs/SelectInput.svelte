@@ -5,6 +5,8 @@
 
     export let title;
 
+    export let value = null;
+    
     function dispatchEvent(event)
     {
         dispatcher(event.type,event)
@@ -14,7 +16,7 @@
 <div>
     <label>
         <span class="text-sm">{title}</span> <br>
-        <select on:change={dispatchEvent}  class="select w-full"  {...$$restProps}>
+        <select bind:value={value} on:change={dispatchEvent}  class="select w-full"  {...$$restProps}>
             <slot>
                 <option selected> Main </option>
                 <option> Main </option>

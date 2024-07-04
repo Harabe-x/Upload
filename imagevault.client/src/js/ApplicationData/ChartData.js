@@ -22,7 +22,7 @@ async function getChartDataFromApi(count) {
 export async  function getChartData()
 {
     
-    const chartData  = await getChartDataFromApi();
+    const chartData  = await generateRandomNumberArray();
     
     
     return { 

@@ -73,10 +73,10 @@
             <div class="py-24 px-10">
                 <p class="text-center text-3xl font-semibold mb-4">Registers</p>
                 <div class="form-control gap-1">
-                    <TextInput on:focus={cancelError}   isError={ ! dataValidationStatus.isFirstNameValid } bind:value={firstName} label="First Name" errorMessage="First name can't have number or special characters" placeholder="name"></TextInput>
-                    <TextInput on:focus={cancelError}  isError={ ! dataValidationStatus.isLastNameValid } bind:value={lastName}   label="Last Name" errorMessage="Last name can't have number or special characters" placeholder="email"></TextInput>
-                    <TextInput on:focus={cancelError}  isError={ ! dataValidationStatus.isEmailValid }  bind:value={email}      label="Email" errorMessage="Invalid email or email already exist"  placeholder="email" type="email"></TextInput>
-                    <TextInput on:focus={cancelError}  isError={ ! dataValidationStatus.isPasswordValid } errorMessage="The provided data is incorrect or a user with this email address already exists." bind:value={password}  label="Password" placeholder="password" type="password"></TextInput>
+                    <TextInput on:focus={cancelError}   isError={ ! dataValidationStatus.isFirstNameValid } bind:value={firstName} label="First Name" errorMessage="First name can't have number or special characters" placeholder="First name"></TextInput>
+                    <TextInput on:focus={cancelError}  isError={ ! dataValidationStatus.isLastNameValid } bind:value={lastName}   label="Last Name" errorMessage="Last name can't have number or special characters" placeholder="Last name"></TextInput>
+                    <TextInput on:focus={cancelError}  isError={ ! dataValidationStatus.isEmailValid }  bind:value={email}      label="Email" errorMessage="Invalid email or email already exist"  placeholder="Email" type="email"></TextInput>
+                    <TextInput on:focus={cancelError}  isError={ ! dataValidationStatus.isPasswordValid } errorMessage="The provided data is incorrect or a user with this email address already exists." bind:value={password}  label="Password" placeholder="Password" type="password"></TextInput>
                     <button on:click={register} class="btn btn-primary mt-10">
                             {#if isRegistering}
                                   <Icon src={ArrowPath} class="w-6 animate-spin"></Icon>

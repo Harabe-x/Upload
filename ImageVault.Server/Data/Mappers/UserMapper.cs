@@ -19,7 +19,7 @@ public static class UserMapper
     public static UserDataDto MapToUserData(this ApplicationUser applicationUser)
     {
         return new UserDataDto(applicationUser.FirstName, applicationUser.LastName, 
-            applicationUser.PreferedColorSchema, applicationUser.ProfilePicture);
+            applicationUser.PreferedColorSchema,applicationUser.Email ,applicationUser.ProfilePicture);
     }
 
 }

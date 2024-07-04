@@ -8,20 +8,39 @@
     import {themeChange} from "theme-change";
     import {getThemeStore} from "../../../../js/Temp/ThemeStore.js";
     import {get} from "svelte/store";
+    import {getUserDataStore} from "@/js/State/User/UserDataStore.js";
+    import axios from "axios";
 
     const themeStore = getThemeStore();
-
+    const userData = getUserDataStore()
     const themes = [];
+    let email;
+    let firstName;
+    let lastName;
+    let preferedColorSchema;
 
 
-    onMount(() => {
+    onMount( async () => {
         themeChange(false);
+        let data = get(userData)
+
+        if(data.userData === null)
+        {
+             await userData.fetchUserData();
+        }
+
+        data = get(userData)
+
+        email = data.userData.email;
+        firstName = data.userData.firstName;
+        lastName = data.userData.lastName;
+        preferedColorSchema = data.userData.preferedColorSchema;
     })
 
     function updateTheme(event)
     {
 
-      themeStore.update(_ => {
+        themeStore.update(_ => {
            return  event.detail.target.value;
         })
 
@@ -46,9 +65,9 @@
 <Card title="Profile Settings">
 
     <div  class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <TextInput label="First Name" placeholder="Your first name"  />
-        <TextInput label="Last Name" placeholder="Your last name"  />
-        <TextInput label="Email" placeholder="email@example.com"  />
+        <TextInput bind:value={firstName} label="First Name" placeholder="Your first name"  />
+        <TextInput bind:value={lastName}  label="Last Name" placeholder="Your last name"  />
+        <TextInput bind:value={email} label="Email" placeholder="email@example.com"  />
         <FIleInput label="Profile Picture"> </FIleInput>
   </div>
     <div  class="divider" ></div>
@@ -66,7 +85,7 @@
 <Card title="Preferences">
 
     <div  class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <SelectInput on:change={updateTheme} title="Application Theme" data-choose-theme>
+        <SelectInput bind:value={preferedColorSchema} on:change={updateTheme} title="Application Theme" data-choose-theme>
             <option use:addThemeAction  value="light"> Light </option>
             <option use:addThemeAction  value="dark"> Dark </option>
             <option use:addThemeAction  value="cupcake"> Cupcake </option>

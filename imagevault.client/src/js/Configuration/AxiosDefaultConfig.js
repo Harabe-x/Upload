@@ -7,17 +7,30 @@ import axios from 'axios'
 axios.defaults.baseURL = 'https://localhost:7110/api';
 
 
+
 const setAuthToken = (token) => {
 
-    const authStore = getAuthStore();
-
-    authStore.pingAuth();
-
-    const store = get(authStore);
-
-    if(!store.isLoggedIn) return;
-
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    // const authStore = getAuthStore();
+    //
+    // authStore.pingAuth();
+    //
+    // const store = get(authStore);
+    //
+    // axios.interceptors.request.use(config => {
+    //
+    //     if(!store.token) return;
+    //
+    //     config.headers['Authorization'] = `Bearer ${token}`;
+    //
+    //     return config;
+    // },
+    //     error => {
+    //         return Promise.reject(error);
+    //     }
+    // )
 }
+
+
+
 
 export { setAuthToken }

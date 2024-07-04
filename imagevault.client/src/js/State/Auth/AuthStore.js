@@ -2,13 +2,15 @@ import { writable } from "svelte/store";
 import axios from "axios";
 import { UserDataModel } from "@/js/Models/UserDataModel.js";
 import { setAuthToken } from "@/js/Configuration/AxiosDefaultConfig.js";
+import {getUserDataStore} from "@/js/State/User/UserDataStore.js";
+
 
 const store = writable({
-    userDataModel: null,
+    token: null,
     isLoggedIn: false
 });
 
-const storedData = localStorage.getItem("userData");
+const storedData = localStorage.getItem("loginData");
 
 if (storedData !== null) {
     const serializedData = JSON.parse(storedData);
@@ -26,7 +28,7 @@ export function getAuthStore() {
         set(value) {
             store.set(value);
             const json = JSON.stringify(value);
-            localStorage.setItem("userData", json);
+            localStorage.setItem("loginData", json);
         },
 
         async login(email, password) {
@@ -35,13 +37,13 @@ export function getAuthStore() {
 
                 if (response.status !== HTTP_STATUS_OK) return;
 
-                setAuthToken(response.data.token);
 
 
-                this.set({
-                    userDataModel: new UserDataModel(response.data.token, response.data.name, response.data.name, response.data.email, "darl"),
-                    isLoggedIn: true
-                });
+               this.set({token: response.data.token, isLoggedIn: true});
+
+               const userDataStore = getUserDataStore();
+
+               await  userDataStore.fetchUserData();
 
             } catch (error) {
                 console.error("Error during login:", error);
@@ -50,10 +52,13 @@ export function getAuthStore() {
         },
 
         logout() {
+
             this.set({
                 userDataModel: null,
                 isLoggedIn: false
             });
+            localStorage.clear();
+            location.reload();
         },
 
         async register( firstName, lastName,email, password) {
@@ -76,6 +81,7 @@ export function getAuthStore() {
                     const response = await axios.post("/auth/pingauth");
 
                     if (response.status === HTTP_STATUS_OK) {
+                        setAuthToken(state.token);
                         return { ...state, isLoggedIn: true };
                     }
 

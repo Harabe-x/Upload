@@ -47,9 +47,9 @@ export default defineConfig({
                 target,
                 secure: false
             },
-            '^/ChartData': {
+            '^/api/account': {
                 target: 'https://localhost:7110/',
-                secure: false
+                secure: true
             }
         },
         port: 5174,

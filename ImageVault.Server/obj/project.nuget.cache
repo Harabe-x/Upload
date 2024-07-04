@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "fX3cW2bDl4Qrgfc5LUiQFq1HrFAOfK8EcmIaY9Hn9aQcJ6nwAYCmRCB1vmYJYd/bwWqebqfrSwEvUzGHDQvS1g==",
+  "dgSpecHash": "kpROKWllX7q00AMW0vQUNAehe3/ACT8rrdsEgiMZZdfzI8qhakSPXIaCC0i6vw0+kB7yDWmSVA47OL/XkRaB5g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\xgra5\\Desktop\\Upload\\imagevault.server\\ImageVault.Server.csproj",
+  "projectFilePath": "C:\\Users\\xgra5\\Desktop\\Upload\\ImageVault.Server\\ImageVault.Server.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\xgra5\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\xgra5\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
