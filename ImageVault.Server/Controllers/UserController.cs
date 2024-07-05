@@ -14,15 +14,12 @@ namespace ImageVault.Server.Controllers;
 [Authorize]
 public class UserController : ControllerBase
 {
-
+    
     public UserController(IUserRepository userRepository)
     {
         _userRepository = userRepository; 
     }
     
-    
-                                                                                              
-                        
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> GetUserData()

@@ -43,7 +43,7 @@ public class UserRepository : IUserRepository
 
         var updateResult = await _userManager.UpdateAsync(user);
 
-        return new UserOperationResultDto(newUserData, updateResult.Succeeded);
+        return new UserOperationResultDto(new UserDataDto(user.FirstName,user.LastName,user.PreferedColorSchema,user.Email,user.ProfilePicture), updateResult.Succeeded);
     }
     
     public async Task<bool> DeleteUser(string email)
