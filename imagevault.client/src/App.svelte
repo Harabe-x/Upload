@@ -18,6 +18,7 @@
     import {getContext} from "svelte";
     import ApplicationMenu from "@/ApplicationUI.svelte";
     import {getAuthStore} from "@/js/State/Auth/AuthStore.js";
+    import ToastNotification from "@/lib/Controls/Shared/ToastNotification.svelte";
 
     const navbarStateStore = getNavBarStateStore();
     const navigation = getNavigationStore();
@@ -40,6 +41,8 @@
         <Route path="/app/*"  component={ApplicationMenu}></Route>
         {/if}
 </Router>
+
+<ToastNotification> </ToastNotification>
 
 <style>
 

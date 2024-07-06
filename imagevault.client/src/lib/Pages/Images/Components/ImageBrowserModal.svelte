@@ -12,7 +12,7 @@
     } from "svelte-hero-icons";
     import IconDropdown from "../../../Controls/Dropdowns/IconDropdown.svelte";
     import DataFetchingPage from "@/lib/Pages/InfoPages/DataFetchingPage.svelte";
-    import {onEscapeAction,onArrowLeftAction,onArrowRight} from "../../../../js/Actions/ModalActions.js";
+    import {onEscapeAction,onArrowLeftAction,onArrowRight} from "../../../../js/UserInterface/Actions/ModalActions.js";
 
     export let isModalVisable = false;
     export let param;

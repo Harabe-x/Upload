@@ -1,6 +1,5 @@
 export class UserDataModel {
-    constructor(token = "", firstName = "", lastName = "", email = "", preferedColorSchema = "") {
-        this.token = token;
+    constructor( firstName = "", lastName = "", email = "", preferedColorSchema = "") {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

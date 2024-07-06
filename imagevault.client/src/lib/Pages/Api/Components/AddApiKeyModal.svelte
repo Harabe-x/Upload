@@ -5,8 +5,8 @@
      import { createEventDispatcher } from "svelte";
      import { getApiKeys } from "../../../../js/Temp/ApiKeysData";
      import { validateName,validateStorage } from "../../../../js/Temp/DataValidator";
-     import { onEscapeAction,onEnterAction} from "../../../../js/Actions/ModalActions.js";
-     import { focusAction } from "../../../../js/Actions/StateAction.js";
+     import { onEscapeAction,onEnterAction} from "../../../../js/UserInterface/Actions/ModalActions.js";
+     import { focusAction } from "../../../../js/UserInterface/Actions/ElementStateAction.js";
 
      const apiKeyStore = getApiKeys();
      const dispatcher = createEventDispatcher();

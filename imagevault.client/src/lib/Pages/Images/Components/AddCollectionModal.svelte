@@ -4,7 +4,7 @@
     import FIleInput from "../../../Controls/Inputs/FIleInput.svelte";
     import {createEventDispatcher} from "svelte";
     import {Check, XMark} from "svelte-hero-icons";
-    import {onEscapeAction,onEnterAction} from "../../../../js/Actions/ModalActions.js";
+    import {onEscapeAction,onEnterAction} from "../../../../js/UserInterface/Actions/ModalActions.js";
 
     const dispatcher = createEventDispatcher();
     export let isModalVisable = false;

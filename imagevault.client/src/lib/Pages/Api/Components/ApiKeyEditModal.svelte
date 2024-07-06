@@ -5,7 +5,7 @@
    import { XMark, Check } from "svelte-hero-icons";
    import { getApiKeys } from "../../../../js/Temp/ApiKeysData";
    import { validateStorage ,validateName} from "../../../../js/Temp/DataValidator";
-   import {onEscapeAction,onEnterAction} from "../../../../js/Actions/ModalActions.js";
+   import {onEscapeAction,onEnterAction} from "../../../../js/UserInterface/Actions/ModalActions.js";
 
    const dispatcher = createEventDispatcher();
    const apiKeysStore = getApiKeys();

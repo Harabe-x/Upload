@@ -47,10 +47,6 @@ export default defineConfig({
                 target,
                 secure: false
             },
-            '^/api/account': {
-                target: 'https://localhost:7110/',
-                secure: true
-            }
         },
         port: 5174,
         https: { 

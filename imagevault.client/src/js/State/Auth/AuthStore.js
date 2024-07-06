@@ -1,9 +1,14 @@
 import { writable } from "svelte/store";
-import axios from "axios";
-import { UserDataModel } from "@/js/Models/UserDataModel.js";
-import { setAuthToken } from "@/js/Configuration/AxiosDefaultConfig.js";
 import {getUserDataStore} from "@/js/State/User/UserDataStore.js";
-
+import {getNotificationsStore} from "@/js/State/UserInterface/ToastNotificationStore.js";
+import axios from "axios";
+import {
+    HTTP_STATUS_OK,
+    LOGIN_ENDPOINT_URL,
+    NOTIFICATION_TYPE_ERROR,
+    PING_AUTH_ENDPOINT_URL,
+    REGISTER_ENDPOINT_URL
+} from "@/js/Constants.js";
 
 const store = writable({
     token: null,
@@ -18,10 +23,7 @@ if (storedData !== null) {
 }
 
 export function getAuthStore() {
-
-    const HTTP_STATUS_OK = 200;
-    const HTTP_STATUS_UNAUTHORIZED = 401;
-
+    const notificationStore = getNotificationsStore();
     return {
         subscribe: store.subscribe,
 
@@ -33,11 +35,9 @@ export function getAuthStore() {
 
         async login(email, password) {
             try {
-                const response = await axios.post("/auth/login", { email, password });
+                const response = await axios.post(LOGIN_ENDPOINT_URL, { email, password });
 
-                if (response.status !== HTTP_STATUS_OK) return;
-
-
+                if (response.status !== 200) return;
 
                this.set({token: response.data.token, isLoggedIn: true});
 
@@ -63,13 +63,13 @@ export function getAuthStore() {
 
         async register( firstName, lastName,email, password) {
             try {
-                const response = await axios.post("/auth/register", { firstName, lastName, email, password });
+                const response = await axios.post(REGISTER_ENDPOINT_URL, { firstName, lastName, email, password });
 
                 if (response.status !== HTTP_STATUS_OK) return;
 
-                await this.login(email, password);
-            } catch (error) {
-                console.error("Error during registration:", error);
+                    await this.login(email, password);
+                } catch (error) {
+                notificationStore.sendNotification(NOTIFICATION_TYPE_ERROR, error.message);
             }
         },
 
@@ -78,7 +78,7 @@ export function getAuthStore() {
                 if (!state.isLoggedIn) return state;
 
                 try {
-                    const response = await axios.post("/auth/pingauth");
+                    const response = await axios.post(PING_AUTH_ENDPOINT_URL);
 
                     if (response.status === HTTP_STATUS_OK) {
                         setAuthToken(state.token);

@@ -3,7 +3,7 @@
     import IconButton from "../../../Controls/Buttons/IconButton.svelte";  
     import { XMark,Trash } from "svelte-hero-icons";
     import { getApiKeys } from "../../../../js/Temp/ApiKeysData";
-    import {onEscapeAction} from "../../../../js/Actions/ModalActions.js";
+    import {onEscapeAction} from "../../../../js/UserInterface/Actions/ModalActions.js";
     const apiKeysStore = getApiKeys();
     const dispatcher = createEventDispatcher();
     export let param;
