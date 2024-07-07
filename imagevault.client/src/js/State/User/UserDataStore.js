@@ -10,6 +10,7 @@ import {
     USER_ENDPOINT_URL
 } from "@/js/Constants.js";
 import {getNotificationsStore} from "@/js/State/UserInterface/ToastNotificationStore.js";
+import {getThemeStore} from "@/js/State/UserInterface/ThemeStore.js";
 
 const storedData = localStorage.getItem("userData");
 const store = writable({
@@ -49,6 +50,11 @@ export function getUserDataStore() {
                 }
 
                 if (response.status === HTTP_STATUS_OK) {
+
+                    const themeStore = getThemeStore();
+
+                    themeStore.set(response.data.dataTheme)
+
                     this.set({
                         userData: new UserDataModel(
                             response.data.firstName,

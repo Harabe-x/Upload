@@ -1,8 +1,18 @@
 import { writable } from "svelte/store";
 
-let theme = localStorage.getItem('theme');
+let userData = localStorage.getItem('userData');
 
-theme = theme === null ? 'dark' : theme
+let theme;
+
+if(userData)
+{
+    const parsedData = JSON.parse(userData);
+
+    theme = parsedData.userData.preferedColorSchema;
+
+}
+
+theme = theme === null ? "dark" : theme;
 
 const themeStore = writable(theme) ;
 
@@ -11,6 +21,7 @@ function setDataTheme(value)
 {
     document.documentElement.setAttribute('data-theme', value);
 }
+
 
 setDataTheme(theme);
 

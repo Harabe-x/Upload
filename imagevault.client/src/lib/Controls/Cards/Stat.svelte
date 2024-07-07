@@ -1,6 +1,6 @@
 <script>
     import { Icon } from "svelte-hero-icons";
-    import {getThemeStore  } from "../../../js/Temp/ThemeStore.js";
+    import {getThemeStore  } from "../../../js/State/UserInterface/ThemeStore.js";
 
 
      export let title;

@@ -24,6 +24,7 @@ if (storedData !== null) {
 
 export function getAuthStore() {
     const notificationStore = getNotificationsStore();
+
     return {
         subscribe: store.subscribe,
 
@@ -44,6 +45,7 @@ export function getAuthStore() {
                const userDataStore = getUserDataStore();
 
                await  userDataStore.fetchUserData();
+
 
             } catch (error) {
                 console.error("Error during login:", error);

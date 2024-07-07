@@ -6,7 +6,7 @@
     import SelectInput from "../../../Controls/Inputs/SelectInput.svelte";
     import {onMount} from "svelte";
     import {themeChange} from "theme-change";
-    import {getThemeStore} from "../../../../js/Temp/ThemeStore.js";
+    import {getThemeStore} from "../../../../js/State/UserInterface/ThemeStore.js";
     import {get} from "svelte/store";
     import {getUserDataStore} from "@/js/State/User/UserDataStore.js";
     import {temporaryDisableButton} from "@/js/UserInterface/Utilities/TemporaryDisableButton.js";
