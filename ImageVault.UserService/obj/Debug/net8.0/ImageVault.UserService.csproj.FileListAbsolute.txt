@@ -32,3 +32,13 @@ C:\Users\xgra5\Desktop\Upload\ImageVault.UserService\obj\Debug\net8.0\refint\Ima
 C:\Users\xgra5\Desktop\Upload\ImageVault.UserService\obj\Debug\net8.0\ImageVault.UserService.pdb
 C:\Users\xgra5\Desktop\Upload\ImageVault.UserService\obj\Debug\net8.0\ImageVault.UserService.genruntimeconfig.cache
 C:\Users\xgra5\Desktop\Upload\ImageVault.UserService\obj\Debug\net8.0\ref\ImageVault.UserService.dll
+C:\Users\xgra5\Desktop\Upload\ImageVault.UserService\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\xgra5\Desktop\Upload\ImageVault.UserService\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\xgra5\Desktop\Upload\ImageVault.UserService\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\xgra5\Desktop\Upload\ImageVault.UserService\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\xgra5\Desktop\Upload\ImageVault.UserService\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\xgra5\Desktop\Upload\ImageVault.UserService\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\xgra5\Desktop\Upload\ImageVault.UserService\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\xgra5\Desktop\Upload\ImageVault.UserService\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\xgra5\Desktop\Upload\ImageVault.UserService\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\xgra5\Desktop\Upload\ImageVault.UserService\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
