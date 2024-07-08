@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "9iNB1XFYbGObVpAOXct27huo3JrG1mhTKYixR12Dlb0=",
+  "Source": "ImageVault.UserService",
+  "BasePath": "_content/ImageVault.UserService",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

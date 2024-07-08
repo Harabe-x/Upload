@@ -56,7 +56,7 @@ export function getAuthStore() {
         logout() {
 
             this.set({
-                userDataModel: null,
+                token: null,
                 isLoggedIn: false
             });
             localStorage.clear();

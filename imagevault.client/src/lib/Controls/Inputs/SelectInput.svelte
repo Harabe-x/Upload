@@ -18,7 +18,7 @@
         <span class="text-sm">{title}</span> <br>
         <select bind:value={value} on:change={dispatchEvent}  class="select w-full"  {...$$restProps}>
             <slot>
-                <option selected> Main </option>
+                <option> Main </option>
                 <option> Main </option>
                 <option> Main </option>
                 <option> Main </option>

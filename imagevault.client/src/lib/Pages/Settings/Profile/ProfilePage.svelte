@@ -128,7 +128,7 @@
         </SelectInput>
 
         <SelectInput title="Application Language">
-            <option selected> English </option>
+            <option selected={true}> English </option>
         </SelectInput>
     </div>
 
