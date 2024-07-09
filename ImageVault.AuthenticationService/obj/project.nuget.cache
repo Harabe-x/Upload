@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "fZwHsSrXw4hJYZ7k7o4RWP1uRfqLgBsjBKgv4jypffmWoLJGgVF6dJ2zu3Hd2PIvpq5kleQ/oUiesMS4WLD2Jg==",
+  "dgSpecHash": "Io03S4VCptRoqw5UqSLj/Hfe/UAYKfVd1/IOoPmz1Qw1q0bP/Y23XmV2KWgzvuNkruM83Ac45bLtVodyjkG2Xg==",
   "success": true,
   "projectFilePath": "C:\\Users\\xgra5\\Desktop\\Upload\\ImageVault.AuthenticationService\\ImageVault.AuthenticationService.csproj",
   "expectedPackageFiles": [
@@ -49,6 +49,7 @@
     "C:\\Users\\xgra5\\.nuget\\packages\\microsoft.identitymodel.tokens\\7.1.2\\microsoft.identitymodel.tokens.7.1.2.nupkg.sha512",
     "C:\\Users\\xgra5\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
     "C:\\Users\\xgra5\\.nuget\\packages\\microsoft.sqlserver.server\\1.0.0\\microsoft.sqlserver.server.1.0.0.nupkg.sha512",
+    "C:\\Users\\xgra5\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.19.6\\microsoft.visualstudio.azure.containers.tools.targets.1.19.6.nupkg.sha512",
     "C:\\Users\\xgra5\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "C:\\Users\\xgra5\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
     "C:\\Users\\xgra5\\.nuget\\packages\\swashbuckle.aspnetcore\\6.5.0\\swashbuckle.aspnetcore.6.5.0.nupkg.sha512",

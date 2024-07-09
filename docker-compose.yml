@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  imagevault.apigateway:
+    image: ${DOCKER_REGISTRY-}imagevaultapigateway
+    build:
+      context: .
+      dockerfile: ImageVault.ApiGateway/Dockerfile

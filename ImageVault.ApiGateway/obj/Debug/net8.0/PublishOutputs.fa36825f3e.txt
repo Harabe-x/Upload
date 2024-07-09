@@ -1,0 +1,17 @@
+C:\Users\xgra5\Desktop\Upload\ImageVault.ApiGateway\obj\rider-publish\ImageVault.ApiGateway.exe
+C:\Users\xgra5\Desktop\Upload\ImageVault.ApiGateway\obj\rider-publish\appsettings.Development.json
+C:\Users\xgra5\Desktop\Upload\ImageVault.ApiGateway\obj\rider-publish\appsettings.json
+C:\Users\xgra5\Desktop\Upload\ImageVault.ApiGateway\obj\rider-publish\ocelot.json
+C:\Users\xgra5\Desktop\Upload\ImageVault.ApiGateway\obj\rider-publish\ImageVault.ApiGateway.dll
+C:\Users\xgra5\Desktop\Upload\ImageVault.ApiGateway\obj\rider-publish\ImageVault.ApiGateway.deps.json
+C:\Users\xgra5\Desktop\Upload\ImageVault.ApiGateway\obj\rider-publish\ImageVault.ApiGateway.runtimeconfig.json
+C:\Users\xgra5\Desktop\Upload\ImageVault.ApiGateway\obj\rider-publish\ImageVault.ApiGateway.pdb
+C:\Users\xgra5\Desktop\Upload\ImageVault.ApiGateway\obj\rider-publish\FluentValidation.dll
+C:\Users\xgra5\Desktop\Upload\ImageVault.ApiGateway\obj\rider-publish\IPAddressRange.dll
+C:\Users\xgra5\Desktop\Upload\ImageVault.ApiGateway\obj\rider-publish\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\xgra5\Desktop\Upload\ImageVault.ApiGateway\obj\rider-publish\Microsoft.AspNetCore.MiddlewareAnalysis.dll
+C:\Users\xgra5\Desktop\Upload\ImageVault.ApiGateway\obj\rider-publish\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\xgra5\Desktop\Upload\ImageVault.ApiGateway\obj\rider-publish\Microsoft.Extensions.DiagnosticAdapter.dll
+C:\Users\xgra5\Desktop\Upload\ImageVault.ApiGateway\obj\rider-publish\Newtonsoft.Json.dll
+C:\Users\xgra5\Desktop\Upload\ImageVault.ApiGateway\obj\rider-publish\Newtonsoft.Json.Bson.dll
+C:\Users\xgra5\Desktop\Upload\ImageVault.ApiGateway\obj\rider-publish\Ocelot.dll

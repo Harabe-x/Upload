@@ -26,7 +26,7 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey =  true,
         ValidIssuer = builder.Configuration["JWT:Issuer"],
         ValidAudience = builder.Configuration["JWT:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey( Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])) // probably this code gonna fuck up 
+        IssuerSigningKey = new SymmetricSecurityKey( Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"]))
     };
 });
 
@@ -59,7 +59,7 @@ builder.Services.AddSwaggerGen(c => {
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

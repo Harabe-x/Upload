@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "SofnRR8w4SoDrlm4z/QwNVGjW7NuALuJRXKUu9XheYc=",
+  "Source": "ImageVault.ApiGateway",
+  "BasePath": "_content/ImageVault.ApiGateway",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

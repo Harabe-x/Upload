@@ -1,32 +1,27 @@
 #See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+USER app
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+EXPOSE 8080
+EXPOSE 8081
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS with-node
-RUN apt-get update
-RUN apt-get install curl
-RUN curl -sL https://deb.nodesource.com/setup_20.x | bash
-RUN apt-get -y install nodejs
-
-
-FROM with-node AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["ImageVault.Server/ImageVault.Server.csproj", "ImageVault.Server/"]
+COPY ["ImageVault.AuthenticationService/ImageVault.AuthenticationService.csproj", "ImageVault.AuthenticationService/"]
+COPY ["ImageVault.ClassLibrary/ImageVault.ClassLibrary.csproj", "ImageVault.ClassLibrary/"]
 COPY ["imagevault.client/imagevault.client.esproj", "imagevault.client/"]
-RUN dotnet restore "./ImageVault.Server/ImageVault.Server.csproj"
+RUN dotnet restore "./ImageVault.AuthenticationService/ImageVault.AuthenticationService.csproj"
 COPY . .
-WORKDIR "/src/ImageVault.Server"
-RUN dotnet build "./ImageVault.Server.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/ImageVault.AuthenticationService"
+RUN dotnet build "./ImageVault.AuthenticationService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./ImageVault.Server.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./ImageVault.AuthenticationService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "ImageVault.Server.dll"]
+ENTRYPOINT ["dotnet", "ImageVault.AuthenticationService.dll"]

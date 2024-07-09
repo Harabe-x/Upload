@@ -1,4 +1,3 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34622.214
@@ -7,9 +6,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageVault.AuthenticationSe
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "imagevault.client", "imagevault.client\imagevault.client.esproj", "{21A6C5FE-40CF-463E-80E2-7EB91011BF6A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageVault.ClassLibrary", "ImageVault.ClassLibrary\ImageVault.ClassLibrary.csproj", "{A5B77F89-430D-4E2E-B8CC-FD0FE46BC864}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageVault.ClassLibrary", "ImageVault.ClassLibrary\ImageVault.ClassLibrary.csproj", "{A5B77F89-430D-4E2E-B8CC-FD0FE46BC864}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageVault.UserService", "ImageVault.UserService\ImageVault.UserService.csproj", "{03CDD421-9DDE-48ED-879F-DFD635B00F33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageVault.UserService", "ImageVault.UserService\ImageVault.UserService.csproj", "{03CDD421-9DDE-48ED-879F-DFD635B00F33}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageVault.ApiGateway", "ImageVault.ApiGateway\ImageVault.ApiGateway.csproj", "{2AE76B8F-F7D6-4A55-9508-E4100526858A}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{D121F608-C8F9-4745-B51A-A2F6D3E3C05B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +38,14 @@ Global
 		{03CDD421-9DDE-48ED-879F-DFD635B00F33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03CDD421-9DDE-48ED-879F-DFD635B00F33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03CDD421-9DDE-48ED-879F-DFD635B00F33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AE76B8F-F7D6-4A55-9508-E4100526858A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AE76B8F-F7D6-4A55-9508-E4100526858A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AE76B8F-F7D6-4A55-9508-E4100526858A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AE76B8F-F7D6-4A55-9508-E4100526858A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D121F608-C8F9-4745-B51A-A2F6D3E3C05B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D121F608-C8F9-4745-B51A-A2F6D3E3C05B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D121F608-C8F9-4745-B51A-A2F6D3E3C05B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D121F608-C8F9-4745-B51A-A2F6D3E3C05B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
