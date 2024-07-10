@@ -78,6 +78,13 @@ public class UserAuthenticationController : ControllerBase
         return Ok();
     }
     
+    [HttpGet("test")] 
+    [EnableRateLimiting("register")]
+    public IActionResult Test()
+    {
+        return Ok("Success");
+    }
+    
     private readonly ITokenService _tokenService; 
     
     private readonly IUserAuthenticationRepository _userAuthenticationRepository;

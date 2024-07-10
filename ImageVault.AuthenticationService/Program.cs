@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Unicode;
 using ImageVault.Server.Data;
@@ -58,6 +59,14 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = builder.Configuration["JWT:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey( Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])) // probably this code gonna fuck up 
     };
+});
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ConfigureHttpsDefaults(config =>
+    {
+        config.ServerCertificate = new X509Certificate2("/https/aspnetapp.pfx", "TestPassword");
+    });
 });
 
 builder.Services.AddSwaggerGen(c => {
@@ -134,7 +143,9 @@ if (app.Environment.IsDevelopment())
     
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
+
+
 app.UseAuthentication();
 app.UseAuthorization();
 

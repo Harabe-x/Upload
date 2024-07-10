@@ -1,23 +1,11 @@
 {
   "Version": 1,
-  "Hash": "5BFt+h4/up75Xv/Rak3eKcha/5KeoczZoRG1QzS8g+w=",
+  "Hash": "PNHjqUtnkDZioP5pX9LB5AWqntgdeshamazXlFhPEh4=",
   "Source": "ImageVault.AuthenticationService",
   "BasePath": "_content/ImageVault.AuthenticationService",
   "Mode": "Default",
   "ManifestType": "Build",
-  "ReferencedProjectsConfiguration": [
-    {
-      "Identity": "C:\\Users\\xgra5\\Desktop\\Upload\\imagevault.client\\imagevault.client.esproj",
-      "Version": 2,
-      "Source": "imagevault.client",
-      "GetPublishAssetsTargets": "GetCurrentProjectPublishStaticWebAssetItems",
-      "AdditionalPublishProperties": "Configuration=Debug;Platform=AnyCPU",
-      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained",
-      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
-      "AdditionalBuildProperties": "Configuration=Debug;Platform=AnyCPU",
-      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained"
-    }
-  ],
+  "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [],
   "Assets": []
 }

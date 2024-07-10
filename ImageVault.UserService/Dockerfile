@@ -3,8 +3,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
+
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
@@ -14,6 +13,14 @@ RUN dotnet restore "./ImageVault.UserService/ImageVault.UserService.csproj"
 COPY . .
 WORKDIR "/src/ImageVault.UserService"
 RUN dotnet build "./ImageVault.UserService.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+ENV ASPNETCORE_Kestrel__Certificates__Default__Password=TestPassword
+ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+
+RUN mkdir /https
+COPY ../certs/aspnetapp.pfx /https/
+
+
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release

@@ -10,9 +10,8 @@ public class UserController : ControllerBase
 {
         
     [HttpGet]
-    [Authorize]
     public async Task<IActionResult> TestServer()
     {
-        return Ok();
+        return Ok("Success");
     }
 }
