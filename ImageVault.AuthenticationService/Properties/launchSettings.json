@@ -5,11 +5,10 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7110;http://localhost:5192"
+      "applicationUrl": "https://localhost:7110"
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -25,8 +24,8 @@
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
-        "ASPNETCORE_HTTPS_PORTS": "8084",
-        "ASPNETCORE_HTTP_PORTS": "8083"
+        "ASPNETCORE_HTTPS_PORTS": "8080",
+        "ASPNETCORE_HTTP_PORTS": "8089"
       },
       "publishAllPorts": true,
       "useSSL": true 

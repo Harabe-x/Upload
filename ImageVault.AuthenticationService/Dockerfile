@@ -31,4 +31,4 @@ RUN dotnet publish "./ImageVault.AuthenticationService.csproj" -c $BUILD_CONFIGU
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "ImageVault.AuthenticationService.dll"]
+ENTRYPOINT ["dotnet", "ImageVault.AuthenticationService.dll","--server.urls", "https://*:7110"]

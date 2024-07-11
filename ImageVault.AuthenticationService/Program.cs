@@ -69,6 +69,8 @@ builder.WebHost.ConfigureKestrel(options =>
     });
 });
 
+builder.WebHost.UseUrls("http://*:8080");
+
 builder.Services.AddSwaggerGen(c => {
     c.SwaggerDoc("v1", new OpenApiInfo {
         Title = "UsersAPI", Version = "v1"

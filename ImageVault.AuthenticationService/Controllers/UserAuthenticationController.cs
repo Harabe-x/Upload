@@ -82,7 +82,7 @@ public class UserAuthenticationController : ControllerBase
     [EnableRateLimiting("register")]
     public IActionResult Test()
     {
-        return Ok("Success");
+        return Ok($"api/auth/test {Random.Shared.Next(111,1111)}");
     }
     
     private readonly ITokenService _tokenService; 
