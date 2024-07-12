@@ -1,3 +1,4 @@
+using ImageVault.UserService.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ImageVault.UserService.Data;
@@ -9,6 +10,6 @@ public class ApplicationDbContext : DbContext
         
     }
     
-    
+    public DbSet<UserModel?> ApplicationUsers { get; set; }
     
 }

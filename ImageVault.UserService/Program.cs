@@ -1,17 +1,29 @@
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using ImageVault.ClassLibrary.Validation.Classes;
+using ImageVault.ClassLibrary.Validation.Interfaces;
+using ImageVault.UserService.Configuration;
+using ImageVault.UserService.Data;
+using ImageVault.UserService.Data.Interfaces;
+using ImageVault.UserService.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.ConfigureKestrel(options =>
+// builder.WebHost.ConfigureKestrel(options =>
+// {
+//     options.ConfigureHttpsDefaults(config =>
+//     {
+//         config.ServerCertificate = new X509Certificate2("/https/aspnetapp.pfx", "TestPassword");
+//     });
+// });
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.ConfigureHttpsDefaults(config =>
-    {
-        config.ServerCertificate = new X509Certificate2("/https/aspnetapp.pfx", "TestPassword");
-    });
+    options.UseSqlServer(builder.Configuration.GetConnectionString("default"));
 });
 
 
@@ -38,6 +50,13 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey( Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"]))
     };
 });
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();  
+ 
+var validator = new DataValidator();
+DataValidationRules.AddRules(validator);
+
+builder.Services.AddSingleton<IDataValidator>(validator);
 
 
 builder.Services.AddSwaggerGen(c => {
