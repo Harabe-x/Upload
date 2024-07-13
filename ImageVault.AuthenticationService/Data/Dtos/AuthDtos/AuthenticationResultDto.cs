@@ -1,10 +1,7 @@
-using System.ComponentModel.DataAnnotations;
-
-namespace ImageVault.Server.Data.Dtos;
+namespace ImageVault.AuthenticationService.Data.Dtos.AuthDtos;
 
 public record AuthenticationResultDto
 (
-    string Name,
     string Email,
     string Token
 );

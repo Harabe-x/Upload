@@ -1,9 +1,10 @@
-using ImageVault.Server.Models;
+using ImageVault.AuthenticationService.Data.Models;
 
-namespace ImageVault.Server.Data.Dtos;
+namespace ImageVault.AuthenticationService.Data.Dtos.AuthDtos;
 
 public record UserDatabaseOperationResultDto
 (
     ApplicationUser User,
-    bool IsSuccess
+    bool IsSuccess,
+    Error Error
 );

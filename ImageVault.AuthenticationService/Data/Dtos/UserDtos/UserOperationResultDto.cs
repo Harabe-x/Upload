@@ -1,7 +1,7 @@
-namespace ImageVault.Server.Data.Dtos.UserDtos;
+namespace ImageVault.AuthenticationService.Data.Dtos.UserDtos;
 
 public record UserOperationResultDto
 (
- UserDataDto UserData,
- bool IsSuccess
- );
+    UserDataDto UserData,
+    bool IsSuccess
+);

@@ -16,8 +16,8 @@ services:
       context: .
       dockerfile: ImageVault.AuthenticationService/Dockerfile
     ports:
-      - "8083:8083"
-      - "8084:8084"  
+      - "8083:8080"
+      - "8084:8089"  
     volumes:
       - ./certs:/https 
       

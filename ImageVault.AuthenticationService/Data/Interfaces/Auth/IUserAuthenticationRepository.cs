@@ -1,12 +1,10 @@
-using ImageVault.Server.Data.Dtos;
-using ImageVault.Server.Models;
+using ImageVault.AuthenticationService.Data.Dtos.AuthDtos;
 
-namespace ImageVault.Server.Data.Interfaces;
+namespace ImageVault.AuthenticationService.Data.Interfaces.Auth;
 
 public interface IUserAuthenticationRepository
 {
-    public  Task<UserDatabaseOperationResultDto> CreateAccount(RegisterAccountDto accountDto);
+    public Task<UserDatabaseOperationResultDto> CreateAccount(RegisterAccountDto accountDto);
 
     public Task<UserDatabaseOperationResultDto> LoginUser(LoginDto loginDto);
 }
-

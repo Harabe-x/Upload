@@ -1,4 +1,4 @@
-﻿namespace ImageVault.Server;
+﻿namespace ImageVault.AuthenticationService;
 
 public class ChartDataModel
 {

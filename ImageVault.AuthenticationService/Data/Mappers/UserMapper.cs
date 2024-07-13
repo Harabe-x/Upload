@@ -1,25 +1,24 @@
-using ImageVault.Server.Data.Dtos;
-using ImageVault.Server.Data.Dtos.UserDtos;
-using ImageVault.Server.Models;
+using ImageVault.AuthenticationService.Data.Dtos.AuthDtos;
+using ImageVault.AuthenticationService.Data.Dtos.UserDtos;
+using ImageVault.AuthenticationService.Data.Models;
 
-namespace ImageVault.Server.Data.Mappers;
+namespace ImageVault.AuthenticationService.Data.Mappers;
 
 public static class UserMapper
 {
     public static ApplicationUser MapUser(this RegisterAccountDto account)
     {
-       return new ApplicationUser
-        {   
+        return new ApplicationUser
+        {
             FirstName = account.FirstName,
             LastName = account.LastName,
-            Email = account.Email,
+            Email = account.Email
         };
     }
 
     public static UserDataDto MapToUserData(this ApplicationUser applicationUser)
     {
-        return new UserDataDto(applicationUser.FirstName, applicationUser.LastName, 
-            applicationUser.PreferedColorSchema,applicationUser.Email ,applicationUser.ProfilePicture);
+        return new UserDataDto(applicationUser.FirstName, applicationUser.LastName,
+            applicationUser.PreferedColorSchema, applicationUser.Email, applicationUser.ProfilePicture);
     }
-
 }

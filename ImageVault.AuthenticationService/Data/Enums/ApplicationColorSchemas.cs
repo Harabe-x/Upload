@@ -1,4 +1,4 @@
-namespace ImageVault.Server.Data.Enums;
+namespace ImageVault.AuthenticationService.Data.Enums;
 
 public enum ApplicationColorSchemas
 {

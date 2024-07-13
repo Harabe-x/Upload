@@ -1,15 +1,17 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using ImageVault.Server.Data.Dtos;
-using ImageVault.Server.Data.Interfaces;
-using ImageVault.Server.Models;
+using ImageVault.AuthenticationService.Data.Interfaces.Auth;
+using ImageVault.AuthenticationService.Data.Models;
 using Microsoft.IdentityModel.Tokens;
 
-namespace ImageVault.Server.Services;
+namespace ImageVault.AuthenticationService.Services;
 
 public class TokenService : ITokenService
 {
+    private readonly IConfiguration _configuration;
+
+    private readonly SymmetricSecurityKey _key;
 
     public TokenService(IConfiguration configuration)
     {
@@ -19,11 +21,10 @@ public class TokenService : ITokenService
 
     public string CreateToken(ApplicationUser user)
     {
-
         var claims = new List<Claim>
         {
             new(JwtRegisteredClaimNames.Email, user.Email),
-            new(JwtRegisteredClaimNames.Sub, user.Id),
+            new(JwtRegisteredClaimNames.Sub, user.Id)
         };
 
         var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512);
@@ -43,8 +44,4 @@ public class TokenService : ITokenService
 
         return tokenHandler.WriteToken(token);
     }
-    
-    private readonly IConfiguration _configuration;
-
-    private readonly SymmetricSecurityKey _key; 
 }

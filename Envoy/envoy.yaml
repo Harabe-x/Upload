@@ -33,27 +33,59 @@ static_resources:
               domains: ["*"]
               routes:
               - match:
-                  prefix: "/"
+                  prefix: "/api/auth/test"
                 route:
-                  host_rewrite_literal: www.envoyproxy.io
-                  cluster: service_envoyproxy_io
+                  prefix_rewrite: /api/auth/test
+                  cluster: AuthenticationService
+              
+              - match:
+                  prefix: "/api/auth/login"
+                route:
+                  prefix_rewrite: /api/auth/login
+                  cluster: AuthenticationService
+              
+              - match:
+                  prefix: "/api/auth/register"
+                route:
+                  prefix_rewrite: "/api/auth/register"
+                  cluster: AuthenticationService
+              
+              - match:
+                  prefix: "/api/auth/pingauth"
+                route:
+                  prefix_rewrite: /api/auth/pingauth
+                  cluster: AuthenticationService
+              
+              - match:
+                  prefix: "/api/user"
+                route:
+                  prefix_rewrite: /api/user
+                  cluster: UserService
+
 
   clusters:
-  - name: service_envoyproxy_io
+  - name: AuthenticationService
     type: LOGICAL_DNS
-    # Comment out the following line to test on v6 networks
     dns_lookup_family: V4_ONLY
     load_assignment:
-      cluster_name: service_envoyproxy_io
+      cluster_name: AuthenticationService
       endpoints:
       - lb_endpoints:
         - endpoint:
             address:
               socket_address:
-                address: www.envoyproxy.io
-                port_value: 443
-    transport_socket:
-      name: envoy.transport_sockets.tls
-      typed_config:
-        "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
-        sni: www.envoyproxy.io
+                address: imagevault.authenticationservice
+                port_value: 8080
+  - name: UserService
+    type: LOGICAL_DNS
+    dns_lookup_family: V4_ONLY
+    load_assignment:
+      cluster_name: UserService
+      endpoints:
+      - lb_endpoints:
+        - endpoint:
+            address:
+              socket_address:
+                address: imagevault.userservice
+                port_value: 8080
+  

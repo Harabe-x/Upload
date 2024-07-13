@@ -1,10 +1,8 @@
-using ImageVault.Server.Data.Dtos;
-using ImageVault.Server.Models;
+using ImageVault.AuthenticationService.Data.Models;
 
-namespace ImageVault.Server.Data.Interfaces;
+namespace ImageVault.AuthenticationService.Data.Interfaces.Auth;
 
 public interface ITokenService
 {
     public string CreateToken(ApplicationUser user);
-    
 }

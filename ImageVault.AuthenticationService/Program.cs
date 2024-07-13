@@ -1,23 +1,19 @@
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using System.Text.Unicode;
-using ImageVault.Server.Data;
-using ImageVault.Server.Data.Interfaces;
-using ImageVault.Server.Models;
-using ImageVault.Server.Repository;
-using ImageVault.Server.Services;
+using System.Threading.RateLimiting;
+using ImageVault.AuthenticationService.Configuration;
+using ImageVault.AuthenticationService.Data;
+using ImageVault.AuthenticationService.Data.Interfaces.Auth;
+using ImageVault.AuthenticationService.Data.Models;
+using ImageVault.AuthenticationService.Repository;
+using ImageVault.AuthenticationService.Services;
+using ImageVault.ClassLibrary.Validation.Classes;
+using ImageVault.ClassLibrary.Validation.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Threading.RateLimiting;
-using ImageVault.ClassLibrary.Validation.Classes;
-using ImageVault.ClassLibrary.Validation.Interfaces;
-using ImageVault.Server.Configuration;
-using ImageVault.Server.Data.Interfaces.User;
-using Microsoft.AspNetCore.RateLimiting;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,44 +50,53 @@ builder.Services.AddAuthentication(options =>
     {
         ValidateIssuer = true,
         ValidateAudience = true,
-        ValidateIssuerSigningKey =  true,
+        ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["JWT:Issuer"],
         ValidAudience = builder.Configuration["JWT:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey( Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])) // probably this code gonna fuck up 
+        IssuerSigningKey =
+            new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])) // probably this code gonna fuck up 
     };
 });
 
-builder.WebHost.ConfigureKestrel(options =>
+// builder.WebHost.ConfigureKestrel(options =>
+// {
+//     options.ConfigureHttpsDefaults(config =>
+//     {
+//         config.ServerCertificate = new X509Certificate2("/https/aspnetapp.pfx", "TestPassword");
+//     });
+// });
+
+// builder.WebHost.UseUrls("http://*:8080");
+
+builder.Services.AddSwaggerGen(c =>
 {
-    options.ConfigureHttpsDefaults(config =>
+    c.SwaggerDoc("v1", new OpenApiInfo
     {
-        config.ServerCertificate = new X509Certificate2("/https/aspnetapp.pfx", "TestPassword");
-    });
-});
-
-builder.WebHost.UseUrls("http://*:8080");
-
-builder.Services.AddSwaggerGen(c => {
-    c.SwaggerDoc("v1", new OpenApiInfo {
         Title = "UsersAPI", Version = "v1"
     });
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme() {
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
         Name = "Authorization",
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
+        Description =
+            "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\""
     });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
         {
-            new OpenApiSecurityScheme {
-                Reference = new OpenApiReference {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
                     Type = ReferenceType.SecurityScheme,
                     Id = "Bearer"
                 }
             },
-            new string[] {}
+            new string[] { }
         }
     });
 });
@@ -111,7 +116,6 @@ builder.Services.AddRateLimiter(builder => builder.AddFixedWindowLimiter("login"
 
 builder.Services.AddScoped<IUserAuthenticationRepository, UserAuthenticationRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var validator = new DataValidator();
 DataValidationRules.AddRules(validator);
@@ -138,11 +142,7 @@ app.UseStaticFiles();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.InjectStylesheet("SwaggerDark.css");
-    });
-    
+    app.UseSwaggerUI(c => { c.InjectStylesheet("SwaggerDark.css"); });
 }
 
 // app.UseHttpsRedirection();

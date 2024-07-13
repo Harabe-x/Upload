@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace ImageVault.Server.Data.Dtos;
+namespace ImageVault.AuthenticationService.Data.Dtos.AuthDtos;
 
 public record LoginDto
 (
