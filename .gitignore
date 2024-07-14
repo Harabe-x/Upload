@@ -1,10 +1,10 @@
 # IDE files
 .idea/
 .vs/
-
 # Build files 
 obj/ 
 bin/
+node_modules/
 # File types 
 *.pfx
 
