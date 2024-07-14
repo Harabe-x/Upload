@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "yuZEi5Tkr7y6G6s05WPCTWTiqCHMshQp5IFaRHe50hU=",
+  "Source": "ImageVault.RequestMetricsService",
+  "BasePath": "_content/ImageVault.RequestMetricsService",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

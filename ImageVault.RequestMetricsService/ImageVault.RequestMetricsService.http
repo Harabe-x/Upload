@@ -1,0 +1,6 @@
+@ImageVault.RequestMetricsService_HostAddress = http://localhost:5293
+
+GET {{ImageVault.RequestMetricsService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
