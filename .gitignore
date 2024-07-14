@@ -4,6 +4,8 @@
 # Build files 
 obj/ 
 bin/
+# packages 
+packages/
 node_modules/
 # File types 
 *.pfx
