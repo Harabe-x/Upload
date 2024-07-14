@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ImageVault.AuthenticationService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7b4fdc13d42843d8407099033d3fc9b3b0548e5c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8d20aea2485d737022cea9695e332b4b7138ce34")]
 [assembly: System.Reflection.AssemblyProductAttribute("ImageVault.AuthenticationService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ImageVault.AuthenticationService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

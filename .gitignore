@@ -1,2 +1,10 @@
+# IDE files
 .idea/
 .vs/
+
+# Build files 
+obj/ 
+bin/
+# File types 
+*.pfx
+
