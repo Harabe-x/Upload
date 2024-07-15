@@ -27,42 +27,48 @@ public class UserRepository : IUserRepository
     }
 
  
-    public async Task<UserOperationResultDto> GetUser(string id)
+    public async Task<OperationResultDto<UserDataDto>> GetUser(string id)
     {
         if (await GetUserFromDatabase(id) is not { } userModel)
-            return new UserOperationResultDto(null, false, new Error("User not found"));
+            return new OperationResultDto<UserDataDto>(null, false, new Error("User not found"));
     
         var userDataDto = userModel.MapToUserDataDto();
 
-        return new UserOperationResultDto(userDataDto, true, null);
+        return new OperationResultDto<UserDataDto>(userDataDto, true, null);
         ;
     }
 
-    public async Task<UserOperationResultDto> AddUser([FromBody]UserDataDto userData,string id )
+    public async Task<OperationResultDto<UserDataDto>> AddUser([FromBody]UserDataDto userData,string id )
     {
         if (!_dataValidator.ValidateData("ValidateUserDataDto", userData))  
-            return new UserOperationResultDto(null, false,new Error("Data validation failed"));
+            return new OperationResultDto<UserDataDto>
+(null, false,new Error("Data validation failed"));
 
         if (await GetUserFromDatabase(id) is  { })
-            return new UserOperationResultDto(null, false,new Error("User already exist"));
+            return new OperationResultDto<UserDataDto>
+(null, false,new Error("User already exist"));
         
         await _dbContext.ApplicationUsers.AddAsync(userData.MapToUserModel(id));
         
         return await SaveChanges()
-            ? new UserOperationResultDto(userData, true, null)
-            : new UserOperationResultDto(null, false, new Error("Unexpected error occured"));
+            ? new OperationResultDto<UserDataDto>
+(userData, true, null)
+            : new OperationResultDto<UserDataDto>
+(null, false, new Error("Unexpected error occured"));
         
     }
     
     
-    public async Task<UserOperationResultDto> UpdateUser(UserDataDto newUserData, string id)
+    public async Task<OperationResultDto<UserDataDto>> UpdateUser(UserDataDto newUserData, string id)
     {
         
         if (!_dataValidator.ValidateData("ValidateUserDataDto", newUserData))  
-            return new UserOperationResultDto(null, false,new Error("Data validation failed"));
+            return new OperationResultDto<UserDataDto>
+(null, false,new Error("Data validation failed"));
         
         if (await GetUserFromDatabase(id) is not { } user)
-            return new UserOperationResultDto(null, false,new Error("User not found"));
+            return new OperationResultDto<UserDataDto>
+(null, false,new Error("User not found"));
     
         user.FirstName = newUserData.FirstName;
         user.LastName = newUserData.LastName;
@@ -72,8 +78,10 @@ public class UserRepository : IUserRepository
           _dbContext.Update(user);
           
           return await SaveChanges()
-              ? new UserOperationResultDto(user.MapToUserDataDto(), true, null) 
-              : new UserOperationResultDto(null, false, new Error("Unexpected error occured"));
+              ? new OperationResultDto<UserDataDto>
+(user.MapToUserDataDto(), true, null) 
+              : new OperationResultDto<UserDataDto>
+(null, false, new Error("Unexpected error occured"));
 
     }
                                                               

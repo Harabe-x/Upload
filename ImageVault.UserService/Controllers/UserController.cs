@@ -24,7 +24,7 @@ public class UserController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetUserData()
+    public async Task<IActionResult> GetValue()
     {
         var id= User.GetClaimValue(ClaimTypes.NameIdentifier);
     
@@ -32,7 +32,7 @@ public class UserController : ControllerBase
         {
           var result= await  _userRepository.GetUser(id);
 
-          return result.IsSuccess ? Ok(result.UserData) : BadRequest(result.Error);
+          return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
         catch (Exception)
         {
@@ -41,17 +41,17 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateUser([FromBody] UserDataDto userData)
+    public async Task<IActionResult> CreateUser([FromBody] UserDataDto Value)
     {
         var id= User.GetClaimValue(ClaimTypes.NameIdentifier);
 
-        if (User.GetClaimValue(ClaimTypes.Email) !=  userData.Email) return BadRequest(new Error("Invalid email"));
+        if (User.GetClaimValue(ClaimTypes.Email) !=  Value.Email) return BadRequest(new Error("Invalid email"));
         
         try
         {
-            var result = await _userRepository.AddUser(userData, id);
+            var result = await _userRepository.AddUser(Value, id);
             
-            return result.IsSuccess ? Ok(result.UserData) : BadRequest(result.Error);
+            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
         catch (Exception) 
         {
@@ -61,15 +61,15 @@ public class UserController : ControllerBase
     }
     
     [HttpPatch]
-    public async Task<IActionResult> UpdateUserData([FromBody] UserDataDto newUserData)
+    public async Task<IActionResult> UpdateValue([FromBody] UserDataDto newValue)
     {
         var id  = User.GetClaimValue(ClaimTypes.NameIdentifier);
         
         try
         {
-            var result= await  _userRepository.UpdateUser(newUserData,id );
+            var result= await  _userRepository.UpdateUser(newValue,id );
     
-            return result.IsSuccess ? Ok(result.UserData) : BadRequest(result.Error);
+            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
         catch (Exception)
         {
