@@ -102,10 +102,10 @@ public class UserRepository : IUserRepository
         return await _dbContext.ApplicationUsers.FirstOrDefaultAsync( x =>  x.Id == id);
     }
 
-    public async Task<bool> SaveChanges()
+    private async Task<bool> SaveChanges()
     {
-        await _dbContext.SaveChangesAsync();
-        return true; 
+       return await _dbContext.SaveChangesAsync() > 0;
+        
     }
     
 }

@@ -20,7 +20,7 @@ public class ApiKey
 
     public string KeyName { get; set; }
 
-    [Column(TypeName = "decimal(6,2)")]
+    [Column(TypeName = "decimal(5,2)")]
     public decimal KeyStorageCapacity { get; set; }
 
     public DateTime CreatedAt { get; set; }

@@ -5,12 +5,13 @@ namespace ImageVault.UserService.Data.Interfaces;
 
 public interface IApiKeyRepository
 {
-    Task<OperationResultDto<ApiKeyDto>> GetApiKey(string key, string userId);
+    Task<OperationResultDto<ApiKeyDto>> GetApiKey(string apiKey, string userId);
 
     Task<OperationResultDto<ApiKeyDto>> AddKey(AddApiKeyDto apiKeyData, string userId);
 
-    Task<OperationResultDto<ApiKeyDto>> EditKey(EditApiKeyDto apiKeyEditData, string id);
+    Task<OperationResultDto<ApiKeyDto>> EditKey(EditApiKeyDto apiKeyEditData, string userId);
 
-    Task<bool> DeleteApiKey(string key, string id);
+    Task<OperationResultDto<IEnumerable<ApiKeyDto>>> GetAllApiKeys(string userId); 
 
+    Task<bool> DeleteApiKey(string apiKey, string userId);
 }

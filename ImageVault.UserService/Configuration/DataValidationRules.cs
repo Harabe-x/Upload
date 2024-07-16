@@ -10,7 +10,7 @@ public class DataValidationRules
     {
         validator.AddCustomValidationRule<string>("ValidateName", (str) =>
         {
-            return str.All(chr => char.IsLetter(chr));
+            return str.All(char.IsLetter);
         });
         validator.AddCustomValidationRule<string>("ValidateApplicationColorSchema", (str) => Enum.IsDefined(typeof(ApplicationColorSchemas), str));
           
@@ -26,5 +26,18 @@ public class DataValidationRules
                    && validator.ValidateData("ValidateName", userData.LastName)
                    && validator.ValidateData("ValidateApplicationColorSchema", userData.DataTheme);
         });
+        
+        validator.AddCustomValidationRule<string>("ValidateApiKeyName" , apiKeyName =>
+        {
+            return (!string.IsNullOrEmpty(apiKeyName) ) && apiKeyName.Length > 0;
+        });
+        
+        validator.AddCustomValidationRule<decimal>("ValidateKeyStorageCapacity", storage =>
+        {
+            const decimal maxStorageCapacity = 10000; 
+            return storage > 0 && storage < maxStorageCapacity;
+        });
+        
+        
     }
 }

@@ -12,4 +12,5 @@ public class ApplicationDbContext : DbContext
     
     public DbSet<UserModel?> ApplicationUsers { get; set; }
     
+    public DbSet<ApiKey?> ApiKeys { get; set; }
 }

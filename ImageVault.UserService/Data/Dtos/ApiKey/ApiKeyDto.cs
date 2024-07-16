@@ -1,6 +1,3 @@
 namespace ImageVault.UserService.Data.Dtos.ApiKey;
 
-public class ApiKeyDto
-{
-    
-}
+public record ApiKeyDto (string KeyName , string Key,  decimal KeyStorageCapacity,DateTime CreatedAt   ) ; 
