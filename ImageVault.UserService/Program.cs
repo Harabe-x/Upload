@@ -52,6 +52,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();  
+builder.Services.AddScoped<IApiKeyRepository,ApiKeyRepository>(); 
  
 var validator = new DataValidator();
 DataValidationRules.AddRules(validator);

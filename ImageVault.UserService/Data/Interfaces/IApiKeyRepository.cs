@@ -13,5 +13,5 @@ public interface IApiKeyRepository
 
     Task<OperationResultDto<IEnumerable<ApiKeyDto>>> GetAllApiKeys(string userId); 
 
-    Task<bool> DeleteApiKey(string apiKey, string userId);
+    Task<OperationResultDto<bool>> DeleteApiKey(string apiKey, string userId);
 }

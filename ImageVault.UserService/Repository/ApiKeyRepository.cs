@@ -79,15 +79,17 @@ public class ApiKeyRepository : IApiKeyRepository
 
     }
 
-    public async Task<bool> DeleteApiKey(string apiKey, string userId)
+    public async Task<OperationResultDto<bool>> DeleteApiKey(string apiKey, string userId)
     {
         var key = await GetKey(apiKey, userId);
 
-        if (key is not { }) return false;
+        if (key is not { })  new OperationResultDto<bool>(false, false, new Error("Api key not found"));
 
         _dbContext.ApiKeys.Remove(key);
 
-       return await SaveChanges();
+        return await SaveChanges()
+            ? new OperationResultDto<bool>(true, true, null)
+            : new OperationResultDto<bool>(false, false, new Error("deleting key failed")); 
     }
 
     private async Task<ApiKey?> GetKey(string key, string userId)
