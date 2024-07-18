@@ -30,7 +30,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme =
@@ -87,7 +86,6 @@ builder.Services.AddSwaggerGen(c => {
 
 
 var app = builder.Build();
-
 
 if (app.Environment.IsDevelopment())
 {

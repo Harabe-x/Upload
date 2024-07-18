@@ -11,5 +11,16 @@ public class Requests
     public DateTime TimeStamp { get; set; }
     
     public string Endpoint { get; set;  } 
+    
+    public string Ip { get; set; }
+    
+    public string Method { get; set; }
+    
+    public Requests()
+    {
+        Id = Guid.NewGuid().ToString();
+    }
+    
+
 }
 

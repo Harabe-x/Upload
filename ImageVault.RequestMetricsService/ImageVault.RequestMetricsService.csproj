@@ -21,10 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Data\Dtos" />
       <Folder Include="Data\Enums" />
-      <Folder Include="Data\Interfaces" />
-      <Folder Include="Repository" />
     </ItemGroup>
 
 </Project>

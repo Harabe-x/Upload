@@ -1,5 +1,8 @@
 using System.Text;
 using ImageVault.RequestMetricsService.Data;
+using ImageVault.RequestMetricsService.Data.Interfaces;
+using ImageVault.RequestMetricsService.Middleware;
+using ImageVault.RequestMetricsService.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -12,6 +15,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.AddScoped<IRequestRepository,RequestRepository>();
+builder.Services.AddScoped<IUserRequestMetricsRepository, UserRequestMetricsRepository>(); 
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -38,6 +43,7 @@ builder.Services.AddAuthentication(options =>
                 Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])) // probably this code gonna fuck up 
     };
 });
+
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -71,6 +77,8 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+
+
 var app = builder.Build();
 
 app.UseAuthentication();
@@ -84,6 +92,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<RequestMiddleware>();
 app.UseHttpsRedirection();
 
 app.Run();

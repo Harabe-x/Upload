@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ImageVault.RequestMetricsService.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240714180615_init")]
-    partial class init
+    [Migration("20240718120051_Requests table Changed")]
+    partial class RequeststableChanged
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,6 +58,14 @@ namespace ImageVault.RequestMetricsService.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Endpoint")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Ip")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Method")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

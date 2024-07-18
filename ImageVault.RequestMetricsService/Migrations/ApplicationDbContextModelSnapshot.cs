@@ -58,6 +58,14 @@ namespace ImageVault.RequestMetricsService.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Ip")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Method")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("TimeStamp")
                         .HasColumnType("datetime2");
 
@@ -70,7 +78,7 @@ namespace ImageVault.RequestMetricsService.Migrations
                     b.ToTable("Requests");
                 });
 
-            modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.UserRequestsMetric", b =>
+            modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.UserRequestMetrics", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
