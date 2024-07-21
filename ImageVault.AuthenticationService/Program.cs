@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.RateLimiting;
 using ImageVault.AuthenticationService.Configuration;
@@ -59,15 +60,15 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// builder.WebHost.ConfigureKestrel(options =>
-// {
-//     options.ConfigureHttpsDefaults(config =>
-//     {
-//         config.ServerCertificate = new X509Certificate2("/https/aspnetapp.pfx", "TestPassword");
-//     });
-// });
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ConfigureHttpsDefaults(config =>
+    {
+        config.ServerCertificate = new X509Certificate2("/https/aspnetapp.pfx", "TestPassword");
+    });
+});
 
-// builder.WebHost.UseUrls("http://*:8080");
+builder.WebHost.UseUrls("http://*:2101");
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -138,12 +139,8 @@ var app = builder.Build();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(c => { c.InjectStylesheet("SwaggerDark.css"); });
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 // app.UseHttpsRedirection();
 

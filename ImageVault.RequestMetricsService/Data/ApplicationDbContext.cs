@@ -10,11 +10,11 @@ public class ApplicationDbContext : DbContext
     {
         
     }
-    
+
     public DbSet<Requests> Requests { get; set;  }
     
     public DbSet<UserRequestMetrics> UsersRequestMetrics { get; set; }
     
-    public DbSet<ApiKeyResourcesUsageMetric> ApiKeyResourcesUsageMetrics { get; set; }
+    public DbSet<ApiKeyUsageMetric> ApiKeyResourcesUsageMetrics { get; set; }
     
 }

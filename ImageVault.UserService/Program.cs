@@ -13,13 +13,16 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// builder.WebHost.ConfigureKestrel(options =>
-// {
-//     options.ConfigureHttpsDefaults(config =>
-//     {
-//         config.ServerCertificate = new X509Certificate2("/https/aspnetapp.pfx", "TestPassword");
-//     });
-// });
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ConfigureHttpsDefaults(config =>
+    {
+        config.ServerCertificate = new X509Certificate2("/https/aspnetapp.pfx", "TestPassword");
+    });
+});
+
+builder.WebHost.UseUrls("http://*:2104");
+
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -87,11 +90,8 @@ builder.Services.AddSwaggerGen(c => {
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 // app.UseHttpsRedirection();
 

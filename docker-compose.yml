@@ -16,8 +16,8 @@ services:
       context: .
       dockerfile: ImageVault.AuthenticationService/Dockerfile
     ports:
-      - "8083:8080"
-      - "8084:8089"  
+      - "2100:2100"
+      - "2101:2101"  
     volumes:
       - ./certs:/https 
       
@@ -27,7 +27,42 @@ services:
       context: .
       dockerfile: ImageVault.UserService/Dockerfile
     ports:
-      - "8080:8080"
-      - "8081:8081"  
+      - "2103:2103"
+      - "2104:2104"  
     volumes:
-      - ./certs:/https  
+      - ./certs:/https
+
+  rabbitmq : 
+   build : RabbitMq/
+   ports : 
+     - "5672:5672"
+     - "15672:15672"
+   volumes:
+     - rabbitMq:/var/lib/rabbitmq
+
+  imagevault.requestmetricsservice:
+    image: ${DOCKER_REGISTRY-}imagevaultrequestmetricsservice
+    build:
+      context: .
+      dockerfile: ImageVault.RequestMetricsService/Dockerfile
+    ports:
+      - "2105:2105"
+      - "2106:2106"  
+    volumes:
+      - ./certs:/https
+
+  sqlserver : 
+   build : MsSqlServer/
+   ports : 
+    - "1433:1433"
+   environment : 
+    ACCEPT_EULA : "Y"
+    MSSQL_SA_PASSWORD : "TestPassword1!"
+   volumes :
+    - msSqlServer:/var/opt/mssql
+
+volumes:
+  rabbitMq:
+    external: true
+  msSqlServer:
+    external: true

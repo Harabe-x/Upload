@@ -25,7 +25,7 @@ namespace ImageVault.RequestMetricsService.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.ApiKeyResourcesUsageMetric", b =>
+            modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.ApiKeyUsageMetric", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");

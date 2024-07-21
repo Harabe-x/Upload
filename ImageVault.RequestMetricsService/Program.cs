@@ -1,7 +1,7 @@
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using ImageVault.RequestMetricsService.Data;
 using ImageVault.RequestMetricsService.Data.Interfaces;
-using ImageVault.RequestMetricsService.Middleware;
 using ImageVault.RequestMetricsService.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +44,16 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ConfigureHttpsDefaults(config =>
+    {
+        config.ServerCertificate = new X509Certificate2("/https/aspnetapp.pfx", "TestPassword");
+    });
+});
+
+builder.WebHost.UseUrls("http://*:2106");
+
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -84,15 +94,11 @@ var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers(); 
+app.MapControllers();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
-app.UseMiddleware<RequestMiddleware>();
 app.UseHttpsRedirection();
 
 app.Run();
