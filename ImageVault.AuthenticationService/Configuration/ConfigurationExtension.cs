@@ -6,4 +6,14 @@ public static class ConfigurationExtension
     {
         return configuration?.GetSection("Endpoints")[endpointName];
     }
+
+    public static string? GetRabbitMqUsername(this IConfiguration configuration)
+    {
+        return configuration.GetSection("RabbitMq")["Username"];
+    }
+    
+    public static string? GetRabbitMqPassword(this IConfiguration configuration)
+    {
+        return configuration.GetSection("RabbitMq")["Password"];
+    }
 }

@@ -3,6 +3,7 @@ using ImageVault.AuthenticationService.Configuration;
 using ImageVault.AuthenticationService.Data;
 using ImageVault.AuthenticationService.Data.Dtos.AuthDtos;
 using ImageVault.AuthenticationService.Data.Interfaces.Auth;
+using ImageVault.AuthenticationService.Data.Interfaces.RabbitMq;
 using ImageVault.AuthenticationService.Data.Mappers;
 using ImageVault.AuthenticationService.Data.Models;
 using ImageVault.ClassLibrary.Validation.Interfaces;
@@ -21,26 +22,17 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
 
     private readonly UserManager<ApplicationUser> _userManager;
 
-    private readonly ApplicationDbContext _dbContext;
-
-    private readonly IConfiguration _configuration; 
-    
-    private readonly HttpClient _client;
-    
-    private readonly ITokenService _tokenService; 
+    private readonly IMessageSender _messageSender; 
     
     public UserAuthenticationRepository(UserManager<ApplicationUser> userManager,
         ILogger<UserAuthenticationRepository> logger, SignInManager<ApplicationUser> signInManager,
-        IDataValidator dataValidator,ApplicationDbContext dbContext,ITokenService tokenService,IConfiguration configuration)
+        IDataValidator dataValidator, IMessageSender messageSender)
     {
         _logger = logger;
         _userManager = userManager;
         _signInManager = signInManager;
         _dataValidator = dataValidator;
-        _dbContext = dbContext;
-        _tokenService = tokenService;
-        _configuration = configuration; 
-        _client = new HttpClient();
+        _messageSender = messageSender;
     }
 
     public async Task<UserDatabaseOperationResultDto> CreateAccount(RegisterAccountDto accountDto)
@@ -49,9 +41,6 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
             return new UserDatabaseOperationResultDto(null, false, new Error("Invalid user data"));
 
         var user = accountDto.MapUser();
-
-
-        using var transaction = _dbContext.Database.BeginTransaction();
         
         var identityResult = await _userManager.CreateAsync(user, accountDto.Password);
 
@@ -66,34 +55,13 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
 
         var addingRoleResult = await _userManager.AddToRoleAsync(user, "User");
 
-        var token = _tokenService.CreateToken(user);
-
-        var requestMessage = BuildUserRegistrationRequest(token, user.FirstName, user.LastName, user.Email);
-
-        try
-        {
-            using var response = await _client.SendAsync(requestMessage);
-
-            if (response.IsSuccessStatusCode && addingRoleResult.Succeeded)
-            {
-                await transaction.CommitAsync();
-            }
-            else
-            {
-                _logger.LogError($"[{DateTime.Now}]  STATUS_CODE : {response.StatusCode}  REQUEST_MESSAGE : {response.RequestMessage} ");
-                await transaction.RollbackAsync();
-                return new UserDatabaseOperationResultDto(null,false, new Error("Cannot add new user right now"));
-            }
-        }
-        catch (Exception e)
-        {
-            _logger.LogError( $"[{DateTime.Now}] MESSAGE: ${e.Message} SOURCE: ${e.Source}"  );
-            await transaction.RollbackAsync();
-            return new UserDatabaseOperationResultDto(null,false, new Error("Cannot add new user right now"));
-
-        }
+        if (!addingRoleResult.Succeeded)
+            return new UserDatabaseOperationResultDto(null, false, new Error("Sorry, something went wrong ..."));
         
-        return new UserDatabaseOperationResultDto(user, true, null);
+        _messageSender.SendMessage(user);
+
+        return new UserDatabaseOperationResultDto(user,true,null);
+
     }
 
     public async Task<UserDatabaseOperationResultDto> LoginUser(LoginDto loginDto)
@@ -113,29 +81,5 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
         return _dataValidator.ValidateData("ValidateName", accountDto.FirstName)
                && _dataValidator.ValidateData("ValidateName", accountDto.LastName)
                && _dataValidator.ValidateData("ValidatePassword", accountDto.Password);
-    }
-
-    private HttpRequestMessage BuildUserRegistrationRequest(string token, string firstName, string lastName,string email)
-    {
-        var request = new HttpRequestMessage
-        {
-            Method = HttpMethod.Post,
-            Headers =
-            {
-                { "Authorization" , $"Bearer {token}"}
-            }, 
-            RequestUri = new Uri(_configuration.GetEndpointUrl("UserServiceRegister")),
-        };
-
-        request.Content = JsonContent.Create(new
-        {
-            firstName,
-            lastName,
-            email,
-            dataTheme = "dark",
-            profilePictureUrl = "string"
-        });
-
-        return request;
     }
 }

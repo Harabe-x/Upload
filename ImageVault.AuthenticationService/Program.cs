@@ -4,7 +4,9 @@ using System.Threading.RateLimiting;
 using ImageVault.AuthenticationService.Configuration;
 using ImageVault.AuthenticationService.Data;
 using ImageVault.AuthenticationService.Data.Interfaces.Auth;
+using ImageVault.AuthenticationService.Data.Interfaces.RabbitMq;
 using ImageVault.AuthenticationService.Data.Models;
+using ImageVault.AuthenticationService.RabbitMq;
 using ImageVault.AuthenticationService.Repository;
 using ImageVault.AuthenticationService.Services;
 using ImageVault.ClassLibrary.Validation.Classes;
@@ -117,6 +119,8 @@ builder.Services.AddRateLimiter(builder => builder.AddFixedWindowLimiter("login"
 
 builder.Services.AddScoped<IUserAuthenticationRepository, UserAuthenticationRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddSingleton<IRabitMqConnection, RabitMqConnection>();
+builder.Services.AddScoped<IMessageSender,MessageSender>();
 
 var validator = new DataValidator();
 DataValidationRules.AddRules(validator);
@@ -151,7 +155,6 @@ app.UseAuthorization();
 app.UseCors("AllowSpecificOrigin");
 
 app.MapControllers();
-
 app.MapFallbackToFile("/index.html");
 
 app.Run();

@@ -5,6 +5,7 @@ using ImageVault.ClassLibrary.Validation.Interfaces;
 using ImageVault.UserService.Configuration;
 using ImageVault.UserService.Data;
 using ImageVault.UserService.Data.Interfaces;
+using ImageVault.UserService.RabbitMq;
 using ImageVault.UserService.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -60,7 +61,7 @@ var validator = new DataValidator();
 DataValidationRules.AddRules(validator);
 
 builder.Services.AddSingleton<IDataValidator>(validator);
-
+builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>(); 
 
 builder.Services.AddSwaggerGen(c => {
     c.SwaggerDoc("v1", new OpenApiInfo {

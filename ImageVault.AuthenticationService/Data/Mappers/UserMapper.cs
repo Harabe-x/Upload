@@ -12,7 +12,7 @@ public static class UserMapper
         {
             FirstName = account.FirstName,
             LastName = account.LastName,
-            Email = account.Email
+            Email = account.Email,
         };
     }
 

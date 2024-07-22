@@ -7,5 +7,7 @@ public record RegisterAccountDto
     [Required] string FirstName,
     [Required] string LastName,
     [Required] [EmailAddress] string Email,
-    [Required] string Password
+    [Required] string DataTheme, 
+    [Required] string Password, 
+    string profilePictureUrl
 );

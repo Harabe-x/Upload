@@ -1,6 +1,15 @@
 version: '3.4'
 
 services:
+
+  rabbitmq : 
+   build : RabbitMq/
+   ports : 
+     - "5672:5672"
+     - "5671:5671"
+     - "15672:15672"
+   volumes:
+     - rabbitMq:/var/lib/rabbitmq
   
   envoygateway:
     build: Envoy/
@@ -31,14 +40,6 @@ services:
       - "2104:2104"  
     volumes:
       - ./certs:/https
-
-  rabbitmq : 
-   build : RabbitMq/
-   ports : 
-     - "5672:5672"
-     - "15672:15672"
-   volumes:
-     - rabbitMq:/var/lib/rabbitmq
 
   imagevault.requestmetricsservice:
     image: ${DOCKER_REGISTRY-}imagevaultrequestmetricsservice
