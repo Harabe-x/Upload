@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ImageVault.AuthenticationService.Repository;
-
+    
 public class UserAuthenticationRepository : IUserAuthenticationRepository
 {
     private readonly IDataValidator _dataValidator;
@@ -58,7 +58,7 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
         if (!addingRoleResult.Succeeded)
             return new UserDatabaseOperationResultDto(null, false, new Error("Sorry, something went wrong ..."));
         
-        _messageSender.SendMessage(user);
+        _messageSender.SendMessage(accountDto.MapToUserData(user.Id));
 
         return new UserDatabaseOperationResultDto(user,true,null);
 

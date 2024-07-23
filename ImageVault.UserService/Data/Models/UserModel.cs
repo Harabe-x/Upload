@@ -20,7 +20,7 @@ public class UserModel
     [Required]
     public ApplicationColorSchemas ColorSchema { get; set; }
     
-    public string ProfilePictureUrl { get; set; }
+    public string? ProfilePictureUrl { get; set; }
     
     public List<ApiKey> UserApiKeys { get; set; }
 }

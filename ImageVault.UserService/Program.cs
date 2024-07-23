@@ -1,3 +1,4 @@
+using System.Net.NetworkInformation;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using ImageVault.ClassLibrary.Validation.Classes;
@@ -5,6 +6,7 @@ using ImageVault.ClassLibrary.Validation.Interfaces;
 using ImageVault.UserService.Configuration;
 using ImageVault.UserService.Data;
 using ImageVault.UserService.Data.Interfaces;
+using ImageVault.UserService.Extension;
 using ImageVault.UserService.RabbitMq;
 using ImageVault.UserService.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -56,12 +58,14 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();  
 builder.Services.AddScoped<IApiKeyRepository,ApiKeyRepository>(); 
- 
+
 var validator = new DataValidator();
 DataValidationRules.AddRules(validator);
 
 builder.Services.AddSingleton<IDataValidator>(validator);
-builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>(); 
+builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
+builder.Services.AddSingleton<IRabbitMqMessageConsumer, RabbitMqMessageConsumer>();
+
 
 builder.Services.AddSwaggerGen(c => {
     c.SwaggerDoc("v1", new OpenApiInfo {
@@ -91,8 +95,20 @@ builder.Services.AddSwaggerGen(c => {
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<ApplicationDbContext>();
+    if (context.Database.GetPendingMigrations().Any())
+    {
+        context.Database.Migrate();
+    }
+}
+
 app.UseSwagger();
 app.UseSwaggerUI();
+app.AddRabbitMqConsumer();
 
 // app.UseHttpsRedirection();
 

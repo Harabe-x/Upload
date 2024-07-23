@@ -73,7 +73,7 @@ public class UserRepository : IUserRepository
         user.FirstName = newUserData.FirstName;
         user.LastName = newUserData.LastName;
         user.ColorSchema = Enum.Parse<ApplicationColorSchemas>(newUserData.DataTheme);
-        user.ProfilePictureUrl= newUserData.profilePictureUrl;
+        user.ProfilePictureUrl= newUserData.ProfilePictureUrl;
     
           _dbContext.Update(user);
           

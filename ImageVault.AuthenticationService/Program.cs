@@ -137,8 +137,9 @@ builder.Services.AddCors(options =>
     });
 });
 
-var app = builder.Build();
 
+
+var app = builder.Build();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();

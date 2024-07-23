@@ -8,7 +8,7 @@ public static class UserMapper
 {
     public static UserDataDto MapToUserDataDto(this UserModel user)
     {
-        return new UserDataDto(user.FirstName, user.LastName, user.ColorSchema.ToString(), user.Email,
+        return new UserDataDto( user.Id,user.FirstName, user.LastName, user.ColorSchema.ToString(), user.Email,
             user.ProfilePictureUrl);
     }
 
@@ -19,7 +19,7 @@ public static class UserMapper
             Id = id,
             FirstName = user.FirstName,
             LastName = user.LastName,
-            ProfilePictureUrl = user.profilePictureUrl,
+            ProfilePictureUrl = user.ProfilePictureUrl,
             Email = user.Email,
             ColorSchema = Enum.Parse<ApplicationColorSchemas>(user.DataTheme)
         };
