@@ -1,11 +1,11 @@
-using ImageVault.UserService.Data.Interfaces;
-using ImageVault.UserService.Extension;
+using ImageVault.AuthenticationService.Configuration;
+using ImageVault.AuthenticationService.Data.Interfaces.RabbitMq;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 
-namespace ImageVault.UserService.RabbitMq;
+namespace ImageVault.AuthenticationService.RabbitMq;
 
-public class RabbitMqConnection : IRabbitMqConnection , IDisposable
+public class RabbitMqConnection : IRabitMqConnection, IDisposable
 {
     private readonly IConfiguration _configuration; 
     

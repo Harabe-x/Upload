@@ -6,6 +6,7 @@ using ImageVault.AuthenticationService.Data;
 using ImageVault.AuthenticationService.Data.Interfaces.Auth;
 using ImageVault.AuthenticationService.Data.Interfaces.RabbitMq;
 using ImageVault.AuthenticationService.Data.Models;
+using ImageVault.AuthenticationService.Middleware;
 using ImageVault.AuthenticationService.RabbitMq;
 using ImageVault.AuthenticationService.Repository;
 using ImageVault.AuthenticationService.Services;
@@ -119,8 +120,8 @@ builder.Services.AddRateLimiter(builder => builder.AddFixedWindowLimiter("login"
 
 builder.Services.AddScoped<IUserAuthenticationRepository, UserAuthenticationRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddSingleton<IRabitMqConnection, RabitMqConnection>();
-builder.Services.AddScoped<IMessageSender,MessageSender>();
+builder.Services.AddSingleton<IRabitMqConnection, RabbitMqConnection>();
+builder.Services.AddScoped<IRabbitMqMessageSender,RabbitMqMessageSender>();
 
 var validator = new DataValidator();
 DataValidationRules.AddRules(validator);
@@ -143,6 +144,7 @@ var app = builder.Build();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
+app.UseMiddleware<RequestLoggingMiddleware>();
 
 app.UseSwagger();
 app.UseSwaggerUI();

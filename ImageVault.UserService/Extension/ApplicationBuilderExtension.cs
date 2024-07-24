@@ -20,7 +20,7 @@ public  static class ApplicationBuilderExtension
 
     public static void OnStarted()
     {
-        _rabbitMqConsumer.Start();
+         _rabbitMqConsumer.Start();
     }
 
     public static void OnStopped()

@@ -5,27 +5,25 @@ using RabbitMQ.Client;
 
 namespace ImageVault.AuthenticationService.RabbitMq;
 
-public class MessageSender : IMessageSender
+public class RabbitMqMessageSender : IRabbitMqMessageSender
 {
     private IRabitMqConnection _connection;
 
-    public MessageSender(IRabitMqConnection connection)
+    public RabbitMqMessageSender(IRabitMqConnection connection)
     {
         _connection = connection;  
     }
     
-    public void SendMessage<T>(T message)
+    public void SendMessage<T>(T message,string queue)
     {
        using var channel = _connection.Connection.CreateModel();
 
-       channel.QueueDeclare( "UserData", true, false);
+       channel.QueueDeclare( queue , true, false);
 
        var jsonObject = JsonSerializer.Serialize(message);
 
        var body = Encoding.UTF8.GetBytes(jsonObject);
        
-       channel.BasicPublish("", "UserData" , true , body : body );
-       
-       
+       channel.BasicPublish("", queue , true , body : body );
     }
 }

@@ -18,7 +18,6 @@
     }
     function addCollection()
     {
-        //TODO
         closeModal()
     }
 

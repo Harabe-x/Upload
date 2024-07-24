@@ -1,9 +1,9 @@
-using ImageVault.UserService.Data.Interfaces;
-using ImageVault.UserService.Extension;
+using ImageVault.RequestMetricsService.Data.Interfaces;
+using ImageVault.RequestMetricsService.Extension;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 
-namespace ImageVault.UserService.RabbitMq;
+namespace ImageVault.RequestMetricsService.RabbitMq;
 
 public class RabbitMqConnection : IRabbitMqConnection , IDisposable
 {
@@ -35,7 +35,7 @@ public class RabbitMqConnection : IRabbitMqConnection , IDisposable
         const int maxAttempts = 5;
         var currentAttempt = 0; 
         
-        while ( currentAttempt < maxAttempts &&  _connection is not {} ||   !_connection.IsOpen ) 
+        while ( currentAttempt < maxAttempts &&  _connection is not {} ||  !_connection.IsOpen ) 
         {
             try
             {
@@ -50,6 +50,7 @@ public class RabbitMqConnection : IRabbitMqConnection , IDisposable
                 { 
                     _connection = factory.CreateConnection();
                 }
+                
             }
             catch (BrokerUnreachableException e)
             {

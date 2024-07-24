@@ -22,17 +22,20 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
 
     private readonly UserManager<ApplicationUser> _userManager;
 
-    private readonly IMessageSender _messageSender; 
+    private readonly IConfiguration _configuration; 
+    
+    private readonly IRabbitMqMessageSender _rabbitMqMessageSender; 
     
     public UserAuthenticationRepository(UserManager<ApplicationUser> userManager,
         ILogger<UserAuthenticationRepository> logger, SignInManager<ApplicationUser> signInManager,
-        IDataValidator dataValidator, IMessageSender messageSender)
+        IDataValidator dataValidator, IRabbitMqMessageSender rabbitMqMessageSender, IConfiguration configuration )
     {
         _logger = logger;
         _userManager = userManager;
         _signInManager = signInManager;
         _dataValidator = dataValidator;
-        _messageSender = messageSender;
+        _rabbitMqMessageSender = rabbitMqMessageSender;
+        _configuration = configuration;
     }
 
     public async Task<UserDatabaseOperationResultDto> CreateAccount(RegisterAccountDto accountDto)
@@ -58,7 +61,7 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
         if (!addingRoleResult.Succeeded)
             return new UserDatabaseOperationResultDto(null, false, new Error("Sorry, something went wrong ..."));
         
-        _messageSender.SendMessage(accountDto.MapToUserData(user.Id));
+        _rabbitMqMessageSender.SendMessage(accountDto.MapToUserData(user.Id), _configuration.GetUserQueueName());
 
         return new UserDatabaseOperationResultDto(user,true,null);
 

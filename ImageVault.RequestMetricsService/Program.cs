@@ -2,6 +2,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using ImageVault.RequestMetricsService.Data;
 using ImageVault.RequestMetricsService.Data.Interfaces;
+using ImageVault.RequestMetricsService.Extension;
 using ImageVault.RequestMetricsService.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -98,7 +99,7 @@ app.MapControllers();
 
 app.UseSwagger();
 app.UseSwaggerUI();
-
+app.AddRabbitMqListener();
 app.UseHttpsRedirection();
 
 app.Run();

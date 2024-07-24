@@ -7,6 +7,7 @@ using ImageVault.UserService.Configuration;
 using ImageVault.UserService.Data;
 using ImageVault.UserService.Data.Interfaces;
 using ImageVault.UserService.Extension;
+using ImageVault.UserService.Middleware;
 using ImageVault.UserService.RabbitMq;
 using ImageVault.UserService.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -95,21 +96,11 @@ builder.Services.AddSwaggerGen(c => {
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-
-    var context = services.GetRequiredService<ApplicationDbContext>();
-    if (context.Database.GetPendingMigrations().Any())
-    {
-        context.Database.Migrate();
-    }
-}
 
 app.UseSwagger();
 app.UseSwaggerUI();
 app.AddRabbitMqConsumer();
-
+app.UseMiddleware<RequestLoggingMiddleware>();
 // app.UseHttpsRedirection();
 
 app.UseAuthentication();
