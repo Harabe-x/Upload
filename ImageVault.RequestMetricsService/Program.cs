@@ -2,7 +2,10 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using ImageVault.RequestMetricsService.Data;
 using ImageVault.RequestMetricsService.Data.Interfaces;
+using ImageVault.RequestMetricsService.Data.Interfaces.RabbitMq;
 using ImageVault.RequestMetricsService.Extension;
+using ImageVault.RequestMetricsService.RabbitMq;
+using ImageVault.RequestMetricsService.RabbitMq.Consumers;
 using ImageVault.RequestMetricsService.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -16,8 +19,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.AddScoped<IUserRequestMetricsRepository, UserRequestMetricsRepository>();
 builder.Services.AddScoped<IRequestRepository,RequestRepository>();
-builder.Services.AddScoped<IUserRequestMetricsRepository, UserRequestMetricsRepository>(); 
+builder.Services.AddSingleton<IRabbitMqConsumerList, RabbitMqConsumerList>();
+builder.Services.AddSingleton<IRabbitMqListener,RabbitMqListener>();
+builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
+builder.Services.AddSingleton<RequestInfoConsumer>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {

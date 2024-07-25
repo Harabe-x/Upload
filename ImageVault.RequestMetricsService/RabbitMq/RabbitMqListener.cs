@@ -5,7 +5,7 @@ namespace ImageVault.RequestMetricsService.RabbitMq;
 
 public class RabbitMqListener : IRabbitMqListener
 {
-    public IEnumerable<IRabbitMqConsumer> Consumers => _rabbitMqConsumerList.GetConsumers();
+    public IEnumerable<IRabbitMqConsumer> Consumers { get; set; }
 
     private readonly IRabbitMqConsumerList _rabbitMqConsumerList;
     
@@ -16,6 +16,8 @@ public class RabbitMqListener : IRabbitMqListener
     
     public void StartListening()
     {
+        Consumers = _rabbitMqConsumerList.GetConsumers();
+        
         foreach (var consumer in Consumers)
         {
             consumer.Start();

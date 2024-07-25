@@ -9,54 +9,36 @@ public class RabbitMqConnection : IRabbitMqConnection , IDisposable
 {
     private readonly IConfiguration _configuration; 
     
-    private readonly object _lock = new ();
+    private readonly ILogger<RabbitMqConnection> _logger; 
     
     private IConnection _connection;
 
-    public IConnection Connection
+    public IConnection Connection => _connection; 
+    
+    public RabbitMqConnection(IConfiguration configuration,ILogger<RabbitMqConnection> logger )
     {
-        get
-        {
-            lock (_lock)
-            {
-                return _connection; 
-            }
-        }
-    }
-
-    public RabbitMqConnection(IConfiguration configuration)
-    {
-        _configuration = configuration; 
+        _configuration = configuration;
+        _logger = logger;
         InitializeConnection();
     }
 
     private async void InitializeConnection()
     {
-        const int maxAttempts = 5;
-        var currentAttempt = 0; 
-        
-        while ( currentAttempt < maxAttempts &&  _connection is not {} ||   !_connection.IsOpen ) 
+        try
         {
-            try
+            var factory = new ConnectionFactory
             {
-                var factory = new ConnectionFactory
-                {
-                    HostName = _configuration.GetRabbitMqHostName(),
-                    UserName = _configuration.GetRabbitMqUsername(),
-                    Password = _configuration.GetRabbitMqPassword()
-                };
+                HostName = _configuration.GetRabbitMqHostName(),
+                UserName = _configuration.GetRabbitMqUsername(),
+                Password = _configuration.GetRabbitMqPassword()
+            };
 
-                lock (_lock)
-                { 
-                    _connection = factory.CreateConnection();
-                }
-            }
-            catch (BrokerUnreachableException e)
-            {
-                await Task.Delay(TimeSpan.FromSeconds(30));
-                currentAttempt += 1;
-                if (currentAttempt == maxAttempts) throw;
-            }
+            _connection = factory.CreateConnection();
+        }
+        catch (BrokerUnreachableException e)
+        {
+            InitializeConnection();
+            _logger.LogError("Connection to Rabbitmq service failed");
         }
     }
 

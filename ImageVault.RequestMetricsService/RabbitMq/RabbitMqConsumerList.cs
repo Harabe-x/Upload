@@ -1,6 +1,7 @@
 using ImageVault.RequestMetricsService.Data.Interfaces;
 using ImageVault.RequestMetricsService.Data.Interfaces.RabbitMq;
 using ImageVault.RequestMetricsService.RabbitMq.Consumers;
+using Microsoft.EntityFrameworkCore.Storage.Json;
 
 namespace ImageVault.RequestMetricsService.RabbitMq;
 

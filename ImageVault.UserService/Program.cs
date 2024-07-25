@@ -96,11 +96,11 @@ builder.Services.AddSwaggerGen(c => {
 
 var app = builder.Build();
 
+app.AddRabbitMqConsumer();
 
 app.UseSwagger();
 app.UseSwaggerUI();
-app.AddRabbitMqConsumer();
-app.UseMiddleware<RequestLoggingMiddleware>();
+// app.UseMiddleware<RequestLoggingMiddleware>();
 // app.UseHttpsRedirection();
 
 app.UseAuthentication();

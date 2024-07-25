@@ -3,6 +3,7 @@ using System.Text.Json;
 using ImageVault.RequestMetricsService.Data.Dtos;
 using ImageVault.RequestMetricsService.Data.Interfaces;
 using ImageVault.RequestMetricsService.Extension;
+using ImageVault.RequestMetricsService.Repository;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -14,18 +15,18 @@ public class RequestInfoConsumer : IRabbitMqConsumer
     
     private readonly IRabbitMqConnection _connection;
 
-    private readonly ILogger<RequestInfoConsumer> _logger; 
+    private readonly ILogger<RequestInfoConsumer> _logger;
 
-    private readonly IRequestRepository _requestRepository;
-
+    private readonly IServiceProvider _serviceProvider; 
+    
     private IModel _channel; 
 
-    public RequestInfoConsumer(IRabbitMqConnection connection, IConfiguration configuration,IRequestRepository requestRepository, ILogger<RequestInfoConsumer> logger)
+    public RequestInfoConsumer(IRabbitMqConnection connection, IConfiguration configuration, ILogger<RequestInfoConsumer> logger, IServiceProvider serviceProvider)
     {
         _logger = logger; 
         _connection = connection;
         _configuration = configuration;
-        _requestRepository = requestRepository; 
+        _serviceProvider = serviceProvider; 
     }
     
     
@@ -51,12 +52,18 @@ public class RequestInfoConsumer : IRabbitMqConsumer
         {
             var requestObject =JsonSerializer.Deserialize<RequestDto>(jsonMessage);
 
-            var result = await _requestRepository.AddRequest(requestObject);
+            using var scope = _serviceProvider.CreateScope();
 
+            var requestRepository = scope.ServiceProvider.GetService<IRequestRepository>();
+            
+            var result = await requestRepository.AddRequest(requestObject); 
+            
             if (!result)
             {
                 _channel.BasicNack(args.DeliveryTag, true , false) ;
+                return; 
             }
+            _channel.BasicAck(args.DeliveryTag,true);
         }
         catch (Exception e)
         {
@@ -72,6 +79,6 @@ public class RequestInfoConsumer : IRabbitMqConsumer
 
     public void Dispose()
     {
-        _connection.Connection.Dispose();
+        _connection.Connection?.Dispose();
     }
 }

@@ -7,14 +7,18 @@ public static class ApplicationBuilderExtension
 {
     public static IApplicationBuilder AddRabbitMqListener(this IApplicationBuilder  app)
     {
-        var rabbitmqListener = app.ApplicationServices.GetService<IRabbitMqListener>();
+        var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
+        using (var scope = scopeFactory.CreateScope())
+        {
+            var listener = scope.ServiceProvider.GetRequiredService<IRabbitMqListener>();
         
-        var lifetime = app.ApplicationServices.GetService<IHostApplicationLifetime>();
+            var lifetime = app.ApplicationServices.GetService<IHostApplicationLifetime>();
 
-        lifetime.ApplicationStarted.Register(rabbitmqListener.StartListening);
+            lifetime.ApplicationStarted.Register(listener.StartListening);
 
-        lifetime.ApplicationStopped.Register(rabbitmqListener.StopListening);
-
+            lifetime.ApplicationStopped.Register(listener.StopListening);
+        }
+        
         return app; 
     }
 }
