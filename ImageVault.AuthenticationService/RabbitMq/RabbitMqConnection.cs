@@ -30,7 +30,8 @@ public class RabbitMqConnection : IRabitMqConnection, IDisposable
             {
                 HostName = _configuration.GetRabbitMqHostName(),
                 UserName = _configuration.GetRabbitMqUsername(),
-                Password = _configuration.GetRabbitMqPassword()
+                Password = _configuration.GetRabbitMqPassword(),
+                DispatchConsumersAsync = true
             };
 
             _connection = factory.CreateConnection();

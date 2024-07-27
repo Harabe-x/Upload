@@ -27,7 +27,7 @@ public class RabbitMqMessageConsumer : IRabbitMqMessageConsumer
 
         channel.QueueDeclare("UserData",true, false);
 
-        var consumer = new EventingBasicConsumer(channel);
+        var consumer = new AsyncEventingBasicConsumer(channel);
 
         consumer.Received += async (model, ea) =>
         {

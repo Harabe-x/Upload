@@ -17,16 +17,14 @@ public class RequestInfoConsumer : IRabbitMqConsumer
 
     private readonly ILogger<RequestInfoConsumer> _logger;
 
-    private readonly IServiceProvider _serviceProvider; 
     
     private IModel _channel; 
 
-    public RequestInfoConsumer(IRabbitMqConnection connection, IConfiguration configuration, ILogger<RequestInfoConsumer> logger, IServiceProvider serviceProvider)
+    public RequestInfoConsumer(IRabbitMqConnection connection, IConfiguration configuration, ILogger<RequestInfoConsumer> logger)
     {
         _logger = logger; 
         _connection = connection;
         _configuration = configuration;
-        _serviceProvider = serviceProvider; 
     }
     
     
@@ -52,17 +50,10 @@ public class RequestInfoConsumer : IRabbitMqConsumer
         {
             var requestObject =JsonSerializer.Deserialize<RequestDto>(jsonMessage);
 
-            using var scope = _serviceProvider.CreateScope();
-
-            var requestRepository = scope.ServiceProvider.GetService<IRequestRepository>();
+           
+            _logger.LogInformation(requestObject.ToString());
             
-            var result = await requestRepository.AddRequest(requestObject); 
             
-            if (!result)
-            {
-                _channel.BasicNack(args.DeliveryTag, true , false) ;
-                return; 
-            }
             _channel.BasicAck(args.DeliveryTag,true);
         }
         catch (Exception e)

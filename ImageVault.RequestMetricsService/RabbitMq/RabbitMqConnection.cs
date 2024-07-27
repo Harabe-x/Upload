@@ -30,14 +30,15 @@ public class RabbitMqConnection : IRabbitMqConnection , IDisposable
             {
                 HostName = _configuration.GetRabbitMqHostName(),
                 UserName = _configuration.GetRabbitMqUsername(),
-                Password = _configuration.GetRabbitMqPassword()
+                Password = _configuration.GetRabbitMqPassword(),
+                DispatchConsumersAsync = true
             };
 
             _connection = factory.CreateConnection();
         }
         catch (BrokerUnreachableException e)
         {
-            await Task.Delay(TimeSpan.FromSeconds(30));
+            await Task.Delay(TimeSpan.FromSeconds(5));
             InitializeConnection();
             _logger.LogError("Connection to Rabbitmq service failed");
         }
