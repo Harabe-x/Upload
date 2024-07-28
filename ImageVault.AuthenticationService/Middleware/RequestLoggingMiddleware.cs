@@ -28,6 +28,6 @@ public class RequestLoggingMiddleware
 
     private RequestDto CreateRequestDto(HttpContext context)
     {
-        return new RequestDto(context.User.GetClaimValue(ClaimTypes.NameIdentifier), DateTime.Now,context.Request.Path, context.Connection.RemoteIpAddress.ToString(), context.Request.Method  );
+        return new RequestDto(context.User.GetClaimValue(ClaimTypes.NameIdentifier) ?? "User not authenticated", DateTime.Now,context.Request.Path, context.Connection.RemoteIpAddress.ToString(), context.Request.Method  );
     }
 }

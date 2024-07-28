@@ -34,9 +34,11 @@ public class RabbitMqListener : IRabbitMqListener
 
     public void Dispose()
     {
+        if (Consumers is not { } || Consumers.Count() == 0) return; 
+        
         foreach (var consumer in Consumers)
         {
-            consumer.Dispose();
+            consumer?.Dispose();
         }
     }
 }

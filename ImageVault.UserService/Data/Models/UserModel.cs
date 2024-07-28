@@ -22,5 +22,4 @@ public class UserModel
     
     public string? ProfilePictureUrl { get; set; }
     
-    public List<ApiKey> UserApiKeys { get; set; }
 }

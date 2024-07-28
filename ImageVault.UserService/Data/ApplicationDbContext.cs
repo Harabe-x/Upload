@@ -5,12 +5,12 @@ namespace ImageVault.UserService.Data;
 
 public class ApplicationDbContext : DbContext
 {
-    public ApplicationDbContext(DbContextOptions options) : base(options)
+    private readonly IConfiguration _configuration;
+    
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,IConfiguration configuration ) : base(options)
     {
-        
+        _configuration = configuration;
     }
     
     public DbSet<UserModel> ApplicationUsers { get; set; }
-    
-    public DbSet<ApiKey> ApiKeys { get; set; }
 }

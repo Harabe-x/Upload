@@ -17,14 +17,17 @@ public class RequestInfoConsumer : IRabbitMqConsumer
 
     private readonly ILogger<RequestInfoConsumer> _logger;
 
+    private readonly IServiceScopeFactory _factory;
     
     private IModel _channel; 
 
-    public RequestInfoConsumer(IRabbitMqConnection connection, IConfiguration configuration, ILogger<RequestInfoConsumer> logger)
+    public RequestInfoConsumer(IRabbitMqConnection connection, IConfiguration configuration, ILogger<RequestInfoConsumer> logger,IServiceScopeFactory factory)
     {
         _logger = logger; 
         _connection = connection;
         _configuration = configuration;
+        _factory = factory; 
+
     }
     
     
@@ -52,8 +55,20 @@ public class RequestInfoConsumer : IRabbitMqConsumer
 
            
             _logger.LogInformation(requestObject.ToString());
-            
-            
+
+            using (var scope = _factory.CreateAsyncScope())
+            {
+                var requestRepository = scope.ServiceProvider.GetService<IRequestRepository>();
+
+                var result = await requestRepository.AddRequest(requestObject);
+
+                if (!result)
+                {
+                    _channel.BasicNack(args.DeliveryTag, true,  false);
+                    return; 
+                }
+
+            }
             _channel.BasicAck(args.DeliveryTag,true);
         }
         catch (Exception e)

@@ -57,8 +57,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddScoped<IUserRepository, UserRepository>();  
-builder.Services.AddScoped<IApiKeyRepository,ApiKeyRepository>(); 
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var validator = new DataValidator();
 DataValidationRules.AddRules(validator);
@@ -100,11 +99,9 @@ app.AddRabbitMqConsumer();
 
 app.UseSwagger();
 app.UseSwaggerUI();
-// app.UseMiddleware<RequestLoggingMiddleware>();
-// app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseMiddleware<RequestLoggingMiddleware>();
 
 app.MapControllers(); 
 
