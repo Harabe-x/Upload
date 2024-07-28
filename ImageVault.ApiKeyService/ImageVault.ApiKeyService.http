@@ -1,0 +1,6 @@
+@ImageVault.ApiKeyService_HostAddress = http://localhost:5236
+
+GET {{ImageVault.ApiKeyService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
