@@ -33,7 +33,7 @@ public class RequestInfoConsumer : IRabbitMqConsumer
         _channel = _connection.Connection.CreateModel();
 
         _channel.QueueDeclare(_configuration.GetRequestQueueName(), true, false);
-
+        
         var consumer = new AsyncEventingBasicConsumer(_channel);
 
         consumer.Received += HandleMessage;

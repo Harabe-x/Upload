@@ -26,6 +26,8 @@ builder.Services.AddSingleton<IRabbitMqListener,RabbitMqListener>();
 builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
 builder.Services.AddSingleton<RequestInfoConsumer>();
 
+
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("default"));
@@ -63,6 +65,7 @@ builder.WebHost.ConfigureKestrel(options =>
 builder.WebHost.UseUrls("http://*:2106");
 
 
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
@@ -98,6 +101,8 @@ builder.Services.AddSwaggerGen(c =>
 
 
 var app = builder.Build();
+
+
 
 app.UseAuthentication();
 app.UseAuthorization();
