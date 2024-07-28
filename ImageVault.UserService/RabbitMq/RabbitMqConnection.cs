@@ -38,7 +38,7 @@ public class RabbitMqConnection : IRabbitMqConnection , IDisposable
         }
         catch (BrokerUnreachableException e)
         {
-            await Task.Delay(TimeSpan.FromSeconds(5));
+            Thread.Sleep(TimeSpan.FromSeconds(5));    
             InitializeConnection();
             _logger.LogError("Connection to Rabbitmq service failed");
         }
