@@ -17,6 +17,10 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.ConfigureHttpsDefaults(config =>
@@ -32,10 +36,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("default"));
 });
-
-
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -56,17 +56,6 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey( Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"]))
     };
 });
-
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-
-var validator = new DataValidator();
-DataValidationRules.AddRules(validator);
-
-builder.Services.AddSingleton<IDataValidator>(validator);
-builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
-builder.Services.AddSingleton<IRabbitMqMessageConsumer, RabbitMqMessageConsumer>();
-
-
 builder.Services.AddSwaggerGen(c => {
     c.SwaggerDoc("v1", new OpenApiInfo {
         Title = "UsersAPI", Version = "v1"
@@ -92,6 +81,15 @@ builder.Services.AddSwaggerGen(c => {
     });
 });
 
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+var validator = new DataValidator();
+DataValidationRules.AddRules(validator);
+
+builder.Services.AddSingleton<IDataValidator>(validator);
+builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
+builder.Services.AddSingleton<IRabbitMqMessageConsumer, RabbitMqMessageConsumer>();
+
 
 var app = builder.Build();
 
@@ -103,6 +101,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<RequestLoggingMiddleware>();
 
-app.MapControllers(); 
-
+app.MapControllers();
 app.Run();

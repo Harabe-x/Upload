@@ -75,7 +75,7 @@ static_resources:
             address:
               socket_address:
                 address: imagevault.authenticationservice
-                port_value: 8080
+                port_value: 2101
   - name: UserService
     type: LOGICAL_DNS
     dns_lookup_family: V4_ONLY
@@ -87,5 +87,5 @@ static_resources:
             address:
               socket_address:
                 address: imagevault.userservice
-                port_value: 8080
+                port_value: 2104
   

@@ -24,7 +24,6 @@
       <Folder Include="Extension" />
       <Folder Include="Middleware" />
       <Folder Include="RabbitMq" />
-      <Folder Include="Repository" />
     </ItemGroup>
 
 </Project>

@@ -6,7 +6,7 @@ import App from './App.svelte'
 
 //axios defaults
 
-axios.defaults.baseURL = 'https://localhost:7110/api';
+axios.defaults.baseURL = 'https://localhost:10000/api';
 
 
 
