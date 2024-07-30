@@ -1,5 +1,10 @@
 using System.Text;
+using ImageVault.ApiKeyService.Configuration;
 using ImageVault.ApiKeyService.Data;
+using ImageVault.ApiKeyService.Data.Interfaces.ApiKey;
+using ImageVault.ApiKeyService.Data.Interfaces.Services;
+using ImageVault.ApiKeyService.Repository;
+using ImageVault.ApiKeyService.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -11,6 +16,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
+var validationService = new DataValidationService();
+
+validationService.AddValidatioRules();
+
+builder.Services.AddSingleton<IDataValidationService>(validationService);
+builder.Services.AddScoped<IApiKeyRepository, ApiKeyRepository>(); 
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {

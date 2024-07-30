@@ -17,6 +17,13 @@ public class ApiKey
     public string Key { get; set; }
     
     [Required]
-    public long StorageCapacity { get; set; }
+    public uint StorageCapacity { get; set; }
+
+    public ApiKey()
+    {
+        Id = Guid.NewGuid().ToString();
+        Key =  Guid.NewGuid().ToString();
+
+    }
     
 }

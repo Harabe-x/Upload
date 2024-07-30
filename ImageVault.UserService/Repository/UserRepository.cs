@@ -1,12 +1,11 @@
 using System.Runtime.CompilerServices;
-using ImageVault.ClassLibrary.Validation.Interfaces;
 using ImageVault.UserService.Data;
 using ImageVault.UserService.Data.Dtos;
 using ImageVault.UserService.Data.Enums;
 using ImageVault.UserService.Data.Interfaces;
+using ImageVault.UserService.Data.Interfaces.Services;
 using ImageVault.UserService.Data.Mappers;
 using ImageVault.UserService.Data.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,14 +14,14 @@ namespace ImageVault.UserService.Repository;
 public class UserRepository : IUserRepository 
 {
 
-    private readonly IDataValidator _dataValidator;
+    private readonly IDataValidationService _validationService;
     
     private readonly ApplicationDbContext _dbContext; 
 
     
-    public UserRepository(IDataValidator dataValidator ,  ApplicationDbContext dbContext)
+    public UserRepository(IDataValidationService validationService ,  ApplicationDbContext dbContext)
     {
-        _dataValidator = dataValidator;
+        _validationService = validationService;
         _dbContext = dbContext;
     }
 
@@ -40,7 +39,7 @@ public class UserRepository : IUserRepository
 
     public async Task<OperationResultDto<UserDataDto>> AddUser([FromBody]UserDataDto userData,string id )
     {
-        if (!_dataValidator.ValidateData("ValidateUserDataDto", userData))  
+        if (!_validationService.ValidateData("ValidateUserDataDto", userData))  
             return new OperationResultDto<UserDataDto>
 (null, false,new Error("Data validation failed"));
 
@@ -62,7 +61,7 @@ public class UserRepository : IUserRepository
     public async Task<OperationResultDto<UserDataDto>> UpdateUser(UserDataDto newUserData, string id)
     {
         
-        if (!_dataValidator.ValidateData("ValidateUserDataDto", newUserData))  
+        if (!_validationService.ValidateData("ValidateUserDataDto", newUserData))  
             return new OperationResultDto<UserDataDto>
 (null, false,new Error("Data validation failed"));
         

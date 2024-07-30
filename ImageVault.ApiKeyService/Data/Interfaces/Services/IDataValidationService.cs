@@ -1,6 +1,8 @@
 namespace ImageVault.ApiKeyService.Data.Interfaces.Services;
 
-public class IValidationService
+public interface IDataValidationService
 {
-    
+    public void AddCustomValidationRule<T>(string name, Predicate<T> validationRule);
+
+    public bool ValidateData<T>(string name, T validationData);
 }

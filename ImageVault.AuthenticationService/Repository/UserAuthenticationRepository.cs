@@ -1,20 +1,19 @@
-using System.Net;
+
+// using System.Net;
 using ImageVault.AuthenticationService.Configuration;
-using ImageVault.AuthenticationService.Data;
 using ImageVault.AuthenticationService.Data.Dtos.AuthDtos;
 using ImageVault.AuthenticationService.Data.Interfaces.Auth;
 using ImageVault.AuthenticationService.Data.Interfaces.RabbitMq;
+using ImageVault.AuthenticationService.Data.Interfaces.Services;
 using ImageVault.AuthenticationService.Data.Mappers;
 using ImageVault.AuthenticationService.Data.Models;
-using ImageVault.ClassLibrary.Validation.Interfaces;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
 
 namespace ImageVault.AuthenticationService.Repository;
     
 public class UserAuthenticationRepository : IUserAuthenticationRepository
 {
-    private readonly IDataValidator _dataValidator;
+    private readonly IDataValidationService _validationService;
 
     private readonly ILogger<UserAuthenticationRepository> _logger;
 
@@ -28,12 +27,12 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
     
     public UserAuthenticationRepository(UserManager<ApplicationUser> userManager,
         ILogger<UserAuthenticationRepository> logger, SignInManager<ApplicationUser> signInManager,
-        IDataValidator dataValidator, IRabbitMqMessageSender rabbitMqMessageSender, IConfiguration configuration )
+        IDataValidationService validationService, IRabbitMqMessageSender rabbitMqMessageSender, IConfiguration configuration )
     {
         _logger = logger;
         _userManager = userManager;
         _signInManager = signInManager;
-        _dataValidator = dataValidator;
+        _validationService = validationService;
         _rabbitMqMessageSender = rabbitMqMessageSender;
         _configuration = configuration;
     }
@@ -81,8 +80,8 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
 
     private bool ValidateRegisterDto(RegisterAccountDto accountDto)
     {
-        return _dataValidator.ValidateData("ValidateName", accountDto.FirstName)
-               && _dataValidator.ValidateData("ValidateName", accountDto.LastName)
-               && _dataValidator.ValidateData("ValidatePassword", accountDto.Password);
+        return _validationService.ValidateData("ValidateName", accountDto.FirstName)
+               && _validationService.ValidateData("ValidateName", accountDto.LastName)
+               && _validationService.ValidateData("ValidatePassword", accountDto.Password);
     }
 }

@@ -5,13 +5,12 @@ using ImageVault.AuthenticationService.Configuration;
 using ImageVault.AuthenticationService.Data;
 using ImageVault.AuthenticationService.Data.Interfaces.Auth;
 using ImageVault.AuthenticationService.Data.Interfaces.RabbitMq;
+using ImageVault.AuthenticationService.Data.Interfaces.Services;
 using ImageVault.AuthenticationService.Data.Models;
 using ImageVault.AuthenticationService.Middleware;
 using ImageVault.AuthenticationService.RabbitMq;
 using ImageVault.AuthenticationService.Repository;
 using ImageVault.AuthenticationService.Services;
-using ImageVault.ClassLibrary.Validation.Classes;
-using ImageVault.ClassLibrary.Validation.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.RateLimiting;
@@ -123,10 +122,10 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddSingleton<IRabitMqConnection, RabbitMqConnection>();
 builder.Services.AddScoped<IRabbitMqMessageSender,RabbitMqMessageSender>();
 
-var validator = new DataValidator();
+var validator = new DataValidationService();
 DataValidationRules.AddRules(validator);
 
-builder.Services.AddSingleton<IDataValidator>(validator);
+builder.Services.AddSingleton<IDataValidationService>(validator);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCors(options =>
 {

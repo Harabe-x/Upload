@@ -1,35 +1,35 @@
 using ImageVault.AuthenticationService.Data.Dtos.AuthDtos;
 using ImageVault.AuthenticationService.Data.Dtos.UserDtos;
 using ImageVault.AuthenticationService.Data.Enums;
-using ImageVault.ClassLibrary.Validation.Classes;
+using ImageVault.AuthenticationService.Data.Interfaces.Services;
 
 namespace ImageVault.AuthenticationService.Configuration;
 
 public class DataValidationRules
 {
-    public static void AddRules(DataValidator validator)
+    public static void AddRules(IDataValidationService validationService)
     {
-        validator.AddCustomValidationRule<string>("ValidateName",
+        validationService.AddCustomValidationRule<string>("ValidateName",
             str => { return str.All(chr => char.IsLetter(chr)); });
-        validator.AddCustomValidationRule<string>("ValidateApplicationColorSchema",
+        validationService.AddCustomValidationRule<string>("ValidateApplicationColorSchema",
             str => Enum.IsDefined(typeof(ApplicationColorSchemas), str));
 
-        validator.AddCustomValidationRule<string>("ValidatePassword", str =>
+        validationService.AddCustomValidationRule<string>("ValidatePassword", str =>
         {
             return str.Length > 7 && str.Any(chr => !char.IsLetterOrDigit(chr)) &&
                    str.Any(chr => char.IsDigit(chr));
         });
-        validator.AddCustomValidationRule<RegisterAccountDto>("ValidateRegisterDto", registerDto =>
+        validationService.AddCustomValidationRule<RegisterAccountDto>("ValidateRegisterDto", registerDto =>
         {
-            return validator.ValidateData("ValidateName", registerDto.FirstName)
-                   && validator.ValidateData("ValidateName", registerDto.LastName)
-                   && validator.ValidateData("ValidatePassword", registerDto.Password);
+            return validationService.ValidateData("ValidateName", registerDto.FirstName)
+                   && validationService.ValidateData("ValidateName", registerDto.LastName)
+                   && validationService.ValidateData("ValidatePassword", registerDto.Password);
         });
-        validator.AddCustomValidationRule<UserDataDto>("ValidateUserDataDto", userData =>
+        validationService.AddCustomValidationRule<UserDataDto>("ValidateUserDataDto", userData =>
         {
-            return validator.ValidateData("ValidateName", userData.FirstName)
-                   && validator.ValidateData("ValidateName", userData.LastName)
-                   && validator.ValidateData("ValidateApplicationColorSchema", userData.DataTheme);
+            return validationService.ValidateData("ValidateName", userData.FirstName)
+                   && validationService.ValidateData("ValidateName", userData.LastName)
+                   && validationService.ValidateData("ValidateApplicationColorSchema", userData.DataTheme);
         });
     }
 }

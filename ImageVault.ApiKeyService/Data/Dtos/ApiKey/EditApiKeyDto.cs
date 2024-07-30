@@ -1,3 +1,3 @@
 namespace ImageVault.ApiKeyService.Data.Dtos;
 
-public record EditApiKeyDto();
+public record EditApiKeyDto(string KeyName, uint KeyCapacity);

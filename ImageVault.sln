@@ -6,8 +6,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageVault.AuthenticationSe
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "imagevault.client", "imagevault.client\imagevault.client.esproj", "{21A6C5FE-40CF-463E-80E2-7EB91011BF6A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageVault.ClassLibrary", "ImageVault.ClassLibrary\ImageVault.ClassLibrary.csproj", "{A5B77F89-430D-4E2E-B8CC-FD0FE46BC864}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageVault.UserService", "ImageVault.UserService\ImageVault.UserService.csproj", "{03CDD421-9DDE-48ED-879F-DFD635B00F33}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{D8040CBA-B797-478C-AA5E-05CC488F3175}"
@@ -32,10 +30,6 @@ Global
 		{21A6C5FE-40CF-463E-80E2-7EB91011BF6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21A6C5FE-40CF-463E-80E2-7EB91011BF6A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{21A6C5FE-40CF-463E-80E2-7EB91011BF6A}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{A5B77F89-430D-4E2E-B8CC-FD0FE46BC864}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A5B77F89-430D-4E2E-B8CC-FD0FE46BC864}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A5B77F89-430D-4E2E-B8CC-FD0FE46BC864}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A5B77F89-430D-4E2E-B8CC-FD0FE46BC864}.Release|Any CPU.Build.0 = Release|Any CPU
 		{03CDD421-9DDE-48ED-879F-DFD635B00F33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{03CDD421-9DDE-48ED-879F-DFD635B00F33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03CDD421-9DDE-48ED-879F-DFD635B00F33}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -1,15 +1,15 @@
 using System.Net.NetworkInformation;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using ImageVault.ClassLibrary.Validation.Classes;
-using ImageVault.ClassLibrary.Validation.Interfaces;
 using ImageVault.UserService.Configuration;
 using ImageVault.UserService.Data;
 using ImageVault.UserService.Data.Interfaces;
+using ImageVault.UserService.Data.Interfaces.Services;
 using ImageVault.UserService.Extension;
 using ImageVault.UserService.Middleware;
 using ImageVault.UserService.RabbitMq;
 using ImageVault.UserService.Repository;
+using ImageVault.UserService.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -83,10 +83,10 @@ builder.Services.AddSwaggerGen(c => {
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-var validator = new DataValidator();
+var validator = new DataValidationService();
 DataValidationRules.AddRules(validator);
 
-builder.Services.AddSingleton<IDataValidator>(validator);
+builder.Services.AddSingleton<IDataValidationService>(validator);
 builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
 builder.Services.AddSingleton<IRabbitMqMessageConsumer, RabbitMqMessageConsumer>();
 
