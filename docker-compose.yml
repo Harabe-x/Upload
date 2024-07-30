@@ -2,14 +2,14 @@ version: '3.4'
 
 services:
 
-  rabbitmq : 
-   build : RabbitMq/
-   ports : 
-     - "5672:5672"
-     - "5671:5671"
-     - "15672:15672"
-   volumes:
-     - rabbitMq:/var/lib/rabbitmq
+  rabbitmq:
+    build: RabbitMq/
+    ports:
+      - "5672:5672"
+      - "5671:5671"
+      - "15672:15672"
+    volumes:
+      - rabbitMq:/var/lib/rabbitmq
   
   envoygateway:
     build: Envoy/
@@ -26,10 +26,10 @@ services:
       dockerfile: ImageVault.AuthenticationService/Dockerfile
     ports:
       - "2100:2100"
-      - "2101:2101"  
+      - "2101:2101"
     volumes:
-      - ./certs:/https 
-      
+      - ./certs:/https
+  
   imagevault.userservice:
     image: ${DOCKER_REGISTRY-}imagevaultuserservice
     build:
@@ -37,7 +37,7 @@ services:
       dockerfile: ImageVault.UserService/Dockerfile
     ports:
       - "2103:2103"
-      - "2104:2104"  
+      - "2104:2104"
     volumes:
       - ./certs:/https
 
@@ -48,19 +48,19 @@ services:
       dockerfile: ImageVault.RequestMetricsService/Dockerfile
     ports:
       - "2105:2105"
-      - "2106:2106"  
+      - "2106:2106"
     volumes:
       - ./certs:/https
 
-  sqlserver : 
-   build : MsSqlServer/
-   ports : 
-    - "1433:1433"
-   environment : 
-    ACCEPT_EULA : "Y"
-    MSSQL_SA_PASSWORD : "TestPassword1!"
-   volumes :
-    - msSqlServer:/var/opt/mssql
+  sqlserver:
+    build: MsSqlServer/
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "TestPassword1!"
+    volumes:
+      - msSqlServer:/var/opt/mssql
 
 volumes:
   rabbitMq:

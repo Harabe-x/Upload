@@ -7,24 +7,23 @@ namespace ImageVault.UserService.RabbitMq;
 
 public class RabbitMqMessageSender : IRabbitMqMessageSender
 {
-    private IRabbitMqConnection _connection;
+    private readonly IRabbitMqConnection _connection;
 
     public RabbitMqMessageSender(IRabbitMqConnection connection)
     {
-        _connection = connection;  
+        _connection = connection;
     }
-    
-    public void SendMessage<T>(T message,string queue)
+
+    public void SendMessage<T>(T message, string queue)
     {
         using var channel = _connection.Connection.CreateModel();
 
-        channel.QueueDeclare( queue , true, false);
+        channel.QueueDeclare(queue, true, false);
 
         var jsonObject = JsonSerializer.Serialize(message);
 
         var body = Encoding.UTF8.GetBytes(jsonObject);
-       
-        channel.BasicPublish("", queue, true , body : body );
-        
+
+        channel.BasicPublish("", queue, true, body: body);
     }
 }

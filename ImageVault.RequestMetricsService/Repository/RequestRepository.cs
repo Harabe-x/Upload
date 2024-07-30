@@ -14,9 +14,9 @@ public class RequestRepository : IRequestRepository
     public RequestRepository(ApplicationDbContext dbContext, ILogger<IRequestRepository> logger)
     {
         _dbContext = dbContext;
-        _logger = logger; 
+        _logger = logger;
     }
-    
+
     public async Task<bool> AddRequest(RequestDto requestData)
     {
         var request = requestData.MapRequestDtoToRequest();

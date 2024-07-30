@@ -15,23 +15,21 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddScoped<IUserRequestMetricsRepository, UserRequestMetricsRepository>();
-builder.Services.AddScoped<IRequestRepository,RequestRepository>();
+builder.Services.AddScoped<IRequestRepository, RequestRepository>();
 builder.Services.AddSingleton<IRabbitMqConsumerList, RabbitMqConsumerList>();
-builder.Services.AddSingleton<IRabbitMqListener,RabbitMqListener>();
+builder.Services.AddSingleton<IRabbitMqListener, RabbitMqListener>();
 builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
 builder.Services.AddSingleton<RequestInfoConsumer>();
-
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("default"));
-}); 
+});
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme =
@@ -63,7 +61,6 @@ builder.WebHost.ConfigureKestrel(options =>
 });
 
 builder.WebHost.UseUrls("http://*:2106");
-
 
 
 builder.Services.AddSwaggerGen(c =>
@@ -111,4 +108,3 @@ app.AddRabbitMqListener();
 app.UseHttpsRedirection();
 
 app.Run();
-

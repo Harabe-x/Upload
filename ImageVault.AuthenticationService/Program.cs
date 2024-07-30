@@ -120,7 +120,7 @@ builder.Services.AddRateLimiter(builder => builder.AddFixedWindowLimiter("login"
 builder.Services.AddScoped<IUserAuthenticationRepository, UserAuthenticationRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddSingleton<IRabitMqConnection, RabbitMqConnection>();
-builder.Services.AddScoped<IRabbitMqMessageSender,RabbitMqMessageSender>();
+builder.Services.AddScoped<IRabbitMqMessageSender, RabbitMqMessageSender>();
 
 var validator = new DataValidationService();
 DataValidationRules.AddRules(validator);
@@ -136,7 +136,6 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
-
 
 
 var app = builder.Build();

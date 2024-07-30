@@ -7,13 +7,13 @@ public static class RequestMapper
 {
     public static Requests MapRequestDtoToRequest(this RequestDto request)
     {
-        return new Requests()
+        return new Requests
         {
-            UserId = request.UserId, 
-            Endpoint = request.Endpoint, 
+            UserId = request.UserId,
+            Endpoint = request.Endpoint,
             Method = request.Method,
-            Ip =  request.Ip,
-            TimeStamp = request.TimeStamp 
+            Ip = request.Ip,
+            TimeStamp = request.TimeStamp
         };
     }
 }

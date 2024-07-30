@@ -4,5 +4,5 @@ public interface IRabbitMqMessageConsumer
 {
     public Task Start();
 
-    public Task Stop(); 
+    public Task Stop();
 }

@@ -1,5 +1,3 @@
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.JavaScript;
 using ImageVault.ApiKeyService.Data;
 using ImageVault.ApiKeyService.Data.Dtos;
 using ImageVault.ApiKeyService.Data.Interfaces.ApiKey;
@@ -7,7 +5,6 @@ using ImageVault.ApiKeyService.Data.Interfaces.Services;
 using ImageVault.ApiKeyService.Data.Mappers;
 using ImageVault.ApiKeyService.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace ImageVault.ApiKeyService.Repository;
 
@@ -27,9 +24,7 @@ public class ApiKeyRepository : IApiKeyRepository
     {
         if (!_validationService.ValidateData("ValidateKeyName", apiKeyData.KeyName) ||
             _validationService.ValidateData("ValidateKeyCapacity", apiKeyData.KeyCapacity))
-        {
             return new OperationResultDto<ApiKeyDto>(null, false, new Error("Invalid key data"));
-        }
 
         var apiKey = apiKeyData.MapToApiKey(userId);
 
@@ -39,10 +34,9 @@ public class ApiKeyRepository : IApiKeyRepository
             ? new OperationResultDto<ApiKeyDto>(apiKey.MapToApiKeyDto(), true, null)
             : new OperationResultDto<ApiKeyDto>(null, false, new Error("Something went wrong ..."));
     }
-    
+
     public async Task<OperationResultDto<IEnumerable<ApiKeyDto>>> GetKeys(string userId)
     {
-
         var result = await _dbContext.ApiKeys
             .Where(x => x.UserId == userId)
             .Select(x => x.MapToApiKeyDto())
@@ -52,22 +46,19 @@ public class ApiKeyRepository : IApiKeyRepository
 
     public async Task<OperationResultDto<ApiKeyDto>> GetKey(string key, string userId)
     {
-        var apiKey = await GetApiKey(key,userId);
+        var apiKey = await GetApiKey(key, userId);
 
         return new OperationResultDto<ApiKeyDto>(apiKey.MapToApiKeyDto(), true, null);
     }
 
     public async Task<OperationResultDto<ApiKeyDto>> EditKey(EditApiKeyDto newApiKeyData, string userId, string key)
     {
-
         if (!_validationService.ValidateData("ValidateKeyName", newApiKeyData.KeyName) ||
             _validationService.ValidateData("ValidateKeyCapacity", newApiKeyData.KeyCapacity))
-        {
             return new OperationResultDto<ApiKeyDto>(null, false, new Error("Invalid key data"));
-        }
 
-        var apiKey = await GetApiKey(key,userId);
-        
+        var apiKey = await GetApiKey(key, userId);
+
         apiKey.KeyName = newApiKeyData.KeyName;
         apiKey.StorageCapacity = newApiKeyData.KeyCapacity;
 
@@ -80,15 +71,15 @@ public class ApiKeyRepository : IApiKeyRepository
 
     public async Task<OperationResultDto<bool>> DeleteKey(string key, string userId)
     {
-        var apiKey = await GetApiKey(key,userId);
+        var apiKey = await GetApiKey(key, userId);
 
         _dbContext.ApiKeys.Remove(apiKey);
-        
+
         return await SaveChanges()
             ? new OperationResultDto<bool>(true, true, null)
             : new OperationResultDto<bool>(false, false, null);
     }
-    
+
     private async Task<bool> SaveChanges()
     {
         return await _dbContext.SaveChangesAsync() > 0;

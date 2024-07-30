@@ -5,22 +5,25 @@ using RabbitMQ.Client.Exceptions;
 
 namespace ImageVault.RequestMetricsService.RabbitMq;
 
-public class RabbitMqConnection : IRabbitMqConnection , IDisposable
+public class RabbitMqConnection : IRabbitMqConnection, IDisposable
 {
-    private readonly IConfiguration _configuration; 
-    
-    private readonly ILogger<RabbitMqConnection> _logger; 
-    
-    private IConnection _connection;
+    private readonly IConfiguration _configuration;
 
-    public IConnection Connection => _connection; 
-    
-    public RabbitMqConnection(IConfiguration configuration,ILogger<RabbitMqConnection> logger )
+    private readonly ILogger<RabbitMqConnection> _logger;
+
+    public RabbitMqConnection(IConfiguration configuration, ILogger<RabbitMqConnection> logger)
     {
         _configuration = configuration;
         _logger = logger;
         InitializeConnection();
     }
+
+    public void Dispose()
+    {
+        Connection.Dispose();
+    }
+
+    public IConnection Connection { get; private set; }
 
     private async void InitializeConnection()
     {
@@ -34,18 +37,13 @@ public class RabbitMqConnection : IRabbitMqConnection , IDisposable
                 DispatchConsumersAsync = true
             };
 
-            _connection = factory.CreateConnection();
+            Connection = factory.CreateConnection();
         }
         catch (BrokerUnreachableException e)
         {
-            Thread.Sleep(TimeSpan.FromSeconds(5));    
+            Thread.Sleep(TimeSpan.FromSeconds(5));
             InitializeConnection();
             _logger.LogError("Connection to Rabbitmq service failed");
         }
-    }
-
-    public void Dispose()
-    {
-        _connection.Dispose();
     }
 }

@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using ImageVault.RequestMetricsService.Data;
 using ImageVault.RequestMetricsService.Data.Dtos;
 using ImageVault.RequestMetricsService.Data.Interfaces;
@@ -9,7 +8,6 @@ namespace ImageVault.RequestMetricsService.Repository;
 
 public class UserRequestMetricsRepository : IUserRequestMetricsRepository
 {
-
     private readonly ApplicationDbContext _dbContext;
 
     public UserRequestMetricsRepository(ApplicationDbContext dbContext)
@@ -24,8 +22,8 @@ public class UserRequestMetricsRepository : IUserRequestMetricsRepository
         if (userMetrics is not { })
         {
             userMetrics = await CreateUserMetrics(request.UserId);
-            
-            if (userMetrics is not { } ) return false;
+
+            if (userMetrics is not { }) return false;
         }
 
         userMetrics.TotalRequests += 1;
@@ -40,9 +38,8 @@ public class UserRequestMetricsRepository : IUserRequestMetricsRepository
         var request = await _dbContext.UsersRequestMetrics.FirstOrDefaultAsync(x => x.UserId == userId);
 
         if (request is not { }) return null;
-        
-        return request.MapToUserRequestMetricsDto();
 
+        return request.MapToUserRequestMetricsDto();
     }
 
     private async Task<UserRequestMetrics> CreateUserMetrics(string userId)
@@ -53,20 +50,14 @@ public class UserRequestMetricsRepository : IUserRequestMetricsRepository
         };
 
         await _dbContext.AddAsync(userMetrics);
-        
-         await SaveChanges();
 
-         return userMetrics;
+        await SaveChanges();
+
+        return userMetrics;
     }
 
     private async Task<bool> SaveChanges()
     {
         return await _dbContext.SaveChangesAsync() > 0;
     }
-} 
-    
-    
-    
-    
-    
-    
+}

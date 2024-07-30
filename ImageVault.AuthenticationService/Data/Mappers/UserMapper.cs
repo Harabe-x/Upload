@@ -10,13 +10,13 @@ public static class UserMapper
     {
         return new ApplicationUser
         {
-            Email = account.Email,
+            Email = account.Email
         };
     }
 
-    public static UserDataDto MapToUserData(this RegisterAccountDto applicationUser,string id)
+    public static UserDataDto MapToUserData(this RegisterAccountDto applicationUser, string id)
     {
-        return new UserDataDto(id,applicationUser.FirstName, applicationUser.LastName,
+        return new UserDataDto(id, applicationUser.FirstName, applicationUser.LastName,
             applicationUser.DataTheme, applicationUser.Email, applicationUser.profilePictureUrl);
     }
 }

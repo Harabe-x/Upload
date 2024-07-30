@@ -1,5 +1,5 @@
-
 // using System.Net;
+
 using ImageVault.AuthenticationService.Configuration;
 using ImageVault.AuthenticationService.Data.Dtos.AuthDtos;
 using ImageVault.AuthenticationService.Data.Interfaces.Auth;
@@ -10,24 +10,24 @@ using ImageVault.AuthenticationService.Data.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace ImageVault.AuthenticationService.Repository;
-    
+
 public class UserAuthenticationRepository : IUserAuthenticationRepository
 {
-    private readonly IDataValidationService _validationService;
+    private readonly IConfiguration _configuration;
 
     private readonly ILogger<UserAuthenticationRepository> _logger;
+
+    private readonly IRabbitMqMessageSender _rabbitMqMessageSender;
 
     private readonly SignInManager<ApplicationUser> _signInManager;
 
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IDataValidationService _validationService;
 
-    private readonly IConfiguration _configuration; 
-    
-    private readonly IRabbitMqMessageSender _rabbitMqMessageSender; 
-    
     public UserAuthenticationRepository(UserManager<ApplicationUser> userManager,
         ILogger<UserAuthenticationRepository> logger, SignInManager<ApplicationUser> signInManager,
-        IDataValidationService validationService, IRabbitMqMessageSender rabbitMqMessageSender, IConfiguration configuration )
+        IDataValidationService validationService, IRabbitMqMessageSender rabbitMqMessageSender,
+        IConfiguration configuration)
     {
         _logger = logger;
         _userManager = userManager;
@@ -43,7 +43,7 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
             return new UserDatabaseOperationResultDto(null, false, new Error("Invalid user data"));
 
         var user = accountDto.MapUser();
-        
+
         var identityResult = await _userManager.CreateAsync(user, accountDto.Password);
 
         if (!identityResult.Succeeded)
@@ -53,17 +53,16 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
 
             return new UserDatabaseOperationResultDto(user, false, new Error("invalid user data"));
         }
-        
+
 
         var addingRoleResult = await _userManager.AddToRoleAsync(user, "User");
 
         if (!addingRoleResult.Succeeded)
             return new UserDatabaseOperationResultDto(null, false, new Error("Sorry, something went wrong ..."));
-        
+
         _rabbitMqMessageSender.SendMessage(accountDto.MapToUserData(user.Id), _configuration.GetUserQueueName());
 
-        return new UserDatabaseOperationResultDto(user,true,null);
-
+        return new UserDatabaseOperationResultDto(user, true, null);
     }
 
     public async Task<UserDatabaseOperationResultDto> LoginUser(LoginDto loginDto)

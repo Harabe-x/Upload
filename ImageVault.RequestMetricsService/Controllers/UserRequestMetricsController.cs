@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using ImageVault.RequestMetricsService.Data.Dtos;
 using ImageVault.RequestMetricsService.Data.Interfaces;
 using ImageVault.RequestMetricsService.Extension;
 using Microsoft.AspNetCore.Authorization;
@@ -11,17 +10,18 @@ namespace ImageVault.RequestMetricsService.Controllers;
 [Route("/api/user/metrics")]
 public class UserRequestMetricsController : ControllerBase
 {
-    private readonly ILogger<UserRequestMetricsController> _logger;  
-    
-    private readonly IUserRequestMetricsRepository _metricsRepository; 
+    private readonly ILogger<UserRequestMetricsController> _logger;
 
-    public UserRequestMetricsController(IUserRequestMetricsRepository metricsRepository, ILogger<UserRequestMetricsController> logger)
+    private readonly IUserRequestMetricsRepository _metricsRepository;
+
+    public UserRequestMetricsController(IUserRequestMetricsRepository metricsRepository,
+        ILogger<UserRequestMetricsController> logger)
     {
         _metricsRepository = metricsRepository;
-        _logger = logger; 
+        _logger = logger;
     }
-    
-    
+
+
     [HttpGet]
     [Authorize]
     [Route("/get")]
@@ -33,15 +33,13 @@ public class UserRequestMetricsController : ControllerBase
         {
             var metrics = await _metricsRepository.GetRequestMetrics(id);
 
-            return metrics != null ? Ok(metrics) : StatusCode(500, "Something went wrong"); 
+            return metrics != null ? Ok(metrics) : StatusCode(500, "Something went wrong");
         }
         catch (Exception e)
         {
-            _logger.LogError($" {e.Message} | {e.Source}"); 
+            _logger.LogError($" {e.Message} | {e.Source}");
             // returning string as error message is temporary 
             return StatusCode(500, "Internal server error");
         }
-
     }
-    
 }

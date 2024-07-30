@@ -1,4 +1,3 @@
-using ImageVault.RequestMetricsService.Data;
 using ImageVault.RequestMetricsService.Data.Interfaces;
 
 namespace ImageVault.RequestMetricsService.Repository;

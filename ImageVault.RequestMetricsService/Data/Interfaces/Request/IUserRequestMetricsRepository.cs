@@ -6,5 +6,5 @@ public interface IUserRequestMetricsRepository
 {
     public Task<bool> UpdateUserStatstics(RequestDto request);
 
-    public Task<UserRequestMetricsDto> GetRequestMetrics(string userId); 
+    public Task<UserRequestMetricsDto> GetRequestMetrics(string userId);
 }

@@ -20,18 +20,18 @@ public class ApiKeyController : ControllerBase
         _apiKeyRepository = apiKeyRepository;
         _logger = logger;
     }
-    
+
     [HttpPost("get")]
     [Authorize]
-    public async Task<IActionResult> GetKey([FromBody]string key)
+    public async Task<IActionResult> GetKey([FromBody] string key)
     {
         if (string.IsNullOrEmpty(key))
             return BadRequest(new Error("Api key can't be empty"));
-        
+
         var id = User.GetClaimValue(ClaimTypes.NameIdentifier);
         try
         {
-            var result = await _apiKeyRepository.GetKey(key,id);
+            var result = await _apiKeyRepository.GetKey(key, id);
 
             return result.IsSuccess
                 ? Ok(result.Value)
@@ -39,12 +39,13 @@ public class ApiKeyController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.LogError($"[{DateTime.Now}] Error occured | Message : {e.Message} | InnerException : {e.InnerException}");
-            
+            _logger.LogError(
+                $"[{DateTime.Now}] Error occured | Message : {e.Message} | InnerException : {e.InnerException}");
+
             return StatusCode(500, new Error("Internal server error. We will try to fix it as soon as possible"));
         }
     }
-    
+
     [HttpPost("getKeys")]
     [Authorize]
     public async Task<IActionResult> GetKeys()
@@ -60,18 +61,19 @@ public class ApiKeyController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.LogError($"[{DateTime.Now}] Error occured | Message : {e.Message} | InnerException : {e.InnerException}");
+            _logger.LogError(
+                $"[{DateTime.Now}] Error occured | Message : {e.Message} | InnerException : {e.InnerException}");
             return StatusCode(500, new Error("Internal server error. We will try to fix it as soon as possible"));
         }
     }
-    
+
     [HttpPost("add")]
     [Authorize]
     public async Task<IActionResult> AddKey([FromBody] AddApiKeyDto apiKeyDto)
     {
-        if(apiKeyDto == null )
+        if (apiKeyDto == null)
             return BadRequest(new Error("Api key data can't be empty"));
-        
+
         var id = User.GetClaimValue(ClaimTypes.NameIdentifier);
         try
         {
@@ -83,24 +85,24 @@ public class ApiKeyController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.LogError($"[{DateTime.Now}] Error occured | Message : {e.Message} | InnerException : {e.InnerException}");
-            
+            _logger.LogError(
+                $"[{DateTime.Now}] Error occured | Message : {e.Message} | InnerException : {e.InnerException}");
+
             return StatusCode(500, new Error("Internal server error. We will try to fix it as soon as possible"));
         }
-
     }
-    
+
     [HttpPatch("editKey")]
     [Authorize]
-    public async Task<IActionResult> UpdateKey( [FromBody] EditApiKeyDto newApiKeyData ,[FromBody]string key)
+    public async Task<IActionResult> UpdateKey([FromBody] EditApiKeyDto newApiKeyData, [FromBody] string key)
     {
         if (string.IsNullOrEmpty(key) || newApiKeyData == null)
             return BadRequest(new Error("Api key can't be empty"));
-        
+
         var id = User.GetClaimValue(ClaimTypes.NameIdentifier);
         try
         {
-            var result = await _apiKeyRepository.EditKey(newApiKeyData,key,id);
+            var result = await _apiKeyRepository.EditKey(newApiKeyData, key, id);
 
             return result.IsSuccess
                 ? Ok(result.Value)
@@ -108,22 +110,23 @@ public class ApiKeyController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.LogError($"[{DateTime.Now}] Error occured | Message : {e.Message} | InnerException : {e.InnerException}");
+            _logger.LogError(
+                $"[{DateTime.Now}] Error occured | Message : {e.Message} | InnerException : {e.InnerException}");
             return StatusCode(500, new Error("Internal server error. We will try to fix it as soon as possible"));
         }
     }
-    
+
     [HttpDelete("deleteKey")]
     [Authorize]
-    public async Task<IActionResult> DeleteKey([FromBody]string key)
+    public async Task<IActionResult> DeleteKey([FromBody] string key)
     {
         if (string.IsNullOrEmpty(key))
             return BadRequest(new Error("Api key can't be empty"));
-        
+
         var id = User.GetClaimValue(ClaimTypes.NameIdentifier);
         try
         {
-            var result = await _apiKeyRepository.DeleteKey(key,id);
+            var result = await _apiKeyRepository.DeleteKey(key, id);
 
             return result.IsSuccess
                 ? NoContent()
@@ -131,8 +134,9 @@ public class ApiKeyController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.LogError($"[{DateTime.Now}] Error occured | Message : {e.Message} | InnerException : {e.InnerException}");
-            
+            _logger.LogError(
+                $"[{DateTime.Now}] Error occured | Message : {e.Message} | InnerException : {e.InnerException}");
+
             return StatusCode(500, new Error("Internal server error. We will try to fix it as soon as possible"));
         }
     }

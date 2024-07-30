@@ -11,7 +11,7 @@ public static class ApiKeyMapper
         {
             KeyName = apiKey.KeyName,
             StorageCapacity = apiKey.KeyCapacity
-        }; 
+        };
     }
 
     public static ApiKeyDto MapToApiKeyDto(this ApiKey apiKey)

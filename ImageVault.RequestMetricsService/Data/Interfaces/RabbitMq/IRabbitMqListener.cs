@@ -1,11 +1,10 @@
 namespace ImageVault.RequestMetricsService.Data.Interfaces.RabbitMq;
 
-public interface IRabbitMqListener : IDisposable 
+public interface IRabbitMqListener : IDisposable
 {
-     IEnumerable<IRabbitMqConsumer> Consumers { get; }
+    IEnumerable<IRabbitMqConsumer> Consumers { get; }
 
-     void StartListening();
+    void StartListening();
 
-     void StopListening();
+    void StopListening();
 }
-

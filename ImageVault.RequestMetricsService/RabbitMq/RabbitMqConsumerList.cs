@@ -1,13 +1,11 @@
 using ImageVault.RequestMetricsService.Data.Interfaces;
 using ImageVault.RequestMetricsService.Data.Interfaces.RabbitMq;
 using ImageVault.RequestMetricsService.RabbitMq.Consumers;
-using Microsoft.EntityFrameworkCore.Storage.Json;
 
 namespace ImageVault.RequestMetricsService.RabbitMq;
 
 public class RabbitMqConsumerList : IRabbitMqConsumerList
 {
-
     private readonly List<IRabbitMqConsumer> _consumers;
 
     public RabbitMqConsumerList(RequestInfoConsumer requestInfoConsumer)
@@ -15,7 +13,7 @@ public class RabbitMqConsumerList : IRabbitMqConsumerList
         _consumers = new List<IRabbitMqConsumer>();
         _consumers.Add(requestInfoConsumer);
     }
-    
+
     public IEnumerable<IRabbitMqConsumer> GetConsumers()
     {
         return _consumers.ToList();

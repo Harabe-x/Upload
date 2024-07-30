@@ -2,10 +2,10 @@ using ImageVault.UserService.Data.Interfaces;
 
 namespace ImageVault.UserService.Extension;
 
-public  static class ApplicationBuilderExtension
+public static class ApplicationBuilderExtension
 {
-    private static IRabbitMqMessageConsumer _rabbitMqConsumer { get; set;  }
-    
+    private static IRabbitMqMessageConsumer _rabbitMqConsumer { get; set; }
+
     public static IApplicationBuilder AddRabbitMqConsumer(this IApplicationBuilder app)
     {
         _rabbitMqConsumer = app.ApplicationServices.GetService<IRabbitMqMessageConsumer>();
@@ -15,17 +15,16 @@ public  static class ApplicationBuilderExtension
         lifetime.ApplicationStarted.Register(OnStarted);
         lifetime.ApplicationStopped.Register(OnStopped);
 
-        return app; 
+        return app;
     }
 
     public static void OnStarted()
     {
-         _rabbitMqConsumer.Start();
+        _rabbitMqConsumer.Start();
     }
 
     public static void OnStopped()
     {
         _rabbitMqConsumer.Stop();
     }
-    
 }
