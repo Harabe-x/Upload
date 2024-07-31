@@ -3,7 +3,10 @@ using System.Text;
 using ImageVault.ApiKeyService.Configuration;
 using ImageVault.ApiKeyService.Data;
 using ImageVault.ApiKeyService.Data.Interfaces.ApiKey;
+using ImageVault.ApiKeyService.Data.Interfaces.RabbitMq;
 using ImageVault.ApiKeyService.Data.Interfaces.Services;
+using ImageVault.ApiKeyService.Middleware;
+using ImageVault.ApiKeyService.RabbitMq;
 using ImageVault.ApiKeyService.Repository;
 using ImageVault.ApiKeyService.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -22,7 +25,9 @@ var validationService = new DataValidationService();
 validationService.AddValidatioRules();
 
 builder.Services.AddSingleton<IDataValidationService>(validationService);
+builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
 builder.Services.AddScoped<IApiKeyRepository, ApiKeyRepository>();
+builder.Services.AddScoped<IRabbitMqMessageSender, RabbitMqMessageSender>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -95,6 +100,9 @@ var app = builder.Build();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<RequestLoggingMiddleware>();
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
