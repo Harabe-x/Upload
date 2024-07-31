@@ -9,6 +9,7 @@ public static class ApiKeyMapper
     {
         return new ApiKey
         {
+            UserId = userId,
             KeyName = apiKey.KeyName,
             StorageCapacity = apiKey.KeyCapacity
         };

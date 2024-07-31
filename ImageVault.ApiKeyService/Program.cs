@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using ImageVault.ApiKeyService.Configuration;
 using ImageVault.ApiKeyService.Data;
@@ -79,6 +80,16 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ConfigureHttpsDefaults(config =>
+    {
+        config.ServerCertificate = new X509Certificate2("/https/aspnetapp.pfx", "TestPassword");
+    });
+});
+
+builder.WebHost.UseUrls("http://*:2108");
 
 var app = builder.Build();
 
