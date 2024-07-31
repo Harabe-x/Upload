@@ -1,8 +1,11 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
 
+ENV ASPNETCORE_Kestrel__Certificates__Default__Password=TestPassword
+ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+
+RUN mkdir /https
+COPY ../certs/aspnetapp.pfx /https/
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY ["ImageVault.UploadService/ImageVault.UploadService.csproj", "ImageVault.UploadService/"]

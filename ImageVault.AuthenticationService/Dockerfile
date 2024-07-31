@@ -18,7 +18,6 @@ RUN apt-get update && apt-get install -y curl \
     && apt-get install -y nodejs
 
 COPY ["ImageVault.AuthenticationService/ImageVault.AuthenticationService.csproj", "ImageVault.AuthenticationService/"]
-COPY ["ImageVault.ClassLibrary/ImageVault.ClassLibrary.csproj", "ImageVault.ClassLibrary/"]
 RUN dotnet restore "./ImageVault.AuthenticationService/ImageVault.AuthenticationService.csproj"
 COPY . .
 WORKDIR "/src/ImageVault.AuthenticationService"

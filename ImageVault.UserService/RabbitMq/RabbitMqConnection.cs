@@ -27,16 +27,16 @@ public class RabbitMqConnection : IRabbitMqConnection, IDisposable
 
     private async void InitializeConnection()
     {
+        var factory = new ConnectionFactory
+        {
+            HostName = _configuration.GetRabbitMqHostName(),
+            UserName = _configuration.GetRabbitMqUsername(),
+            Password = _configuration.GetRabbitMqPassword(),
+            DispatchConsumersAsync = true
+        };
+        
         try
         {
-            var factory = new ConnectionFactory
-            {
-                HostName = _configuration.GetRabbitMqHostName(),
-                UserName = _configuration.GetRabbitMqUsername(),
-                Password = _configuration.GetRabbitMqPassword(),
-                DispatchConsumersAsync = true
-            };
-
             Connection = factory.CreateConnection();
         }
         catch (BrokerUnreachableException e)

@@ -62,6 +62,33 @@ services:
     volumes:
       - msSqlServer:/var/opt/mssql
 
+  imagevault.apikeyservice:
+    image: ${DOCKER_REGISTRY-}imagevaultapikeyservice
+    build:
+      context: .
+      dockerfile: ImageVault.ApiKeyService/Dockerfile
+    ports :
+     - "2107:2107"
+     - "2108:2108"
+ 
+  imagevault.uploadservice:
+    image: ${DOCKER_REGISTRY-}imagevaultuploadservice
+    build:
+      context: .
+      dockerfile: ImageVault.UploadService/Dockerfile
+    ports : 
+     - "2109:2109"
+     - "2110:2110" 
+
+  imagevault.imageservice:
+    image: ${DOCKER_REGISTRY-}imagevaultimageservice
+    build:
+      context: .
+      dockerfile: ImageVault.ImageService/Dockerfile
+    ports : 
+     - "2111:2111"
+     - "2112:2112" 
+
 volumes:
   rabbitMq:
     external: true
