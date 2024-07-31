@@ -1,0 +1,6 @@
+@ImageVault.ImageService_HostAddress = http://localhost:5092
+
+GET {{ImageVault.ImageService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
