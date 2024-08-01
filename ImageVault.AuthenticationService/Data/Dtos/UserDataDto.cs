@@ -1,4 +1,4 @@
-namespace ImageVault.AuthenticationService.Data.Dtos.UserDtos;
+namespace ImageVault.AuthenticationService.Data.Dtos.AuthDtos;
 
 public record UserDataDto
 (

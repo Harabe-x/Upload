@@ -11,15 +11,12 @@ namespace ImageVault.AuthenticationService.Controllers;
 [Controller]
 public class UserAuthenticationController : ControllerBase
 {
-    private readonly ITokenService _tokenService;
-
     private readonly IUserAuthenticationRepository _userAuthenticationRepository;
 
     public UserAuthenticationController(IUserAuthenticationRepository userAuthenticationRepository,
         ITokenService tokenService)
     {
         _userAuthenticationRepository = userAuthenticationRepository;
-        _tokenService = tokenService;
     }
 
     [HttpPost("register")]
@@ -34,8 +31,7 @@ public class UserAuthenticationController : ControllerBase
             var accountRegistrationResult = await _userAuthenticationRepository.CreateAccount(accountData);
 
             return accountRegistrationResult.IsSuccess
-                ? Ok(new AuthenticationResultDto(accountRegistrationResult.User.Email,
-                    _tokenService.CreateToken(accountRegistrationResult.User)))
+                ? Ok(accountRegistrationResult.Value)
                 : BadRequest(accountRegistrationResult.Error);
         }
         catch (Exception e)
@@ -55,9 +51,9 @@ public class UserAuthenticationController : ControllerBase
 
             var loginResult = await _userAuthenticationRepository.LoginUser(loginData);
 
-            return loginResult.IsSuccess && loginResult.User is { }
-                ? Ok(new AuthenticationResultDto(loginResult.User.Email, _tokenService.CreateToken(loginResult.User)))
-                : BadRequest(loginResult.Error);
+            return loginResult.IsSuccess
+                    ? Ok(loginResult.Value)
+                    : Unauthorized(loginResult.Error);
         }
         catch (Exception e)
         {
@@ -71,12 +67,5 @@ public class UserAuthenticationController : ControllerBase
     public IActionResult PingAuth()
     {
         return Ok();
-    }
-
-    [HttpGet("test")]
-    [EnableRateLimiting("register")]
-    public IActionResult Test()
-    {
-        return Ok($"api/auth/test {Random.Shared.Next(111, 1111)}");
     }
 }

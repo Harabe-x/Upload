@@ -1,5 +1,4 @@
 using ImageVault.AuthenticationService.Data.Dtos.AuthDtos;
-using ImageVault.AuthenticationService.Data.Dtos.UserDtos;
 using ImageVault.AuthenticationService.Data.Enums;
 using ImageVault.AuthenticationService.Data.Interfaces.Services;
 
@@ -24,12 +23,6 @@ public class DataValidationRules
             return validationService.ValidateData("ValidateName", registerDto.FirstName)
                    && validationService.ValidateData("ValidateName", registerDto.LastName)
                    && validationService.ValidateData("ValidatePassword", registerDto.Password);
-        });
-        validationService.AddCustomValidationRule<UserDataDto>("ValidateUserDataDto", userData =>
-        {
-            return validationService.ValidateData("ValidateName", userData.FirstName)
-                   && validationService.ValidateData("ValidateName", userData.LastName)
-                   && validationService.ValidateData("ValidateApplicationColorSchema", userData.DataTheme);
         });
     }
 }

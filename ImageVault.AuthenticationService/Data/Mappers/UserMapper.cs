@@ -1,5 +1,4 @@
 using ImageVault.AuthenticationService.Data.Dtos.AuthDtos;
-using ImageVault.AuthenticationService.Data.Dtos.UserDtos;
 using ImageVault.AuthenticationService.Data.Models;
 
 namespace ImageVault.AuthenticationService.Data.Mappers;
@@ -12,7 +11,7 @@ public static class UserMapper
         {
             Email = account.Email
         };
-    }
+    } 
 
     public static UserDataDto MapToUserData(this RegisterAccountDto applicationUser, string id)
     {
