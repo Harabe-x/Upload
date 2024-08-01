@@ -109,7 +109,7 @@ builder.Services.AddRateLimiter(builder => builder.AddFixedWindowLimiter("login"
     options.Window = TimeSpan.FromMinutes(1);
     options.PermitLimit = 10;
     options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-    options.QueueLimit = 1;
+    options.QueueLimit = 0;
 }).AddFixedWindowLimiter("register", options =>
 {
     options.Window = TimeSpan.FromMinutes(5);

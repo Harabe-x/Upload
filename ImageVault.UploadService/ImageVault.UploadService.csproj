@@ -9,9 +9,21 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AWSSDK.Core" Version="3.7.400.2" />
+        <PackageReference Include="AWSSDK.S3" Version="3.7.400.2" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.2" />
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Data\Dtos\Upload" />
+      <Folder Include="Data\Interfaces\RabbitMq" />
+      <Folder Include="Data\Interfaces\Upload" />
+      <Folder Include="Data\Models" />
+      <Folder Include="Extension" />
+      <Folder Include="Middleware" />
+      <Folder Include="RabbitMq" />
     </ItemGroup>
 
 </Project>
