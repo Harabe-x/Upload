@@ -1,4 +1,6 @@
+using ImageVault.UploadService.Data.Dtos.Upload;
 using ImageVault.UploadService.Data.Interfaces.AmazonS3;
+using ImageVault.UploadService.Data.Interfaces.Upload;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,16 +11,19 @@ namespace ImageVault.UploadService.Controllers;
 public class UploadController : ControllerBase
 {
 
-    public IAmazonS3Connection _amazonS3Connection;
+    private readonly IImageUploadRepository _uploadRepository;
 
-    public UploadController(IAmazonS3Connection amazonS3Connection )
+    public UploadController(IImageUploadRepository uploadRepository )
     {
-        _amazonS3Connection = amazonS3Connection;
+        _uploadRepository = uploadRepository;
     }
     
-    [HttpGet("Test")]
-    public async Task<IActionResult> TestController()
+    [HttpPost("Test")]
+    public async Task<IActionResult> TestController(IFormFile file)
     {
-        return Ok(await _amazonS3Connection.S3Client.ListBucketsAsync()); 
+
+        var operation = await _uploadRepository.UploadImage(new ImageUpload(file, "", "", "", false));
+        
+        return Ok(operation.IsSuccess); 
     }
 }

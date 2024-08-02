@@ -17,11 +17,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Data\Dtos\Upload" />
+      <Folder Include="Data\Dtos\Collection" />
       <Folder Include="Data\Interfaces\RabbitMq" />
-      <Folder Include="Data\Interfaces\Upload" />
-      <Folder Include="Data\Models" />
-      <Folder Include="Extension" />
       <Folder Include="Middleware" />
       <Folder Include="RabbitMq" />
     </ItemGroup>
