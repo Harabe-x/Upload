@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace ImageVault.UploadService.Data.Dtos.Upload;
 
 /// <summary>
@@ -8,4 +10,4 @@ namespace ImageVault.UploadService.Data.Dtos.Upload;
 /// <param name="Title"></param>
 /// <param name="Description"></param>
 /// <param name="UseCompression"></param>
-public record ImageUpload(IFormFile Image, string CollectionName, string Title, string Description, bool UseCompression);
+public record ImageUploadData([Required]IFormFile Image,[Required]string ApiKey, string CollectionName, string Title, string Description, bool UseCompression);

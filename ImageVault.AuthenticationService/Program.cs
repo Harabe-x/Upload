@@ -20,11 +20,21 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
+
+
+builder.Services.AddScoped<IUserAuthenticationRepository, UserAuthenticationRepository>();
+builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+builder.Services.AddScoped<IRabbitMqMessageSender, RabbitMqMessageSender>();
+builder.Services.AddSingleton<IRabitMqConnection, RabbitMqConnection>();
+builder.Services.AddScoped<IAdminUserRepository, AdminUserRepository>();
+
+var validator = new DataValidationService();
+DataValidationRules.AddRules(validator);
+
+builder.Services.AddSingleton<IDataValidationService>(validator);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -116,16 +126,6 @@ builder.Services.AddRateLimiter(builder => builder.AddFixedWindowLimiter("login"
     options.PermitLimit = 1;
     options.QueueLimit = 0;
 }));
-
-builder.Services.AddScoped<IUserAuthenticationRepository, UserAuthenticationRepository>();
-builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddSingleton<IRabitMqConnection, RabbitMqConnection>();
-builder.Services.AddScoped<IRabbitMqMessageSender, RabbitMqMessageSender>();
-
-var validator = new DataValidationService();
-DataValidationRules.AddRules(validator);
-
-builder.Services.AddSingleton<IDataValidationService>(validator);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCors(options =>
 {

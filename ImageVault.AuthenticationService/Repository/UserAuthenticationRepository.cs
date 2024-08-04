@@ -26,12 +26,12 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
     
     private readonly IDataValidationService _validationService;
 
-    private readonly ITokenService _tokenService; 
+    private readonly IJwtTokenService _jwtTokenService; 
     
     public UserAuthenticationRepository(UserManager<ApplicationUser> userManager,
         ILogger<UserAuthenticationRepository> logger, SignInManager<ApplicationUser> signInManager,
         IDataValidationService validationService, IRabbitMqMessageSender rabbitMqMessageSender,
-        IConfiguration configuration, ITokenService tokenService)
+        IConfiguration configuration, IJwtTokenService jwtTokenService)
     {
         _logger = logger;
         _userManager = userManager;
@@ -39,7 +39,7 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
         _validationService = validationService;
         _rabbitMqMessageSender = rabbitMqMessageSender;
         _configuration = configuration;
-        _tokenService = tokenService; 
+        _jwtTokenService = jwtTokenService; 
     }
 
     public async Task<OperationResultDto<AuthenticationResultDto>> CreateAccount(RegisterAccountDto accountDto)
@@ -95,6 +95,6 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
 
     private AuthenticationResultDto CreateAuthenticationResultDto(ApplicationUser user)
     {
-        return new AuthenticationResultDto(user.Email, _tokenService.CreateToken(user) );
+        return new AuthenticationResultDto(user.Email, _jwtTokenService.CreateToken(user) );
     }
 }

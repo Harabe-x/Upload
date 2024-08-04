@@ -7,13 +7,13 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace ImageVault.AuthenticationService.Services;
 
-public class TokenService : ITokenService
+public class JwtTokenService : IJwtTokenService
 {
     private readonly IConfiguration _configuration;
 
     private readonly SymmetricSecurityKey _key;
 
-    public TokenService(IConfiguration configuration)
+    public JwtTokenService(IConfiguration configuration)
     {
         _configuration = configuration;
         _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:SigningKey"]));

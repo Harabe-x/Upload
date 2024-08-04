@@ -14,7 +14,7 @@ public class UserAuthenticationController : ControllerBase
     private readonly IUserAuthenticationRepository _userAuthenticationRepository;
 
     public UserAuthenticationController(IUserAuthenticationRepository userAuthenticationRepository,
-        ITokenService tokenService)
+        IJwtTokenService jwtTokenService)
     {
         _userAuthenticationRepository = userAuthenticationRepository;
     }

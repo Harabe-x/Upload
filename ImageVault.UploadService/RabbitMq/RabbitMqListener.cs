@@ -1,7 +1,7 @@
-using ImageVault.RequestMetricsService.Data.Interfaces;
-using ImageVault.RequestMetricsService.Data.Interfaces.RabbitMq;
+using ImageVault.UploadService.Data.Interfaces;
+using ImageVault.UploadService.Data.Interfaces.RabbitMq;
 
-namespace ImageVault.RequestMetricsService.RabbitMq;
+namespace ImageVault.UploadService.RabbitMq;
 
 public class RabbitMqListener : IRabbitMqListener
 {

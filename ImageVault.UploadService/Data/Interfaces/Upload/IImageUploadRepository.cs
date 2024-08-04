@@ -5,9 +5,5 @@ namespace ImageVault.UploadService.Data.Interfaces.Upload;
 
 public interface IImageUploadRepository
 {
-    public Task<OperationResultDto<ImageUploadResult>> UploadImage(ImageUpload imageToImageUpload);
-
-    public Task<OperationResultDto<ImageRemoveResult>> RemoveImage(ImageRemoveData imageRemoveData);
-
-    public Task<OperationResultDto<ImageEditResultDto>> EditImageDetails(ImageEditData imageEditData);
+    public Task<OperationResultDto<ImageUploadResult>> UploadImage(ImageUploadData imageToUploadData,string userId);
 }

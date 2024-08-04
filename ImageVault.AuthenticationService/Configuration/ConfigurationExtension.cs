@@ -31,4 +31,9 @@ public static class ConfigurationExtension
     {
         return configuration.GetSection("RabbitMq").GetSection("Queues")["MetricsQueue"];
     }
+
+    public static string? GetUploadServiceJwtQueue(this IConfiguration configuration)
+    {
+        return configuration.GetSection("RabbitMq").GetSection("Queues")["UploadServiceJwtQueue"];
+    }
 }
