@@ -25,7 +25,7 @@ public class RabbitMqConnection : IRabitMqConnection, IDisposable
 
     public IConnection Connection { get; private set; }
 
-    private async void InitializeConnection()
+    private  void InitializeConnection()
     {
         try
         {

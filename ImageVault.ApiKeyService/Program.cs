@@ -28,7 +28,7 @@ builder.Services.AddSingleton<IDataValidationService>(validationService);
 builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
 builder.Services.AddScoped<IApiKeyRepository, ApiKeyRepository>();
 builder.Services.AddScoped<IRabbitMqMessageSender, RabbitMqMessageSender>();
-
+builder.Services.AddScoped<IAdminApiKeyRepository, AdminApiKeyRepository>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("default"));

@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using ImageVault.AuthenticationService.Data.Interfaces.Auth;
 using ImageVault.AuthenticationService.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ImageVault.AuthenticationService.Services;
@@ -13,18 +14,22 @@ public class JwtTokenService : IJwtTokenService
 
     private readonly SymmetricSecurityKey _key;
 
+    private readonly UserManager<ApplicationUser> _userManager; 
+    
     public JwtTokenService(IConfiguration configuration)
     {
         _configuration = configuration;
         _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:SigningKey"]));
+        
     }
 
-    public string CreateToken(ApplicationUser user)
+    public string CreateToken(ApplicationUser user,string role)
     {
         var claims = new List<Claim>
         {
             new(JwtRegisteredClaimNames.Email, user.Email),
-            new(JwtRegisteredClaimNames.Sub, user.Id)
+            new(JwtRegisteredClaimNames.Sub, user.Id),
+            new (ClaimTypes.Role,role)
         };
 
         var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512);

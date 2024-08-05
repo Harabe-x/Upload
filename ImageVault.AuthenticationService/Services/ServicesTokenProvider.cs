@@ -53,8 +53,8 @@ public class ServicesTokenProvider : BackgroundService
                 await Task.Delay(TimeSpan.FromSeconds(RetryInterval), stoppingToken);
                 continue;
             }
-
-            var token = tokenService.CreateToken(operationResult.Value);
+            var token = tokenService.CreateToken(operationResult.Value, "Admin");
+            _logger.LogInformation($"Token sent over amqp. \n Token:  {token} ");
             
             messageSender.SendMessage(token, _configuration.GetUploadServiceJwtQueue());
 

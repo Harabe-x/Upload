@@ -8,6 +8,7 @@ public class ApiKey
     {
         Id = Guid.NewGuid().ToString();
         Key = Guid.NewGuid().ToString();
+        StorageUsed = 0;
     }
 
     [Key] public string Id { get; set; }
@@ -18,5 +19,7 @@ public class ApiKey
 
     [Required] public string Key { get; set; }
 
-    [Required] public uint StorageCapacity { get; set; }
+    [Required] public ulong StorageCapacity { get; set; }
+    
+    [Required] public ulong StorageUsed { get; set; }
 }

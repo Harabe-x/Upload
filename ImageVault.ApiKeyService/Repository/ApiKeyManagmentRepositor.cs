@@ -16,10 +16,10 @@ public class ApiKeyRepository : IApiKeyRepository
 
     private readonly ILogger<ApiKeyRepository> _logger; 
 
-    public ApiKeyRepository(ApplicationDbContext dbContext, IDataValidationService validatioNService, ILogger<ApiKeyRepository> logger)
+    public ApiKeyRepository(ApplicationDbContext dbContext, IDataValidationService validationService, ILogger<ApiKeyRepository> logger)
     {
         _dbContext = dbContext;
-        _validationService = validatioNService;
+        _validationService = validationService;
         _logger = logger; 
     }
 

@@ -7,7 +7,7 @@ public class JwtTokenProvider : IJwtTokenProvider
     private  readonly object _lock = new(); 
 
     private string _token;
-
+    
     public string Token
     {
         get

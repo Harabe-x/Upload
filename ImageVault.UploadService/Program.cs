@@ -4,6 +4,7 @@ using ImageVault.UploadService.Data.Interfaces.AmazonS3;
 using ImageVault.UploadService.Data.Interfaces.RabbitMq;
 using ImageVault.UploadService.Data.Interfaces.Services;
 using ImageVault.UploadService.Data.Interfaces.Upload;
+using ImageVault.UploadService.Extension;
 using ImageVault.UploadService.RabbitMq;
 using ImageVault.UploadService.RabbitMq.Consumers;
 using ImageVault.UploadService.Repository;
@@ -20,7 +21,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSingleton<IAmazonS3Connection, AmazonS3Connection>();
 builder.Services.AddSingleton<IJwtTokenProvider, JwtTokenProvider>();
 builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
-builder.Services.AddSingleton<IRabbitMqListener, IRabbitMqListener>();
+builder.Services.AddSingleton<IRabbitMqListener, RabbitMqListener>();
 builder.Services.AddSingleton<IRabbitMqConsumerList, RabbitMqConsumerList>();
 builder.Services.AddScoped<IImageUploadRepository, ImageUploadRepository>();
 builder.Services.AddSingleton<JwtConsumer>();
@@ -57,7 +58,6 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme =
@@ -80,19 +80,15 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
-app.UseAuthentication();
-app.UseAuthorization();
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseHttpsRedirection();
-
-
-
+app.UseRabbitMqListener();
 app.MapControllers();
-
 app.Run();

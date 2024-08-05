@@ -4,5 +4,5 @@ namespace ImageVault.AuthenticationService.Data.Interfaces.Auth;
 
 public interface IJwtTokenService
 {
-    public string CreateToken(ApplicationUser user);
+    public string CreateToken(ApplicationUser user,string role );
 }

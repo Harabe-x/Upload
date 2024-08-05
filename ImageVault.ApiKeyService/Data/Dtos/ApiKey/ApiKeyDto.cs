@@ -5,5 +5,5 @@ public record ApiKeyDto
     string UserId,
     string KeyName,
     string Key,
-    uint KeyCapactiy
+    ulong KeyCapactiy
 );

@@ -66,7 +66,7 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
 
         _rabbitMqMessageSender.SendMessage(accountDto.MapToUserData(user.Id), _configuration.GetUserQueueName());
 
-        return new OperationResultDto<AuthenticationResultDto>(CreateAuthenticationResultDto(user), true, null);
+        return new OperationResultDto<AuthenticationResultDto>(await CreateAuthenticationResultDto(user), true, null);
     }
 
     public async Task<OperationResultDto<AuthenticationResultDto>> LoginUser(LoginDto loginDto)
@@ -83,7 +83,7 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
             return new OperationResultDto<AuthenticationResultDto>(null, false, new Error("Invalid login credentials"));
         }
         
-        return new OperationResultDto<AuthenticationResultDto>(CreateAuthenticationResultDto(user), isLoginSucceeded.Succeeded, null);
+        return new OperationResultDto<AuthenticationResultDto>(await CreateAuthenticationResultDto(user), isLoginSucceeded.Succeeded, null);
     }
 
     private bool ValidateRegisterDto(RegisterAccountDto accountDto)
@@ -93,8 +93,10 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
                && _validationService.ValidateData("ValidatePassword", accountDto.Password);
     }
 
-    private AuthenticationResultDto CreateAuthenticationResultDto(ApplicationUser user)
+    private async Task<AuthenticationResultDto> CreateAuthenticationResultDto(ApplicationUser user)
     {
-        return new AuthenticationResultDto(user.Email, _jwtTokenService.CreateToken(user) );
+        var role = await _userManager.GetRolesAsync(user);
+        
+        return new AuthenticationResultDto(user.Email, _jwtTokenService.CreateToken(user,role.FirstOrDefault()));
     }
 }

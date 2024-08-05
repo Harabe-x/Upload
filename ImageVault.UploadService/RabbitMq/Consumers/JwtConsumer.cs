@@ -43,9 +43,8 @@ public class JwtConsumer : IRabbitMqConsumer
         var message = args.Body.ToArray();
 
         var jwt = Encoding.UTF8.GetString(message);
-
+        Console.WriteLine(jwt);
         _tokenProvider.Token = jwt;
-
     }
 
     public void Stop()

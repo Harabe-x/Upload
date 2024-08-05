@@ -30,6 +30,7 @@ builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IRabbitMqMessageSender, RabbitMqMessageSender>();
 builder.Services.AddSingleton<IRabitMqConnection, RabbitMqConnection>();
 builder.Services.AddScoped<IAdminUserRepository, AdminUserRepository>();
+builder.Services.AddHostedService<ServicesTokenProvider>();
 
 var validator = new DataValidationService();
 DataValidationRules.AddRules(validator);
@@ -157,5 +158,6 @@ app.UseCors("AllowSpecificOrigin");
 
 app.MapControllers();
 app.MapFallbackToFile("/index.html");
+
 
 app.Run();
