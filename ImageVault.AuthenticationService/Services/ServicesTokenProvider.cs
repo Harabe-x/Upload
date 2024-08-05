@@ -30,7 +30,7 @@ public class ServicesTokenProvider : BackgroundService
     
     protected async override Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        while (stoppingToken.IsCancellationRequested)
+        while (!stoppingToken.IsCancellationRequested)
         {
             using var scope = _scopeFactory.CreateAsyncScope();
 
