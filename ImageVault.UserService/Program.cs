@@ -94,7 +94,9 @@ DataValidationRules.AddRules(validator);
 
 builder.Services.AddSingleton<IDataValidationService>(validator);
 builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
-builder.Services.AddSingleton<IRabbitMqMessageConsumer, RabbitMqMessageConsumer>();
+builder.Services.AddSingleton<IRabbitMqListener, RabbitMqListener>();
+builder.Services.AddSingleton<IRabbitMqConsumerList, RabbitMqConsumerList>();
+builder.Services.AddSingleton<UserDataConsumer>();
 
 
 var app = builder.Build();

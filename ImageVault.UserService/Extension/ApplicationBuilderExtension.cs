@@ -4,11 +4,11 @@ namespace ImageVault.UserService.Extension;
 
 public static class ApplicationBuilderExtension
 {
-    private static IRabbitMqMessageConsumer _rabbitMqConsumer { get; set; }
+    private static IRabbitMqListener _rabbitMqListener { get;  set; }
 
     public static IApplicationBuilder AddRabbitMqConsumer(this IApplicationBuilder app)
     {
-        _rabbitMqConsumer = app.ApplicationServices.GetService<IRabbitMqMessageConsumer>();
+        _rabbitMqListener = app.ApplicationServices.GetService<IRabbitMqListener>();
 
         var lifetime = app.ApplicationServices.GetService<IHostApplicationLifetime>();
 
@@ -20,11 +20,11 @@ public static class ApplicationBuilderExtension
 
     public static void OnStarted()
     {
-        _rabbitMqConsumer.Start();
+        _rabbitMqListener.Start();
     }
 
     public static void OnStopped()
     {
-        _rabbitMqConsumer.Stop();
+        _rabbitMqListener.Stop();
     }
 }
