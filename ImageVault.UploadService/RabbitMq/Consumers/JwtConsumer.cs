@@ -19,10 +19,11 @@ public class JwtConsumer : IRabbitMqConsumer
 
     private  IModel _channel;
     
-    public JwtConsumer(IRabbitMqConnection connection, IConfiguration configuration)
+    public JwtConsumer(IRabbitMqConnection connection, IConfiguration configuration, IJwtTokenProvider tokenProvider)
     {
         _connection = connection;
         _configuration = configuration;
+        _tokenProvider = tokenProvider; 
     }
     
     public void Start()
@@ -43,8 +44,15 @@ public class JwtConsumer : IRabbitMqConsumer
         var message = args.Body.ToArray();
 
         var jwt = Encoding.UTF8.GetString(message);
+        jwt = RemoveQuoteFromString(jwt);
+
         Console.WriteLine(jwt);
         _tokenProvider.Token = jwt;
+    }
+
+    private static string RemoveQuoteFromString(string s)
+    {
+        return s.Remove(s.Length - 1, 1).Remove(0,1);
     }
 
     public void Stop()

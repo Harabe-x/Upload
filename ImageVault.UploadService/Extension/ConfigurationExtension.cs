@@ -2,10 +2,11 @@ namespace ImageVault.UploadService.Extension;
 
 public static class ConfigurationExtension
 {
-    public static string? GetS3BucketName(this IConfiguration configuration )
+    public static string GetS3BucketName(this IConfiguration configuration)
     {
-        return configuration.GetSection("AmazonS3")["BucketName"];
+        return configuration.GetSection("AmazonS3")["BucketName"] ?? throw new InvalidOperationException("BucketName is not configured in AmazonS3 section.");
     }
+
     public static string? GetRabbitMqUsername(this IConfiguration configuration)
     {
         return configuration.GetSection("RabbitMq")["Username"];
@@ -24,6 +25,11 @@ public static class ConfigurationExtension
     public static string? GetRabbitMqJwtTokenQueueName(this IConfiguration configuration)
     {
         return configuration.GetSection("RabbitMq").GetSection("Queues")["UploadServiceJwtQueue"];
+    }
+
+    public static string? GetApiKeyServiceEndpoint(this IConfiguration configuration)
+    {
+        return configuration.GetSection("Endpoints").GetSection("ApiKeyService")["GetApiKeyEndpoint"];
     }
 
 }

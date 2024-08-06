@@ -12,8 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace ImageVault.UploadService.Controllers;
 
 [Route("/api/upload")]
-[Authorize]
 [Controller]
+[AllowAnonymous]
 public class UploadController : ControllerBase
 {
     private readonly IImageUploadRepository _uploadRepository;
@@ -29,11 +29,9 @@ public class UploadController : ControllerBase
     [HttpPost("Upload")]
     public async Task<IActionResult> TestController(ImageUploadData imageUploadData)
     {
-        var id = User.GetClaimValue(ClaimTypes.NameIdentifier);
-
         try
         {
-            var result = await _uploadRepository.UploadImage(imageUploadData, id);
+            var result = await _uploadRepository.UploadImage(imageUploadData);
             
             return result.IsSuccess
                 ? Ok(result.Value)
