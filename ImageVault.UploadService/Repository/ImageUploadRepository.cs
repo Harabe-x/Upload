@@ -6,6 +6,7 @@ using ImageVault.UploadService.Data.Dtos;
 using ImageVault.UploadService.Data.Dtos.ApiKey;
 using ImageVault.UploadService.Data.Dtos.Upload;
 using ImageVault.UploadService.Data.Interfaces.AmazonS3;
+using ImageVault.UploadService.Data.Interfaces.RabbitMq;
 using ImageVault.UploadService.Data.Interfaces.Services;
 using ImageVault.UploadService.Data.Interfaces.Upload;
 using ImageVault.UploadService.Data.Models;
@@ -23,14 +24,22 @@ public class ImageUploadRepository : IImageUploadRepository
 
     private readonly HttpClient _httpClient;
 
-    private readonly IJwtTokenProvider _jwtTokenProvider; 
+    private readonly IJwtTokenProvider _jwtTokenProvider;
+
+    private readonly IRabbitMqMessageSender _rabbitmqMessageSender;
+
+    private readonly IImageProcessingService _imageProcessingService; 
     
-    public ImageUploadRepository(IAmazonS3Connection s3Connection,IConfiguration configuration, ILogger<ImageUploadRepository> logger,IJwtTokenProvider jwtTokenProvider)
+    public ImageUploadRepository(IAmazonS3Connection s3Connection,IConfiguration configuration,
+        ILogger<ImageUploadRepository> logger,IJwtTokenProvider jwtTokenProvider,
+        IRabbitMqMessageSender rabbitmqMessageSender, IImageProcessingService imageProcessingService)
     {
         _configuration = configuration; 
         _s3Connection = s3Connection;
         _logger = logger;
         _jwtTokenProvider = jwtTokenProvider;
+        _rabbitmqMessageSender = rabbitmqMessageSender;
+        _imageProcessingService = imageProcessingService; 
         _httpClient = new HttpClient();
     }
     
@@ -44,11 +53,17 @@ public class ImageUploadRepository : IImageUploadRepository
  
             if(apiKey.storageUsed + (ulong)imageToUploadData.Image.Length > apiKey.storageCapacity)
                 return new OperationResultDto<ImageUploadResult>(null, false, new Error("The API key data limit has been reached"));
-            
-            var request = CreatePutObjectRequest(imageToUploadData, apiKey.userId,imageToUploadData.ApiKey); 
+
+            // if( _imageProcessingService.ValidateFileFormat(imageToUploadData.Image))
+            //     return new OperationResultDto<ImageUploadResult>(null, false  , new Error("Currently we don't accept file ") );
+            //
+            //    
+            var request = await CreatePutObjectRequest(imageToUploadData, apiKey.userId,imageToUploadData.ApiKey);
             
             await _s3Connection.S3Client.PutObjectAsync(request);
             
+           // SendRabbitMqMessages(apiKey.userId, (ulong)imageToUploadData.Image.Length, apiKey.key);
+           
             return new OperationResultDto<ImageUploadResult>(CreateImageUploadResult(request,imageToUploadData),true,null);
         }
         catch (AmazonS3Exception e)
@@ -106,13 +121,23 @@ public class ImageUploadRepository : IImageUploadRepository
         return request;
     }
 
-    
-    private  PutObjectRequest CreatePutObjectRequest(ImageUploadData imageToUploadData,string userId,string apiKey)
+    private void SendRabbitMqMessages(string userId, ulong imageSize, string apiKey)
     {
+        var apiKeyUsage = new ApiKeyUsageDto(userId,imageSize,apiKey);
+        
+        _rabbitmqMessageSender.SendMessage(apiKeyUsage, _configuration.GetApiKeyUsageQueue());
+        
+    }
+
+
+    private  async Task<PutObjectRequest> CreatePutObjectRequest(ImageUploadData imageToUploadData,string userId,string apiKey)
+    {
+        var stream = imageToUploadData.UseCompression ? await _imageProcessingService.CompressImage(imageToUploadData.Image) : imageToUploadData.Image.OpenReadStream();
+
         var request =  new PutObjectRequest
         {
             BucketName = _configuration.GetS3BucketName(),
-            InputStream = imageToUploadData.Image.OpenReadStream(),
+            InputStream = stream,
             Key = CreateFileKey(userId,imageToUploadData.CollectionName,apiKey)
         };
         

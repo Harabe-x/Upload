@@ -32,4 +32,14 @@ public static class ConfigurationExtension
         return configuration.GetSection("Endpoints").GetSection("ApiKeyService")["GetApiKeyEndpoint"];
     }
 
+    public static string? GetApiKeyUsageQueue(this IConfiguration configuration)
+    {
+        return configuration.GetSection("RabbitMq").GetSection("Queues")["ApiKeyUsage"];
+    }
+
+    public static IEnumerable<string> GetAllowedFileExtensions(this IConfiguration configuration)
+    {
+        return configuration.GetSection("AppConfig").GetValue<IEnumerable<string>>("AllowedExtenions");
+    }
+
 }

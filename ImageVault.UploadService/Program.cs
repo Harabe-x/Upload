@@ -23,8 +23,10 @@ builder.Services.AddSingleton<IJwtTokenProvider, JwtTokenProvider>();
 builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
 builder.Services.AddSingleton<IRabbitMqListener, RabbitMqListener>();
 builder.Services.AddSingleton<IRabbitMqConsumerList, RabbitMqConsumerList>();
-builder.Services.AddScoped<IImageUploadRepository, ImageUploadRepository>();
 builder.Services.AddSingleton<JwtConsumer>();
+builder.Services.AddScoped<IImageUploadRepository, ImageUploadRepository>();
+builder.Services.AddScoped<IRabbitMqMessageSender, RabbitMqMessageSender>();
+builder.Services.AddScoped<IImageProcessingService, ImageProcessingService>();
 
 builder.Services.AddSwaggerGen(c =>
 {
