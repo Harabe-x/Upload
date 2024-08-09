@@ -29,8 +29,8 @@ public class ImageProcessingService :IImageProcessingService
         if (fileExtension == ".jpg" || fileExtension == ".jpeg") return file.OpenReadStream();
 
         using var image = await Image.LoadAsync(file.OpenReadStream());
-
-        using var convertedImageStream = new MemoryStream();
+        
+        var convertedImageStream = new MemoryStream();
 
         var encoder = new JpegEncoder()
         {
