@@ -21,4 +21,11 @@ public static class ConfigurationExtension
     {
         return configuration.GetSection("RabbitMq").GetSection("Queues")["MetricsQueue"];
     }
+    
+    public static string? GetApiKeyUsageQueue(this IConfiguration configuration)
+    {
+        return configuration.GetSection("RabbitMq").GetSection("Queues")["ApiKeyUsageQueue"];
+    }
+
+    
 }

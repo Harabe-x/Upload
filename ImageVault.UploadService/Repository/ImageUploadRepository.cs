@@ -57,14 +57,18 @@ public class ImageUploadRepository : IImageUploadRepository
             if(! _imageProcessingService.IsFileFormatValid(imageToUploadData.Image))
                 return new OperationResultDto<ImageUploadResult>(null, false  , new Error("Currently we don't accept file ") );
             
-               
             var request = await CreatePutObjectRequest(imageToUploadData, apiKey.userId,imageToUploadData.ApiKey);
             
             await _s3Connection.S3Client.PutObjectAsync(request);
-            
-           // SendRabbitMqMessages(apiKey.userId, (ulong)imageToUploadData.Image.Length, apiKey.key);
+
+             if (!ulong.TryParse(request.Metadata["Size"], out var imageSize))
+             {
+                 _logger.LogCritical($"Parsing file size from metadata failed in {typeof(ImageUploadRepository)}");
+             }
+
+             SendRabbitMqMessages(apiKey.userId, imageSize, apiKey.key);
            
-            return new OperationResultDto<ImageUploadResult>(CreateImageUploadResult(request,imageToUploadData),true,null);
+            return new OperationResultDto<ImageUploadResult>(CreateImageUploadResult(request,imageToUploadData,imageSize),true,null);
         }
         catch (AmazonS3Exception e)
         {
@@ -126,7 +130,6 @@ public class ImageUploadRepository : IImageUploadRepository
         var apiKeyUsage = new ApiKeyUsageDto(userId,imageSize,apiKey);
         
         _rabbitmqMessageSender.SendMessage(apiKeyUsage, _configuration.GetApiKeyUsageQueue());
-        
     }
 
 
@@ -134,6 +137,8 @@ public class ImageUploadRepository : IImageUploadRepository
     {
         var stream = imageToUploadData.UseCompression ? await _imageProcessingService.CompressImage(imageToUploadData.Image) : imageToUploadData.Image.OpenReadStream();
 
+        var streamLenght = stream.Length;
+        
         var request =  new PutObjectRequest
         {
             BucketName = _configuration.GetS3BucketName(),
@@ -145,6 +150,7 @@ public class ImageUploadRepository : IImageUploadRepository
         request.Metadata.Add("Description" ,  imageToUploadData.Description);
         request.Metadata.Add("CollectionName" ,  imageToUploadData.CollectionName);
         request.Metadata.Add("Owner" , userId);
+        request.Metadata.Add("Size" , streamLenght.ToString());
         
         return request; 
         
@@ -157,9 +163,9 @@ public class ImageUploadRepository : IImageUploadRepository
             : $"{userId}/{apiKey}/{collectionName}/{Guid.NewGuid()}";
     }
 
-    private static ImageUploadResult CreateImageUploadResult(PutObjectRequest request, ImageUploadData imageData)
+    private static ImageUploadResult CreateImageUploadResult(PutObjectRequest request, ImageUploadData imageData,ulong imageSize)
     {
-     return new ImageUploadResult(request.Key, true, DateTime.Now, imageData.Image.Length + " Bytes",
+     return new ImageUploadResult(request.Key, true, DateTime.Now, imageSize + " Bytes",
             imageData.Title, imageData.Description, imageData.UseCompression);
     }
 }

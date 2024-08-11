@@ -5,8 +5,10 @@ using ImageVault.ApiKeyService.Data;
 using ImageVault.ApiKeyService.Data.Interfaces.ApiKey;
 using ImageVault.ApiKeyService.Data.Interfaces.RabbitMq;
 using ImageVault.ApiKeyService.Data.Interfaces.Services;
+using ImageVault.ApiKeyService.Extension;
 using ImageVault.ApiKeyService.Middleware;
 using ImageVault.ApiKeyService.RabbitMq;
+using ImageVault.ApiKeyService.RabbitMq.Consumers;
 using ImageVault.ApiKeyService.Repository;
 using ImageVault.ApiKeyService.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -24,15 +26,20 @@ var validationService = new DataValidationService();
 
 validationService.AddValidatioRules();
 
-builder.Services.AddSingleton<IDataValidationService>(validationService);
-builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
-builder.Services.AddScoped<IApiKeyRepository, ApiKeyRepository>();
-builder.Services.AddScoped<IRabbitMqMessageSender, RabbitMqMessageSender>();
-builder.Services.AddScoped<IAdminApiKeyRepository, AdminApiKeyRepository>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("default"));
 });
+
+builder.Services.AddSingleton<IDataValidationService>(validationService);
+builder.Services.AddSingleton<IRabbitMqListener, RabbitMqListener>(); 
+builder.Services.AddSingleton<IRabbitMqConsumerList, RabbitMqConsumerList>();
+builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
+builder.Services.AddSingleton<ApiKeyUsageConsumer>();
+builder.Services.AddScoped<IApiKeyRepository, ApiKeyRepository>();
+builder.Services.AddScoped<IRabbitMqMessageSender, RabbitMqMessageSender>();
+builder.Services.AddScoped<IAdminApiKeyRepository, AdminApiKeyRepository>();
+
 
 builder.Services.AddAuthentication(options =>
 {
@@ -105,6 +112,7 @@ app.UseMiddleware<RequestLoggingMiddleware>();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+app.AddRabbitMqListener();
 
 app.MapControllers();
 

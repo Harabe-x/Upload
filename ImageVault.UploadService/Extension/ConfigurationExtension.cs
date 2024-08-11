@@ -36,7 +36,7 @@ public static class ConfigurationExtension
 
     public static string? GetApiKeyUsageQueue(this IConfiguration configuration)
     {
-        return configuration.GetSection("RabbitMq").GetSection("Queues")["ApiKeyUsage"];
+        return configuration.GetSection("RabbitMq").GetSection("Queues")["ApiKeyUsageQueue"];
     }
 
     public static IEnumerable<string> GetAllowedFileExtensions(this IConfiguration configuration)
