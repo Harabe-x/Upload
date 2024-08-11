@@ -9,6 +9,7 @@ using ImageVault.UploadService.Data.Interfaces.Services;
 using ImageVault.UploadService.Extension;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Formats.Webp;
 
 namespace ImageVault.UploadService.Services;
 
@@ -32,11 +33,10 @@ public class ImageProcessingService :IImageProcessingService
         
         var convertedImageStream = new MemoryStream();
 
-        var encoder = new JpegEncoder()
+        var encoder = new WebpEncoder
         {
-            Quality = 75,
+            Quality = 90
         };
-
           await image.SaveAsync(convertedImageStream, encoder);
 
           return convertedImageStream;
@@ -51,7 +51,5 @@ public class ImageProcessingService :IImageProcessingService
         var allowedExtensions = _configuration.GetAllowedFileExtensions();
 
         return allowedExtensions.Any(x => x == fileExtension);
-        
-        
     }
 }
