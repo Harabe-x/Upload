@@ -27,7 +27,7 @@ public class UploadController : ControllerBase
     }
     
     [HttpPost("Upload")]
-    public async Task<IActionResult> TestController(ImageUploadData imageUploadData)
+    public async Task<IActionResult> TestController([FromBody] ImageUploadData imageUploadData)
     {
         try
         {

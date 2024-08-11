@@ -54,10 +54,10 @@ public class ImageUploadRepository : IImageUploadRepository
             if(apiKey.storageUsed + (ulong)imageToUploadData.Image.Length > apiKey.storageCapacity)
                 return new OperationResultDto<ImageUploadResult>(null, false, new Error("The API key data limit has been reached"));
 
-            // if( _imageProcessingService.ValidateFileFormat(imageToUploadData.Image))
-            //     return new OperationResultDto<ImageUploadResult>(null, false  , new Error("Currently we don't accept file ") );
-            //
-            //    
+            if(! _imageProcessingService.IsFileFormatValid(imageToUploadData.Image))
+                return new OperationResultDto<ImageUploadResult>(null, false  , new Error("Currently we don't accept file ") );
+            
+               
             var request = await CreatePutObjectRequest(imageToUploadData, apiKey.userId,imageToUploadData.ApiKey);
             
             await _s3Connection.S3Client.PutObjectAsync(request);

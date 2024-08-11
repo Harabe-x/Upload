@@ -4,5 +4,5 @@ public interface IImageProcessingService
 {
   Task<Stream> CompressImage(IFormFile file);
 
- bool ValidateFileFormat(IFormFile file);
+ bool IsFileFormatValid(IFormFile file);
 }

@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Mvc.Routing;
+
 namespace ImageVault.UploadService.Extension;
 
 public static class ConfigurationExtension
@@ -39,7 +41,7 @@ public static class ConfigurationExtension
 
     public static IEnumerable<string> GetAllowedFileExtensions(this IConfiguration configuration)
     {
-        return configuration.GetSection("AppConfig").GetValue<IEnumerable<string>>("AllowedExtenions");
+        return configuration.GetSection("AppConfig").GetSection("AllowedExtensions").Get<string[]>(); ;
     }
 
 }

@@ -42,7 +42,7 @@ public class ImageProcessingService :IImageProcessingService
           return convertedImageStream;
     }
 
-    public bool ValidateFileFormat(IFormFile file)
+    public bool IsFileFormatValid(IFormFile file)
     {
         var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
 
