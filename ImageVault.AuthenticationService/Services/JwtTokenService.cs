@@ -14,22 +14,21 @@ public class JwtTokenService : IJwtTokenService
 
     private readonly SymmetricSecurityKey _key;
 
-    private readonly UserManager<ApplicationUser> _userManager; 
-    
+    private readonly UserManager<ApplicationUser> _userManager;
+
     public JwtTokenService(IConfiguration configuration)
     {
         _configuration = configuration;
         _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:SigningKey"]));
-        
     }
 
-    public string CreateToken(ApplicationUser user,string role)
+    public string CreateToken(ApplicationUser user, string role)
     {
         var claims = new List<Claim>
         {
             new(JwtRegisteredClaimNames.Email, user.Email),
             new(JwtRegisteredClaimNames.Sub, user.Id),
-            new (ClaimTypes.Role,role)
+            new(ClaimTypes.Role, role)
         };
 
         var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512);

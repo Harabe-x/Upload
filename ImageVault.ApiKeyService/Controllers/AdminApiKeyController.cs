@@ -8,14 +8,13 @@ namespace ImageVault.ApiKeyService.Controllers;
 [Controller]
 public class AdminApiKeyController : ControllerBase
 {
+    private readonly IAdminApiKeyRepository _apiKeyRepository;
 
-    private readonly IAdminApiKeyRepository _apiKeyRepository; 
-    
-    public AdminApiKeyController(IAdminApiKeyRepository apiKeyRepository )
+    public AdminApiKeyController(IAdminApiKeyRepository apiKeyRepository)
     {
-        _apiKeyRepository = apiKeyRepository; 
+        _apiKeyRepository = apiKeyRepository;
     }
-    
+
     [HttpPost("get")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetApiKey([FromBody] string apiKey)
@@ -33,6 +32,4 @@ public class AdminApiKeyController : ControllerBase
             return BadRequest();
         }
     }
-    
-
 }

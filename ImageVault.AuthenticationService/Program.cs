@@ -24,7 +24,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 
-
 builder.Services.AddScoped<IUserAuthenticationRepository, UserAuthenticationRepository>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IRabbitMqMessageSender, RabbitMqMessageSender>();

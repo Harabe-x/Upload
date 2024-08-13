@@ -4,10 +4,10 @@ namespace ImageVault.UploadService.Services;
 
 public class JwtTokenProvider : IJwtTokenProvider
 {
-    private  readonly object _lock = new(); 
+    private readonly object _lock = new();
 
     private string _token;
-    
+
     public string Token
     {
         get
@@ -20,10 +20,9 @@ public class JwtTokenProvider : IJwtTokenProvider
         set
         {
             lock (_lock)
-            { 
+            {
                 _token = value;
             }
         }
     }
-
 }

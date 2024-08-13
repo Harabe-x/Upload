@@ -15,7 +15,7 @@ public class UserDataConsumer : IRabbitMqConsumer
 
     private readonly IUserRepository _userRepository;
 
-    private IModel _channel; 
+    private IModel _channel;
 
     public UserDataConsumer(IRabbitMqConnection connection, IUserRepository userRepository,
         ILogger<UserDataConsumer> logger)
@@ -27,7 +27,7 @@ public class UserDataConsumer : IRabbitMqConsumer
 
     public async void Start()
     {
-         _channel  = _connection.Connection.CreateModel();
+        _channel = _connection.Connection.CreateModel();
 
         _channel.QueueDeclare("UserData", true, false);
 
@@ -37,7 +37,16 @@ public class UserDataConsumer : IRabbitMqConsumer
         _channel.BasicConsume("UserData", false, consumer);
     }
 
-    private async  Task HandleMessage(object sender, BasicDeliverEventArgs args)
+    public async void Stop()
+    {
+        _connection?.Connection.Close();
+    }
+
+    public void Dispose()
+    {
+    }
+
+    private async Task HandleMessage(object sender, BasicDeliverEventArgs args)
     {
         var json = Encoding.UTF8.GetString(args.Body.ToArray());
 
@@ -58,16 +67,4 @@ public class UserDataConsumer : IRabbitMqConsumer
             _channel.BasicNack(args.DeliveryTag, true, false);
         }
     }
-
-    public async void Stop()
-    {
-        _connection?.Connection.Close();
-    }
-
-    public void Dispose()
-    {
-        
-    }
-    
-    
 }

@@ -1,5 +1,4 @@
 using ImageVault.ApiKeyService.Data.Dtos;
-using ImageVault.ApiKeyService.Data.Models;
 
 namespace ImageVault.ApiKeyService.Data.Interfaces.ApiKey;
 

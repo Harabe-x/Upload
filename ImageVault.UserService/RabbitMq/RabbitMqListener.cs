@@ -4,16 +4,16 @@ namespace ImageVault.UserService.RabbitMq;
 
 public class RabbitMqListener : IRabbitMqListener
 {
-    public IEnumerable<IRabbitMqConsumer> Consumers { get; }
+    private readonly IRabbitMqConsumerList _consumerList;
 
-    private readonly IRabbitMqConsumerList _consumerList; 
-    
     public RabbitMqListener(IRabbitMqConsumerList consumerList)
     {
         _consumerList = consumerList;
         Consumers = _consumerList.GetConsumers();
     }
-    
+
+    public IEnumerable<IRabbitMqConsumer> Consumers { get; }
+
     public void Start()
     {
         foreach (var consumer in Consumers) consumer.Start();

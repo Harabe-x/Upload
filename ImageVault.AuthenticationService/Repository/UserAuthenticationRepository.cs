@@ -8,13 +8,14 @@ using ImageVault.AuthenticationService.Data.Interfaces.Services;
 using ImageVault.AuthenticationService.Data.Mappers;
 using ImageVault.AuthenticationService.Data.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
 
 namespace ImageVault.AuthenticationService.Repository;
 
 public class UserAuthenticationRepository : IUserAuthenticationRepository
 {
     private readonly IConfiguration _configuration;
+
+    private readonly IJwtTokenService _jwtTokenService;
 
     private readonly ILogger<UserAuthenticationRepository> _logger;
 
@@ -23,11 +24,9 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
     private readonly SignInManager<ApplicationUser> _signInManager;
 
     private readonly UserManager<ApplicationUser> _userManager;
-    
+
     private readonly IDataValidationService _validationService;
 
-    private readonly IJwtTokenService _jwtTokenService; 
-    
     public UserAuthenticationRepository(UserManager<ApplicationUser> userManager,
         ILogger<UserAuthenticationRepository> logger, SignInManager<ApplicationUser> signInManager,
         IDataValidationService validationService, IRabbitMqMessageSender rabbitMqMessageSender,
@@ -39,7 +38,7 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
         _validationService = validationService;
         _rabbitMqMessageSender = rabbitMqMessageSender;
         _configuration = configuration;
-        _jwtTokenService = jwtTokenService; 
+        _jwtTokenService = jwtTokenService;
     }
 
     public async Task<OperationResultDto<AuthenticationResultDto>> CreateAccount(RegisterAccountDto accountDto)
@@ -56,13 +55,15 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
             _logger.LogWarning(
                 $"User registration data validation failed \nError:{string.Join("\n", identityResult.Errors.Select(x => x.Code))} ");
 
-            return new OperationResultDto<AuthenticationResultDto>(null, false, new Error("The provided data was invalid"));
+            return new OperationResultDto<AuthenticationResultDto>(null, false,
+                new Error("The provided data was invalid"));
         }
-        
+
         var addingRoleResult = await _userManager.AddToRoleAsync(user, "User");
 
         if (!addingRoleResult.Succeeded)
-            return new OperationResultDto<AuthenticationResultDto>(null, false, new Error("Sorry, something went wrong ..."));
+            return new OperationResultDto<AuthenticationResultDto>(null, false,
+                new Error("Sorry, something went wrong ..."));
 
         _rabbitMqMessageSender.SendMessage(accountDto.MapToUserData(user.Id), _configuration.GetUserQueueName());
 
@@ -73,17 +74,16 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
     {
         var user = await _userManager.FindByEmailAsync(loginDto.Email);
 
-        if (user == null )
+        if (user == null)
             return new OperationResultDto<AuthenticationResultDto>(null, false, new Error("User does not exists"));
 
         var isLoginSucceeded = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
         if (!isLoginSucceeded.Succeeded)
-        {
             return new OperationResultDto<AuthenticationResultDto>(null, false, new Error("Invalid login credentials"));
-        }
-        
-        return new OperationResultDto<AuthenticationResultDto>(await CreateAuthenticationResultDto(user), isLoginSucceeded.Succeeded, null);
+
+        return new OperationResultDto<AuthenticationResultDto>(await CreateAuthenticationResultDto(user),
+            isLoginSucceeded.Succeeded, null);
     }
 
     private bool ValidateRegisterDto(RegisterAccountDto accountDto)
@@ -96,7 +96,7 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
     private async Task<AuthenticationResultDto> CreateAuthenticationResultDto(ApplicationUser user)
     {
         var role = await _userManager.GetRolesAsync(user);
-        
-        return new AuthenticationResultDto(user.Email, _jwtTokenService.CreateToken(user,role.FirstOrDefault()));
+
+        return new AuthenticationResultDto(user.Email, _jwtTokenService.CreateToken(user, role.FirstOrDefault()));
     }
 }

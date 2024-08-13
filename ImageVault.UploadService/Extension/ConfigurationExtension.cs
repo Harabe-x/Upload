@@ -1,12 +1,11 @@
-using Microsoft.AspNetCore.Mvc.Routing;
-
 namespace ImageVault.UploadService.Extension;
 
 public static class ConfigurationExtension
 {
     public static string GetS3BucketName(this IConfiguration configuration)
     {
-        return configuration.GetSection("AmazonS3")["BucketName"] ?? throw new InvalidOperationException("BucketName is not configured in AmazonS3 section.");
+        return configuration.GetSection("AmazonS3")["BucketName"] ??
+               throw new InvalidOperationException("BucketName is not configured in AmazonS3 section.");
     }
 
     public static string? GetRabbitMqUsername(this IConfiguration configuration)
@@ -41,7 +40,7 @@ public static class ConfigurationExtension
 
     public static IEnumerable<string> GetAllowedFileExtensions(this IConfiguration configuration)
     {
-        return configuration.GetSection("AppConfig").GetSection("AllowedExtensions").Get<string[]>(); ;
+        return configuration.GetSection("AppConfig").GetSection("AllowedExtensions").Get<string[]>();
+        ;
     }
-
 }

@@ -1,5 +1,3 @@
-using System.Diagnostics;
-using System.Text;
 using System.Text.Json;
 using ImageVault.ApiKeyService.Data.Dtos;
 using ImageVault.ApiKeyService.Data.Interfaces.ApiKey;
@@ -12,38 +10,50 @@ namespace ImageVault.ApiKeyService.RabbitMq.Consumers;
 
 public class ApiKeyUsageConsumer : IRabbitMqConsumer
 {
-
-    private readonly IServiceScopeFactory _scopeFactory;
+    private readonly IConfiguration _configuration;
 
     private readonly IRabbitMqConnection _rabbitMqConnection;
 
-    private readonly IConfiguration _configuration;
+    private readonly IServiceScopeFactory _scopeFactory;
 
-    private ILogger<ApiKeyUsageConsumer> _logger;
-    
     private IModel _channel;
 
-    private bool _disposed; 
-    
-    public ApiKeyUsageConsumer(IServiceScopeFactory scopeFactory, IRabbitMqConnection rabbitMqConnection,IConfiguration configuration,ILogger<ApiKeyUsageConsumer> logger)
+    private bool _disposed;
+
+    private readonly ILogger<ApiKeyUsageConsumer> _logger;
+
+    public ApiKeyUsageConsumer(IServiceScopeFactory scopeFactory, IRabbitMqConnection rabbitMqConnection,
+        IConfiguration configuration, ILogger<ApiKeyUsageConsumer> logger)
     {
         _rabbitMqConnection = rabbitMqConnection;
         _scopeFactory = scopeFactory;
         _logger = logger;
-        _configuration = configuration; 
+        _configuration = configuration;
     }
-    
+
     public void Start()
     {
         _channel = _rabbitMqConnection.Connection.CreateModel();
-        
-        _channel.QueueDeclare(_configuration.GetApiKeyUsageQueue(), true ,false);
+
+        _channel.QueueDeclare(_configuration.GetApiKeyUsageQueue(), true, false);
 
         var consumer = new AsyncEventingBasicConsumer(_channel);
 
         consumer.Received += HandleMessage;
 
         _channel.BasicConsume(_configuration.GetApiKeyUsageQueue(), false, consumer);
+    }
+
+    public void Stop()
+    {
+        _channel.Close();
+    }
+
+    public void Dispose()
+    {
+        if (_disposed) return;
+        _channel.Dispose();
+        _disposed = true;
     }
 
     private async Task HandleMessage(object sender, BasicDeliverEventArgs args)
@@ -61,38 +71,23 @@ public class ApiKeyUsageConsumer : IRabbitMqConsumer
             if (adminService == null)
             {
                 _logger.LogCritical($"ServiceProvider couldn't resolve dependency in {typeof(ApiKeyUsageConsumer)}");
-                _channel.BasicNack(args.DeliveryTag, false , true );
-                return; 
+                _channel.BasicNack(args.DeliveryTag, false, true);
+                return;
             }
-            
+
             var result = await adminService.AddUsageToTheApiKey(apiKeyUsage);
 
             if (!result.IsSuccess)
             {
                 _logger.LogCritical(result.Error.message);
-                _channel.BasicNack(args.DeliveryTag, false , true );
+                _channel.BasicNack(args.DeliveryTag, false, true);
                 return;
             }
-            
+
             _channel.BasicAck(args.DeliveryTag, false);
         }
         catch (Exception e)
         {
-            
         }
-        
-    }
-
-    public void Stop()
-    {
-        _channel.Close();
-    }
-    
-    public void Dispose()
-    {
-        if (_disposed) return;
-        _channel.Dispose();
-        _disposed = true; 
-
     }
 }

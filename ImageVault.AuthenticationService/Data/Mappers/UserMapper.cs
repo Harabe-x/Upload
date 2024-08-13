@@ -11,7 +11,7 @@ public static class UserMapper
         {
             Email = account.Email
         };
-    } 
+    }
 
     public static UserDataDto MapToUserData(this RegisterAccountDto applicationUser, string id)
     {

@@ -52,8 +52,8 @@ public class UserAuthenticationController : ControllerBase
             var loginResult = await _userAuthenticationRepository.LoginUser(loginData);
 
             return loginResult.IsSuccess
-                    ? Ok(loginResult.Value)
-                    : Unauthorized(loginResult.Error);
+                ? Ok(loginResult.Value)
+                : Unauthorized(loginResult.Error);
         }
         catch (Exception e)
         {

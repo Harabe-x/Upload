@@ -4,7 +4,7 @@ namespace ImageVault.UserService.Extension;
 
 public static class ApplicationBuilderExtension
 {
-    private static IRabbitMqListener _rabbitMqListener { get;  set; }
+    private static IRabbitMqListener _rabbitMqListener { get; set; }
 
     public static IApplicationBuilder AddRabbitMqConsumer(this IApplicationBuilder app)
     {

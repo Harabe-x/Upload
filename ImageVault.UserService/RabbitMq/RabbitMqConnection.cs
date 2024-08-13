@@ -34,7 +34,7 @@ public class RabbitMqConnection : IRabbitMqConnection, IDisposable
             Password = _configuration.GetRabbitMqPassword(),
             DispatchConsumersAsync = true
         };
-        
+
         try
         {
             Connection = factory.CreateConnection();

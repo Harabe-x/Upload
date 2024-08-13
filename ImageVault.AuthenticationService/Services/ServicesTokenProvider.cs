@@ -1,34 +1,32 @@
 using ImageVault.AuthenticationService.Configuration;
 using ImageVault.AuthenticationService.Data.Interfaces.Auth;
 using ImageVault.AuthenticationService.Data.Interfaces.RabbitMq;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace ImageVault.AuthenticationService.Services;
 
-
 /// <summary>
-///  Provides JWT Tokens to other services
+///     Provides JWT Tokens to other services
 /// </summary>
 public class ServicesTokenProvider : BackgroundService
 {
-    private readonly IConfiguration _configuration;
-
-    private readonly IServiceScopeFactory _scopeFactory;
-
-    private readonly ILogger<ServicesTokenProvider> _logger;
-
     private const int TokenRefreshInterval = 30;
 
     private const int RetryInterval = 15;
-    
-    public ServicesTokenProvider(IConfiguration configuration, IServiceScopeFactory scopeFactory, ILogger<ServicesTokenProvider> logger )
+    private readonly IConfiguration _configuration;
+
+    private readonly ILogger<ServicesTokenProvider> _logger;
+
+    private readonly IServiceScopeFactory _scopeFactory;
+
+    public ServicesTokenProvider(IConfiguration configuration, IServiceScopeFactory scopeFactory,
+        ILogger<ServicesTokenProvider> logger)
     {
         _configuration = configuration;
         _scopeFactory = scopeFactory;
-        _logger = logger; 
+        _logger = logger;
     }
-    
-    protected async override Task ExecuteAsync(CancellationToken stoppingToken)
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
         {
@@ -44,7 +42,7 @@ public class ServicesTokenProvider : BackgroundService
 
                 throw new NullReferenceException();
             }
-            
+
             var operationResult = await adminRepository.GetAdminUser();
 
             if (!operationResult.IsSuccess)
@@ -53,9 +51,10 @@ public class ServicesTokenProvider : BackgroundService
                 await Task.Delay(TimeSpan.FromSeconds(RetryInterval), stoppingToken);
                 continue;
             }
+
             var token = tokenService.CreateToken(operationResult.Value, "Admin");
             _logger.LogInformation($"Token sent over amqp. \n Token:  {token} ");
-            
+
             messageSender.SendMessage(token, _configuration.GetUploadServiceJwtQueue());
 
             await Task.Delay(TimeSpan.FromMinutes(TokenRefreshInterval), stoppingToken);

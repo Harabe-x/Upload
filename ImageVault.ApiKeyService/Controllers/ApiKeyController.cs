@@ -1,4 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using ImageVault.ApiKeyService.Data.Dtos;
 using ImageVault.ApiKeyService.Data.Interfaces.ApiKey;
@@ -77,7 +76,7 @@ public class ApiKeyController : ControllerBase
 
         var id = User.GetClaimValue(ClaimTypes.NameIdentifier);
 
-         try
+        try
         {
             var result = await _apiKeyRepository.AddKey(apiKeyDto, id);
 
@@ -102,10 +101,10 @@ public class ApiKeyController : ControllerBase
             return BadRequest(new Error("Api key can't be empty"));
 
         var id = User.GetClaimValue(ClaimTypes.NameIdentifier);
-        
+
         try
         {
-            var result = await _apiKeyRepository.EditKey(newApiKeyData,  id, newApiKeyData.Key);
+            var result = await _apiKeyRepository.EditKey(newApiKeyData, id, newApiKeyData.Key);
 
             return result.IsSuccess
                 ? Ok(result.Value)

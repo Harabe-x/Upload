@@ -6,7 +6,6 @@ public static class IApplicationBuilderExtension
 {
     public static IApplicationBuilder UseRabbitMqListener(this IApplicationBuilder app)
     {
-
         var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
         using (var scope = scopeFactory.CreateScope())
         {

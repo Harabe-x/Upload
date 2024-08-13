@@ -1,26 +1,17 @@
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Globalization;
-using System.IO.Compression;
-using System.Net.Mime;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
 using ImageVault.UploadService.Data.Interfaces.Services;
 using ImageVault.UploadService.Extension;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Formats.Webp;
 
 namespace ImageVault.UploadService.Services;
 
-public class ImageProcessingService :IImageProcessingService
+public class ImageProcessingService : IImageProcessingService
 {
+    private readonly IConfiguration _configuration;
 
-    private readonly IConfiguration _configuration; 
-
-    public ImageProcessingService(IConfiguration configuration )
+    public ImageProcessingService(IConfiguration configuration)
     {
-        _configuration = configuration; 
+        _configuration = configuration;
     }
 
     public async Task<Stream> CompressImage(IFormFile file)
@@ -30,16 +21,16 @@ public class ImageProcessingService :IImageProcessingService
         if (fileExtension == ".jpg" || fileExtension == ".jpeg") return file.OpenReadStream();
 
         using var image = await Image.LoadAsync(file.OpenReadStream());
-        
+
         var convertedImageStream = new MemoryStream();
 
         var encoder = new WebpEncoder
         {
             Quality = 90
         };
-          await image.SaveAsync(convertedImageStream, encoder);
+        await image.SaveAsync(convertedImageStream, encoder);
 
-          return convertedImageStream;
+        return convertedImageStream;
     }
 
     public bool IsFileFormatValid(IFormFile file)

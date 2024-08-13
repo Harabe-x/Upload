@@ -8,15 +8,14 @@ namespace ImageVault.AuthenticationService.Repository;
 
 public class AdminUserRepository : IAdminUserRepository
 {
-
-    private readonly ApplicationDbContext _dbContext; 
+    private readonly ApplicationDbContext _dbContext;
 
     public AdminUserRepository(ApplicationDbContext dbContext)
     {
-        _dbContext = dbContext; 
+        _dbContext = dbContext;
     }
-    
-    
+
+
     public async Task<OperationResultDto<ApplicationUser>> GetAdminUser()
     {
         try

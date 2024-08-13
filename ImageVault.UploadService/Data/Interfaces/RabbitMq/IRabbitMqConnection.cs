@@ -4,5 +4,5 @@ namespace ImageVault.UploadService.Data.Interfaces.RabbitMq;
 
 public interface IRabbitMqConnection
 {
-    public IConnection Connection { get;  }
+    public IConnection Connection { get; }
 }

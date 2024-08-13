@@ -20,6 +20,6 @@ public class ApiKey
     [Required] public string Key { get; set; }
 
     [Required] public ulong StorageCapacity { get; set; }
-    
+
     [Required] public ulong StorageUsed { get; set; }
 }

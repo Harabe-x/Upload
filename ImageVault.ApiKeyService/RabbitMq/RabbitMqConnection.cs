@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using ImageVault.ApiKeyService.Data.Interfaces.RabbitMq;
 using ImageVault.ApiKeyService.Extension;
 using RabbitMQ.Client;
@@ -8,21 +7,19 @@ namespace ImageVault.ApiKeyService.RabbitMq;
 
 public class RabbitMqConnection : IRabbitMqConnection
 {
-    private IConnection _connection;
-
     private readonly IConfiguration _configuration;
-    
-    public IConnection Connection => _connection;
 
-    private readonly ILogger<RabbitMqConnection> _logger; 
+    private readonly ILogger<RabbitMqConnection> _logger;
 
-    public  RabbitMqConnection(IConfiguration configuration, ILogger<RabbitMqConnection> logger )
+    public RabbitMqConnection(IConfiguration configuration, ILogger<RabbitMqConnection> logger)
     {
-        _logger = logger; 
-        _configuration = configuration; 
-        
-         InitializeConnection();
+        _logger = logger;
+        _configuration = configuration;
+
+        InitializeConnection();
     }
+
+    public IConnection Connection { get; private set; }
 
     private void InitializeConnection()
     {
@@ -31,12 +28,12 @@ public class RabbitMqConnection : IRabbitMqConnection
             HostName = _configuration.GetRabbitMqHostName(),
             UserName = _configuration.GetRabbitMqUsername(),
             Password = _configuration.GetRabbitMqPassword(),
-            DispatchConsumersAsync = true 
+            DispatchConsumersAsync = true
         };
 
         try
         {
-            _connection = connectionFactory.CreateConnection();
+            Connection = connectionFactory.CreateConnection();
         }
         catch (BrokerUnreachableException e)
         {
@@ -45,5 +42,4 @@ public class RabbitMqConnection : IRabbitMqConnection
             InitializeConnection();
         }
     }
-    
 }

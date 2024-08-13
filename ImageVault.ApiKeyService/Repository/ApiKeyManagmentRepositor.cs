@@ -12,15 +12,16 @@ public class ApiKeyRepository : IApiKeyRepository
 {
     private readonly ApplicationDbContext _dbContext;
 
+    private readonly ILogger<ApiKeyRepository> _logger;
+
     private readonly IDataValidationService _validationService;
 
-    private readonly ILogger<ApiKeyRepository> _logger; 
-
-    public ApiKeyRepository(ApplicationDbContext dbContext, IDataValidationService validationService, ILogger<ApiKeyRepository> logger)
+    public ApiKeyRepository(ApplicationDbContext dbContext, IDataValidationService validationService,
+        ILogger<ApiKeyRepository> logger)
     {
         _dbContext = dbContext;
         _validationService = validationService;
-        _logger = logger; 
+        _logger = logger;
     }
 
     public async Task<OperationResultDto<ApiKeyDto>> AddKey(AddApiKeyDto apiKeyData, string userId)
@@ -64,7 +65,7 @@ public class ApiKeyRepository : IApiKeyRepository
             return new OperationResultDto<ApiKeyDto>(null, false, new Error("Invalid key data"));
 
         var apiKey = await GetApiKey(key, userId);
-        
+
         if (apiKey == null)
             return new OperationResultDto<ApiKeyDto>(null, false, new Error("Api key doesn't exists"));
 

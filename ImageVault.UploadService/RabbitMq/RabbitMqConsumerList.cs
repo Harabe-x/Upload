@@ -6,14 +6,12 @@ namespace ImageVault.UploadService.RabbitMq;
 
 public class RabbitMqConsumerList : IRabbitMqConsumerList
 {
-
-
-    private List<IRabbitMqConsumer> Consumers;
+    private readonly List<IRabbitMqConsumer> Consumers;
 
     public RabbitMqConsumerList(JwtConsumer jwtConsumer)
     {
-        Consumers = new List<IRabbitMqConsumer>(); 
-        
+        Consumers = new List<IRabbitMqConsumer>();
+
         Consumers.Add(jwtConsumer);
     }
 

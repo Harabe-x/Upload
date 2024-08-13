@@ -6,13 +6,13 @@ namespace ImageVault.RequestMetricsService.RabbitMq;
 public class RabbitMqListener : IRabbitMqListener
 {
     private readonly IRabbitMqConsumerList _rabbitMqConsumerList;
-    
-    public IEnumerable<IRabbitMqConsumer> Consumers { get; private set; }
 
     public RabbitMqListener(IRabbitMqConsumerList rabbitMqConsumerList)
     {
         _rabbitMqConsumerList = rabbitMqConsumerList;
     }
+
+    public IEnumerable<IRabbitMqConsumer> Consumers { get; private set; }
 
 
     public void StartListening()

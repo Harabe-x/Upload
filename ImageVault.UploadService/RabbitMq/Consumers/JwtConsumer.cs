@@ -3,7 +3,6 @@ using ImageVault.UploadService.Data.Interfaces;
 using ImageVault.UploadService.Data.Interfaces.RabbitMq;
 using ImageVault.UploadService.Data.Interfaces.Services;
 using ImageVault.UploadService.Extension;
-using ImageVault.UploadService.Services;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -11,21 +10,20 @@ namespace ImageVault.UploadService.RabbitMq.Consumers;
 
 public class JwtConsumer : IRabbitMqConsumer
 {
+    private readonly IConfiguration _configuration;
     private readonly IRabbitMqConnection _connection;
 
-    private readonly IConfiguration _configuration;
+    private readonly IJwtTokenProvider _tokenProvider;
 
-    private readonly IJwtTokenProvider _tokenProvider; 
+    private IModel _channel;
 
-    private  IModel _channel;
-    
     public JwtConsumer(IRabbitMqConnection connection, IConfiguration configuration, IJwtTokenProvider tokenProvider)
     {
         _connection = connection;
         _configuration = configuration;
-        _tokenProvider = tokenProvider; 
+        _tokenProvider = tokenProvider;
     }
-    
+
     public void Start()
     {
         _channel = _connection.Connection.CreateModel();
@@ -36,7 +34,17 @@ public class JwtConsumer : IRabbitMqConsumer
 
         consumer.Received += HadnleMessage;
 
-        _channel.BasicConsume(_configuration.GetRabbitMqJwtTokenQueueName(), true , consumer);
+        _channel.BasicConsume(_configuration.GetRabbitMqJwtTokenQueueName(), true, consumer);
+    }
+
+    public void Stop()
+    {
+        _channel.Close();
+    }
+
+    public void Dispose()
+    {
+        _channel.Dispose();
     }
 
     private async Task HadnleMessage(object sender, BasicDeliverEventArgs args)
@@ -52,15 +60,6 @@ public class JwtConsumer : IRabbitMqConsumer
 
     private static string RemoveQuoteFromString(string s)
     {
-        return s.Remove(s.Length - 1, 1).Remove(0,1);
-    }
-
-    public void Stop()
-    {
-        _channel.Close();
-    }
-    public void Dispose()
-    {
-        _channel.Dispose();
+        return s.Remove(s.Length - 1, 1).Remove(0, 1);
     }
 }
