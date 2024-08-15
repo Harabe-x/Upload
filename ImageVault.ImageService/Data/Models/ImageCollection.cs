@@ -8,7 +8,7 @@ public class ImageCollection
     
     [Required] public string CollectionName { get; set; }
 
-    public string UserId { get; set; }
+    public string ApiKey { get; set; }
     
     public DateTime CreatedAt { get; set; }
     

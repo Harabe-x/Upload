@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using ImageVault.ImageService.Data.Dtos;
 using ImageVault.ImageService.Data.Dtos.Image;
+using ImageVault.ImageService.Data.Models;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using HostingEnvironmentExtensions = Microsoft.Extensions.Hosting.HostingEnvironmentExtensions;
 
@@ -18,7 +19,7 @@ public interface IImageManagerRepository
     
     Task<OperationResultDto<bool>> EditImage(string apiKey, string imageKey, string newImageTitle, string newImageDescription, string collectionName = "default");
     
-    Task<OperationResultDto<bool>> CreateCollection(string apiKey, string collectionName, string? description = default); 
+    Task<OperationResultDto<ImageCollection>> CreateCollection(string apiKey, string collectionName, string? description = default); 
 
     Task<OperationResultDto<bool>> EditCollection(string apiKey, string collectionName, string? description = default); 
     
