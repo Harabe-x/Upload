@@ -1,6 +1,9 @@
-using ImageVault.AuthenticationService.Data.Models;
+using System.Runtime.InteropServices.JavaScript;
+using ImageVault.ImageService.Data.Models;
 
-namespace ImageVault.AuthenticationService.Data.Dtos.AuthDtos;
+namespace ImageVault.ImageService.Data.Dtos;
+
+public record OperationResult();
 
 /// <summary>
 ///     A record that represents the status of the operation.

@@ -58,7 +58,7 @@ public class ImageUploadRepository : IImageUploadRepository
                 return new OperationResultDto<ImageUploadResult>(null, false,
                     new Error("Currently we don't accept file "));
 
-            var request = await CreatePutObjectRequest(imageToUploadData, apiKey.userId, imageToUploadData.ApiKey);
+            var request = await CreatePutObjectRequest(imageToUploadData, apiKey.userId);
 
             await _s3Connection.S3Client.PutObjectAsync(request);
 
@@ -134,8 +134,7 @@ public class ImageUploadRepository : IImageUploadRepository
     }
 
 
-    private async Task<PutObjectRequest> CreatePutObjectRequest(ImageUploadData imageToUploadData, string userId,
-        string apiKey)
+    private async Task<PutObjectRequest> CreatePutObjectRequest(ImageUploadData imageToUploadData, string userId)
     {
         var stream = imageToUploadData.UseCompression
             ? await _imageProcessingService.CompressImage(imageToUploadData.Image)
@@ -147,7 +146,7 @@ public class ImageUploadRepository : IImageUploadRepository
         {
             BucketName = _configuration.GetS3BucketName(),
             InputStream = stream,
-            Key = CreateFileKey(userId, imageToUploadData.CollectionName, apiKey)
+            Key = CreateFileKey()
         };
 
         request.Metadata.Add("Title", imageToUploadData.Title);
@@ -159,11 +158,9 @@ public class ImageUploadRepository : IImageUploadRepository
         return request;
     }
 
-    private static string CreateFileKey(string userId, string collectionName, string apiKey)
+    private static string CreateFileKey()
     {
-        return string.IsNullOrWhiteSpace(collectionName)
-            ? $"{userId}/{apiKey}/{Guid.NewGuid()}"
-            : $"{userId}/{apiKey}/{collectionName}/{Guid.NewGuid()}";
+        return Guid.NewGuid().ToString(); 
     }
 
     private static ImageUploadResult CreateImageUploadResult(PutObjectRequest request, ImageUploadData imageData,
