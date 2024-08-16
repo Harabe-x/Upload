@@ -89,7 +89,7 @@ namespace ImageVault.ImageService.Migrations
             modelBuilder.Entity("ImageVault.ImageService.Data.Models.Image", b =>
                 {
                     b.HasOne("ImageVault.ImageService.Data.Models.ImageCollection", "ImageCollection")
-                        .WithMany("CollectionImages")
+                        .WithMany("ImagesCollection")
                         .HasForeignKey("ImageCollectionId");
 
                     b.Navigation("ImageCollection");
@@ -97,7 +97,7 @@ namespace ImageVault.ImageService.Migrations
 
             modelBuilder.Entity("ImageVault.ImageService.Data.Models.ImageCollection", b =>
                 {
-                    b.Navigation("CollectionImages");
+                    b.Navigation("ImagesCollection");
                 });
 #pragma warning restore 612, 618
         }
