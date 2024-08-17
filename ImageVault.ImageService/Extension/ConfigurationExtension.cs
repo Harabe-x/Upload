@@ -18,4 +18,9 @@ public static class ConfigurationExtension
         return configuration.GetSection("RabbitMq")["Host"];
     }
 
+    public static string? GetImageQueueName(this IConfiguration configuration)
+    {
+        return configuration.GetSection("RabbitMq").GetSection("Queues")["ImageQueue"];
+    }
+
 }
