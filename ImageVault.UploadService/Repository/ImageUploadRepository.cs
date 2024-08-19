@@ -65,7 +65,9 @@ public class ImageUploadRepository : IImageUploadRepository
             if (!ulong.TryParse(request.Metadata["Size"], out var imageSize))
                 _logger.LogCritical($"Parsing file size from metadata failed in {typeof(ImageUploadRepository)}");
 
-            SendRabbitMqMessages(apiKey.userId, imageSize, apiKey.key);
+            var fileFormat = imageToUploadData.UseCompression ? ".webp" : _imageProcessingService.GetFileFormat(imageToUploadData.Image);
+            
+            SendRabbitMqMessages(apiKey.userId, imageSize, apiKey.key,request.Key,imageToUploadData.CollectionName,imageToUploadData.Title,imageToUploadData.Description,fileFormat);
 
             return new OperationResultDto<ImageUploadResult>(
                 CreateImageUploadResult(request, imageToUploadData, imageSize), true, null);
@@ -126,11 +128,13 @@ public class ImageUploadRepository : IImageUploadRepository
         return request;
     }
 
-    private void SendRabbitMqMessages(string userId, ulong imageSize, string apiKey)
+    private void SendRabbitMqMessages(string userId, ulong imageSize, string apiKey,string imageKey, string imageCollection, string imageTitle,string imageDescription,string fileFormat )
     {
         var apiKeyUsage = new ApiKeyUsageDto(userId, imageSize, apiKey);
+        var imageData = new ImageDataDto(imageKey, apiKey, imageCollection, imageTitle, imageDescription,userId, imageSize,fileFormat);
 
         _rabbitmqMessageSender.SendMessage(apiKeyUsage, _configuration.GetApiKeyUsageQueue());
+        _rabbitmqMessageSender.SendMessage(imageData, _configuration.GetImageQueueName());
     }
 
 

@@ -13,21 +13,22 @@ public class UserDataConsumer : IRabbitMqConsumer
 
     private readonly ILogger<UserDataConsumer> _logger;
 
-    private readonly IUserRepository _userRepository;
+    private IServiceScopeFactory _scopeFactory; 
 
-    private IModel _channel;
 
-    public UserDataConsumer(IRabbitMqConnection connection, IUserRepository userRepository,
-        ILogger<UserDataConsumer> logger)
+    private IModel _channel; 
+
+    public UserDataConsumer(IRabbitMqConnection connection,
+        ILogger<UserDataConsumer> logger, IServiceScopeFactory scopeFactory)
     {
         _connection = connection;
-        _userRepository = userRepository;
+        _scopeFactory = scopeFactory; 
         _logger = logger;
     }
 
     public async void Start()
     {
-        _channel = _connection.Connection.CreateModel();
+         _channel  = _connection.Connection.CreateModel();
 
         _channel.QueueDeclare("UserData", true, false);
 
@@ -37,26 +38,22 @@ public class UserDataConsumer : IRabbitMqConsumer
         _channel.BasicConsume("UserData", false, consumer);
     }
 
-    public async void Stop()
-    {
-        _connection?.Connection.Close();
-    }
-
-    public void Dispose()
-    {
-    }
-
-    private async Task HandleMessage(object sender, BasicDeliverEventArgs args)
+    private async  Task HandleMessage(object sender, BasicDeliverEventArgs args)
     {
         var json = Encoding.UTF8.GetString(args.Body.ToArray());
 
         _logger.LogInformation("Message received");
 
+        using var scope = _scopeFactory.CreateAsyncScope();
+
+        var userRepository = scope.ServiceProvider.GetService<IUserRepository>();        
         try
         {
+            
+            
             var userData = JsonSerializer.Deserialize<UserDataDto>(json);
 
-            var result = await _userRepository.AddUser(userData, userData.Id);
+            var result = await userRepository.AddUser(userData, userData.Id);
 
             if (result.IsSuccess) _channel.BasicAck(args.DeliveryTag, false);
         }
@@ -67,4 +64,16 @@ public class UserDataConsumer : IRabbitMqConsumer
             _channel.BasicNack(args.DeliveryTag, true, false);
         }
     }
+
+    public async void Stop()
+    {
+        _connection?.Connection.Close();
+    }
+
+    public void Dispose()
+    {
+        
+    }
+    
+    
 }

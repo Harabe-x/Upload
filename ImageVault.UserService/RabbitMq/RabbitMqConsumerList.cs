@@ -4,15 +4,16 @@ namespace ImageVault.UserService.RabbitMq;
 
 public class RabbitMqConsumerList : IRabbitMqConsumerList
 {
-    private readonly List<IRabbitMqConsumer> _consumers;
+
+    private List<IRabbitMqConsumer> _consumers;
 
     public RabbitMqConsumerList(UserDataConsumer userDataConsumer)
     {
         _consumers = new List<IRabbitMqConsumer>();
 
-        _consumers.Add(userDataConsumer);
+        _consumers.Add(userDataConsumer); 
     }
-
+    
     public IEnumerable<IRabbitMqConsumer> GetConsumers()
     {
         return _consumers.ToList();

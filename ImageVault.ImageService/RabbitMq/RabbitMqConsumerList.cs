@@ -1,4 +1,5 @@
 using ImageVault.ImageService.Data.Interfaces;
+using ImageVault.ImageService.RabbitMq.Consumers;
 
 namespace ImageVault.ImageService.RabbitMq;
 
@@ -9,10 +10,10 @@ public class RabbitMqConsumerList : IRabbitMqConsumerList
     private readonly List<IRabbitMqConsumer> _consumers;
 
 
-    public RabbitMqConsumerList()
+    public RabbitMqConsumerList(ImageConsumer imageConsumer)
     {
-        _consumers = new List<IRabbitMqConsumer>(); 
-        
+        _consumers = new List<IRabbitMqConsumer>();
+        _consumers.Add(imageConsumer);
         
     } 
     

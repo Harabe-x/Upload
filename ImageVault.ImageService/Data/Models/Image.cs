@@ -13,7 +13,7 @@ public class Image
 
     [Required] public string Key { get; set; }
     
-    [Required] public string ApiKeyId { get; set; }  
+    [Required] public string ApiKey { get; set; }  
     
     public string? Collection { get; set; }
 
@@ -21,8 +21,16 @@ public class Image
     
     public string? Description { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public string ImageFormat { get; set; }
+    
+    public string? DownloadUrl { get; set; }
+    
+    public ulong ImageSize { get; set; }
 
+    public DateTime CreatedAt { get; set; }
+    
+    public string Url { get; set; }
+    
     public string? ImageCollectionId { get; set; }
 
     [ForeignKey(nameof(ImageCollectionId))]

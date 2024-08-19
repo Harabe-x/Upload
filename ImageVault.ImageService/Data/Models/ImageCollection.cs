@@ -11,18 +11,18 @@ public class ImageCollection
     
     [Required] public string ApiKey { get; set; }
     
-    public string Description { get; set; }
-    
+    public string? Description { get; set; }
     
     public DateTime CreatedAt { get; set; }
     
-    public string CollectionCoverUrl { get; set; }
+    public string? CollectionCoverUrl { get; set; }
 
     public ICollection<Image> ImagesCollection { get; set; }
 
     public ImageCollection()
     {
-        Id = Guid.NewGuid().ToString(); 
+        Id = Guid.NewGuid().ToString();
+        CreatedAt = DateTime.Now;
     }
     
 }

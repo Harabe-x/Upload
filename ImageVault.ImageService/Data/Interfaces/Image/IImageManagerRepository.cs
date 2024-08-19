@@ -9,7 +9,7 @@ namespace ImageVault.ImageService.Data.Interfaces.Image;
 
 public interface IImageManagerRepository
 {
-    Task<OperationResultDto<bool>> AddImage(string imageKey, string apiKey, string title, string description, string collectionName = "default");
+    Task<OperationResultDto<bool>> AddImage(ImageDataDto imageData);
     
     Task<OperationResultDto<ImageDto>> GetImage(string imageKey,string apiKey, string collectionName = "default");
     

@@ -40,7 +40,12 @@ public static class ConfigurationExtension
 
     public static IEnumerable<string> GetAllowedFileExtensions(this IConfiguration configuration)
     {
-        return configuration.GetSection("AppConfig").GetSection("AllowedExtensions").Get<string[]>();
-        ;
+        return configuration.GetSection("AppConfig").GetSection("AllowedExtensions").Get<string[]>(); ;
     }
+
+    public static string? GetImageQueueName(this IConfiguration configuration)
+    {
+        return configuration.GetSection("RabbitMq").GetSection("Queues")["ImageQueue"];
+    }
+
 }

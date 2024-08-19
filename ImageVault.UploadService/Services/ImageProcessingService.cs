@@ -43,4 +43,9 @@ public class ImageProcessingService : IImageProcessingService
 
         return allowedExtensions.Any(x => x == fileExtension);
     }
+
+    public string GetFileFormat(IFormFile file)
+    {
+      return Path.GetExtension(file.FileName).ToLowerInvariant();
+    }
 }

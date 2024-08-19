@@ -23,21 +23,14 @@ public class ImageManagerRepository : IImageManagerRepository
         _dbContext = dbContext; 
     }
     
-    public async Task<OperationResultDto<bool>> AddImage(string imageKey, string apiKey, string title, string description, string collectionName = "default")
+    public async Task<OperationResultDto<bool>> AddImage(ImageDataDto imageData)
     {
-        if (string.IsNullOrWhiteSpace(imageKey) || string.IsNullOrWhiteSpace(apiKey))
-            return new OperationResultDto<bool>(false, false, new Error($"{nameof(apiKey)} or {nameof(imageKey)} was null"));
+        if (string.IsNullOrWhiteSpace(imageData.Key) || string.IsNullOrWhiteSpace(imageData.ApiKey))
+            return new OperationResultDto<bool>(false, false, new Error($"{nameof(imageData.Key)} or {nameof(imageData.ApiKey)} was null"));
 
-        var collection = await GetCollection(apiKey, collectionName);
+        var collection = await GetCollection(imageData.ApiKey, imageData.Collection);
 
-        var image = new Image
-        {
-            Collection = collection.CollectionName,
-            Title = title, 
-            Description = description ,
-            ImageCollectionId = collection.Id,
-            Key = collection.ApiKey
-        };
+        var image = imageData.MapToImage(collection);
         
         collection.ImagesCollection.Add(image);
 
@@ -133,6 +126,8 @@ public class ImageManagerRepository : IImageManagerRepository
             CollectionName = collectionName,
             Description = description 
         };
+
+        await _dbContext.ImageCollections.AddAsync(collection); 
         
         return await SaveChanges()
             ? new OperationResultDto<ImageCollection>(collection, true, null)
@@ -176,20 +171,18 @@ public class ImageManagerRepository : IImageManagerRepository
             ? new OperationResultDto<bool>(true, true, null)
             : new OperationResultDto<bool>(false, false, new Error("An error occurred while editing the collection"));
     }
-    
 
-    private async Task<ImageCollection> GetCollection(string apiKey,string collectionName)
+
+    private async Task<ImageCollection> GetCollection(string apiKey, string collectionName = "default")
     {
-        
-        var collection = await _dbContext.ImageCollections.Include(imageCollection => imageCollection.ImagesCollection).FirstOrDefaultAsync(x => x.CollectionName == collectionName && apiKey == x.ApiKey);
+
+        var collection = await _dbContext.ImageCollections.Include(imageCollection => imageCollection.ImagesCollection)
+            .FirstOrDefaultAsync(x => x.CollectionName == collectionName && apiKey == x.ApiKey);
 
         if (collection != null)
         {
             return collection;
         }
-
-        
-        if (collectionName != "default") return collection;
         
         var result = await CreateCollection(apiKey, collectionName);
         collection = result.Value;

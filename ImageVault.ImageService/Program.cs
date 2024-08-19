@@ -1,8 +1,11 @@
 using System.Text;
 using ImageVault.ImageService.Data;
 using ImageVault.ImageService.Data.Interfaces;
+using ImageVault.ImageService.Data.Interfaces.Image;
+using ImageVault.ImageService.Extension;
 using ImageVault.ImageService.RabbitMq;
 using ImageVault.ImageService.RabbitMq.Consumers;
+using ImageVault.ImageService.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -12,6 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 
+builder.Services.AddScoped<IImageManagerRepository, ImageManagerRepository>(); 
 builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
 builder.Services.AddSingleton<IRabbitMqListener, RabbitMqListener>();
 builder.Services.AddSingleton<IRabbitMqConsumerList, RabbitMqConsumerList>();
@@ -78,15 +82,18 @@ builder.Services.AddAuthentication(options =>
 
 builder.WebHost.UseUrls("http://*:2111");
 
+
 var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
-
+app.UseRabbitMqListener();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseHttpsRedirection();
 app.MapControllers();
 
+
 app.Run();
+ 
