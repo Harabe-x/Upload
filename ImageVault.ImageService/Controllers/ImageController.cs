@@ -1,3 +1,4 @@
+using ImageVault.ImageService.Data.Interfaces.Image;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,11 +8,18 @@ namespace ImageVault.ImageService.Controllers;
 [Route("/api/image/")]
 public class ImageController : ControllerBase
 {
-    
-    [Authorize]
-    [HttpGet("get")]
-    public async Task<IActionResult> GetImage()
+
+    private readonly IImageManagerRepository _imageManager;
+
+    public ImageController(IImageManagerRepository imageManager)
     {
-        return Ok();
+        _imageManager = imageManager; 
+    }
+    
+    
+    [HttpGet("get")]
+    public async Task<IActionResult> GetImage(string apiKey, string collectionName,int pageNumber, int limit)
+    {
+        return Ok(await _imageManager.GetPagedImages(apiKey,pageNumber,limit,collectionName)); 
     }
 }
