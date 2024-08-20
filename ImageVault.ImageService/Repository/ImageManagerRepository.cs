@@ -1,20 +1,16 @@
-using System.Collections.ObjectModel;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Cryptography.Xml;
 using System.Text;
+using Amazon.S3;
 using Amazon.S3.Model;
-using Amazon.S3.Model.Internal.MarshallTransformations;
 using ImageVault.ImageService.Data;
 using ImageVault.ImageService.Data.Dtos;
 using ImageVault.ImageService.Data.Dtos.Image;
+using ImageVault.ImageService.Data.Interfaces;
+using ImageVault.ImageService.Data.Interfaces.Amazon;
 using ImageVault.ImageService.Data.Interfaces.Image;
 using ImageVault.ImageService.Data.Mappers;
 using ImageVault.ImageService.Data.Models;
+using ImageVault.ImageService.Extension;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-using HostingEnvironmentExtensions = Microsoft.Extensions.Hosting.HostingEnvironmentExtensions;
 
 namespace ImageVault.ImageService.Repository;
 
@@ -24,10 +20,19 @@ public class ImageManagerRepository : IImageManagerRepository
     
     private readonly ApplicationDbContext _dbContext;
 
-    public ImageManagerRepository(ApplicationDbContext dbContext, ILogger<ImageManagerRepository> logger)
+    private readonly IApiKeyRepository _apiKeyRepository;
+
+    private IConfiguration _configuration;
+
+    private IAmazonS3Connection _s3Connection; 
+    
+    public ImageManagerRepository(ApplicationDbContext dbContext, ILogger<ImageManagerRepository> logger,IAmazonS3Connection s3Connection, IApiKeyRepository apiKeyRepository,IConfiguration configuration)
     {
         _dbContext = dbContext;
-        _logger = logger; 
+        _logger = logger;
+        _apiKeyRepository = apiKeyRepository;
+        _configuration = configuration;
+        _s3Connection = s3Connection; 
     }
     
     public async Task<OperationResultDto<bool>> AddImage(ImageDataDto imageData)
@@ -115,21 +120,22 @@ public class ImageManagerRepository : IImageManagerRepository
         var imageToRemove = collection.ImagesCollection.FirstOrDefault(x => x.Key == imageKey);
 
         if (imageToRemove == null)
-            return new OperationResultDto<bool>(false, false, new Error("Image does not exist")); 
+            return new OperationResultDto<bool>(false, false, new Error("Image does not exist"));
+
+        if (!await DeleteS3Object(imageToRemove.Key))
+            return new OperationResultDto<bool>(false, false, new Error("Cannot delete image right now. Please try again later."));         
         
         collection.ImagesCollection.Remove(imageToRemove);
 
         return await SaveChanges()
             ? new OperationResultDto<bool>(true, true, null)
             : new OperationResultDto<bool>(false,false,new Error("An error occurred while deleting the image"));
-
     }
 
     public async Task<OperationResultDto<bool>> EditImage(string apiKey, string imageKey, string newImageTitle, string newImageDescription,
         string collectionName = "default")
     {
         if(ValidateCommonInput(apiKey, ref collectionName,out var error,imageKey)) return new OperationResultDto<bool>(false, false, error);
-
         
         var collection = await GetCollection(apiKey, collectionName);
         
@@ -137,6 +143,9 @@ public class ImageManagerRepository : IImageManagerRepository
             return new OperationResultDto<bool>(false, false, new Error($"Collection named {collectionName} does not exists" ));
        
         var imageToEdit = collection.ImagesCollection.FirstOrDefault(x => x.Key == imageKey);
+
+        if (imageToEdit == null)
+            return new OperationResultDto<bool>(false, false, new Error("Image not found."));
         
         imageToEdit.Title = newImageTitle;
         imageToEdit.Description = newImageDescription;
@@ -150,7 +159,9 @@ public class ImageManagerRepository : IImageManagerRepository
     {  
         if(ValidateCommonInput(apiKey, ref collectionName,out var error)) return new OperationResultDto<ImageCollection>(null, false, error);
         
-        // TODO : I need to validate apikey somehow, i wonder if i should use amqp or http. using amqp means that i have to store copy of all ApiKeys in localDb 
+        var keySearchResult = await _apiKeyRepository.GetKey(apiKey);
+
+        if (keySearchResult.IsSuccess) return new OperationResultDto<ImageCollection>(null, false, keySearchResult.Error);
         
         var collection = new ImageCollection()
         {
@@ -174,6 +185,9 @@ public class ImageManagerRepository : IImageManagerRepository
             return new OperationResultDto<bool>(false,false,new Error("Cannot edit default image collection"));
         
         var collection = await GetCollection(apiKey, collectionName);
+
+        if (collection.CollectionName == newCollectionName && collection.Description == newDescription)
+            return new OperationResultDto<bool>(false,false,new Error("Data update failed. The data provided is identical to that in the database"));
         
         collection.CollectionName = newCollectionName;
         collection.Description = newDescription;
@@ -194,8 +208,27 @@ public class ImageManagerRepository : IImageManagerRepository
 
         var collection = await GetCollection(apiKey,collectionName);
 
-        _dbContext.ImageCollections.Remove(collection);
+        if (collection == null)
+            return new OperationResultDto<bool>(false, false, new Error($"{collectionName} collection doesn't exists"));
 
+        const int objectLimit = 1000; 
+        
+        // Keys are chunked because the maximum number of objects that can be deleted in one request is 1000 
+        var imageKeys = collection.ImagesCollection
+                .Select(x => new KeyVersion { Key = x.Key })
+                .ToList()
+                .Chunk(objectLimit);
+        
+        foreach (var keyList in imageKeys)
+        {
+            if (!await DeleteS3Objects(keyList))
+            {
+                return new OperationResultDto<bool>(false, false , new Error("The collection cannot be deleted at this time. Please try again later"));
+            }
+        }
+        
+        _dbContext.ImageCollections.Remove(collection);
+        
         return await SaveChanges()
             ? new OperationResultDto<bool>(true, true, null)
             : new OperationResultDto<bool>(false, false, new Error("An error occurred while editing the collection"));
@@ -210,7 +243,7 @@ public class ImageManagerRepository : IImageManagerRepository
         return collection; 
     }
 
-    public static bool ValidateCommonInput(string apiKey,  ref string collectionName, out Error error,string? imageKey = "Foo")
+    private static bool ValidateCommonInput(string apiKey,  ref string collectionName, out Error error,string? imageKey = "Foo")
     {
         var stringBuilder = new StringBuilder();
         
@@ -230,6 +263,57 @@ public class ImageManagerRepository : IImageManagerRepository
         error = new Error(stringBuilder.ToString());
 
         return stringBuilder.ToString() == string.Empty; 
+    }
+
+    private async Task<bool> DeleteS3Objects(IEnumerable<KeyVersion> objectKeys)
+    {
+        var request = CreateDeleteObjectsRequest(objectKeys.ToList());
+        try
+        {
+            await _s3Connection.S3Client.DeleteObjectsAsync(request);
+        }
+        catch (AmazonS3Exception e )
+        {
+            _logger.LogError(e.ToString());
+            return false; 
+        }
+
+        return true; 
+    }
+
+    private async Task<bool> DeleteS3Object(string objectKey)
+    {
+        var request = CreateDeleteObjectRequest(objectKey);
+
+        try
+        {
+            await _s3Connection.S3Client.DeleteObjectAsync(request);
+        }
+        catch (AmazonS3Exception e)
+        {
+            _logger.LogError(e.ToString());
+            return false; 
+        }
+
+        return true; 
+    }
+
+    private DeleteObjectRequest CreateDeleteObjectRequest(string objectKey)
+    {
+        return new DeleteObjectRequest()
+        {
+            BucketName = _configuration.GetS3BucketName(),
+            Key = objectKey
+        };
+    }
+    
+    private  DeleteObjectsRequest CreateDeleteObjectsRequest(List<KeyVersion> objectList)
+    {
+        return new DeleteObjectsRequest()
+        {
+            BucketName = _configuration.GetS3BucketName(),
+            Objects = objectList
+        };
     }
     
     private async Task<bool> SaveChanges()

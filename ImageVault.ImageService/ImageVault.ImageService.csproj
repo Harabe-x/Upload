@@ -24,7 +24,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="AmazonS3" />
       <Folder Include="Services" />
     </ItemGroup>
 

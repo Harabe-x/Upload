@@ -8,7 +8,7 @@ public static class ImageMapper
 {
     public static ImageDto MapToImageDto(this Image image)
     {
-        return new ImageDto(image.Key, image.Key, image.Collection, image.Title, image.Description, image.CreatedAt);
+        return new ImageDto(image.Key, image.Url, image.Collection, image.Title, image.Description, image.ImageFormat,image.CreatedAt);
     }
 
     public static Image MapToImage(this ImageDataDto imageData ,ImageCollection collection)
@@ -26,6 +26,5 @@ public static class ImageMapper
             ImageFormat = imageData.FileFormat,
             Url = "dckyy64qykbap.cloudfront.net/" + imageData.Key
         };
-
     }
 }

@@ -5,7 +5,7 @@ public static class ConfigurationExtension
     public static string GetS3BucketName(this IConfiguration configuration)
     {
         return configuration.GetSection("AmazonS3")["BucketName"] ??
-               throw new InvalidOperationException("BucketName is not configured in AmazonS3 section.");
+               throw new InvalidOperationException("BucketName is not configured in Amazon section.");
     }
 
     public static string? GetRabbitMqUsername(this IConfiguration configuration)

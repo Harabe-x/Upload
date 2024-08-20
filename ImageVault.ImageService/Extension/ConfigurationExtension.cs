@@ -28,4 +28,9 @@ public static class ConfigurationExtension
         return configuration.GetSection("RabbitMq").GetSection("Queues")["ApiQueue"];
     }
 
+    public static string GetS3BucketName(this IConfiguration configuration)
+    {
+        return configuration.GetSection("Amazon")["BucketName"];  
+    }
+
 }
