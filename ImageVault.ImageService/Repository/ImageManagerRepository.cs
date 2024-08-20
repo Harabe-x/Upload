@@ -61,7 +61,7 @@ public class ImageManagerRepository : IImageManagerRepository
             : new OperationResultDto<bool>(false,false,new Error("An error occurred while adding the image"));
     }
 
-    public async Task<OperationResultDto<ImageDto>> GetImage(string imageKey, string apiKey, string collectionName = "default")
+    public async Task<OperationResultDto<ImageDto>> GetImage(string apiKey, string imageKey, string collectionName = "default")
     {
         if(ValidateCommonInput(apiKey, ref collectionName,out var error, imageKey)) return new OperationResultDto<ImageDto>(null, false, error);
         

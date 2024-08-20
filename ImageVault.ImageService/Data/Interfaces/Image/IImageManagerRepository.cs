@@ -11,7 +11,7 @@ public interface IImageManagerRepository
 {
     Task<OperationResultDto<bool>> AddImage(ImageDataDto imageData);
     
-    Task<OperationResultDto<ImageDto>> GetImage(string imageKey,string apiKey, string collectionName = "default");
+    Task<OperationResultDto<ImageDto>> GetImage(string apiKey,string imageKey, string collectionName = "default");
     
     Task<OperationResultDto<IEnumerable<ImageDto>>> GetImages(string apiKey,string collectionName = "default");
 

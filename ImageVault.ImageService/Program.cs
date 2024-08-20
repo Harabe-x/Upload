@@ -1,6 +1,8 @@
 using System.Text;
+using ImageVault.ImageService.Amazon;
 using ImageVault.ImageService.Data;
 using ImageVault.ImageService.Data.Interfaces;
+using ImageVault.ImageService.Data.Interfaces.Amazon;
 using ImageVault.ImageService.Data.Interfaces.Image;
 using ImageVault.ImageService.Extension;
 using ImageVault.ImageService.RabbitMq;
@@ -20,6 +22,7 @@ builder.Services.AddScoped<IApiKeyRepository, ApiKeyRepository>();
 builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
 builder.Services.AddSingleton<IRabbitMqListener, RabbitMqListener>();
 builder.Services.AddSingleton<IRabbitMqConsumerList, RabbitMqConsumerList>();
+builder.Services.AddSingleton<IAmazonS3Connection, AmazonS3Connection>();
 builder.Services.AddSingleton<ImageConsumer>();
 builder.Services.AddSingleton<ApiKeyConsumer>(); 
 
