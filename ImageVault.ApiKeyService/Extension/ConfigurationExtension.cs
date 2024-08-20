@@ -27,5 +27,11 @@ public static class ConfigurationExtension
         return configuration.GetSection("RabbitMq").GetSection("Queues")["ApiKeyUsageQueue"];
     }
 
+    public static string? GetApiKeyQueueName(this IConfiguration configuration)
+    {
+        return configuration.GetSection("RabbitMq").GetSection("Queues")["ApiQueue"];
+    }
+
+
     
 }

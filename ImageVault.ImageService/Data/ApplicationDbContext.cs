@@ -14,4 +14,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<Image> Images { get; set; }
     
     public DbSet<ImageCollection> ImageCollections { get; set; }
+    
+    public DbSet<ApiKey> ApiKeys { get; set; }
 }

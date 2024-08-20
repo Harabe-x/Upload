@@ -10,11 +10,13 @@ public class RabbitMqConsumerList : IRabbitMqConsumerList
     private readonly List<IRabbitMqConsumer> _consumers;
 
 
-    public RabbitMqConsumerList(ImageConsumer imageConsumer)
+    public RabbitMqConsumerList(ImageConsumer imageConsumer,ApiKeyConsumer apiKeyConsumer)
     {
-        _consumers = new List<IRabbitMqConsumer>();
-        _consumers.Add(imageConsumer);
-        
+        _consumers =
+        [
+            imageConsumer,
+            apiKeyConsumer
+        ];
     } 
     
     public IEnumerable<IRabbitMqConsumer> GetConsumers()

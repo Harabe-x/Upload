@@ -34,7 +34,7 @@ public class ImageManagerRepository : IImageManagerRepository
     {
         var collectionName = imageData.Collection; 
         
-        if(ValidateCommonInput(imageData.ApiKey, ref collectionName,out var error,imageData.Key)) return new OperationResultDto<ImageDto>(null, false, error);
+        if(ValidateCommonInput(imageData.ApiKey, ref collectionName,out var error,imageData.Key)) return new OperationResultDto<bool>(false, false, error);
 
         var collection = await GetCollection(imageData.ApiKey, imageData.Collection);
 
@@ -75,7 +75,7 @@ public class ImageManagerRepository : IImageManagerRepository
 
     public async Task<OperationResultDto<IEnumerable<ImageDto>>> GetImages(string apiKey, string collectionName = "default")
     {
-        if(ValidateCommonInput(apiKey, ref collectionName,out var error)) return new OperationResultDto<IEnumerable<ImageDto>(null, false, error);
+        if(ValidateCommonInput(apiKey, ref collectionName,out var error)) return new OperationResultDto<IEnumerable<ImageDto>>(null, false, error);
         
         var collection = await GetCollection(apiKey, collectionName);
 
@@ -89,7 +89,7 @@ public class ImageManagerRepository : IImageManagerRepository
 
     public async Task<OperationResultDto<IEnumerable<ImageDto>>> GetPagedImages(string apiKey, int page, int limit, string collectionName = "default")
     {   
-        if(ValidateCommonInput(apiKey, ref collectionName,out var error)) return new OperationResultDto<IEnumerable<ImageDto>(null, false, error);
+        if(ValidateCommonInput(apiKey, ref collectionName,out var error)) return new OperationResultDto<IEnumerable<ImageDto>>(null, false, error);
 
         var collection = await GetCollection(apiKey,collectionName);
         

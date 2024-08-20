@@ -15,11 +15,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 
-builder.Services.AddScoped<IImageManagerRepository, ImageManagerRepository>(); 
+builder.Services.AddScoped<IImageManagerRepository, ImageManagerRepository>();
+builder.Services.AddScoped<IApiKeyRepository, ApiKeyRepository>(); 
 builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
 builder.Services.AddSingleton<IRabbitMqListener, RabbitMqListener>();
 builder.Services.AddSingleton<IRabbitMqConsumerList, RabbitMqConsumerList>();
-builder.Services.AddSingleton<ImageConsumer>(); 
+builder.Services.AddSingleton<ImageConsumer>();
+builder.Services.AddSingleton<ApiKeyConsumer>(); 
+
  
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
