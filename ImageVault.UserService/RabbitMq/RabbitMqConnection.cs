@@ -32,7 +32,7 @@ public class RabbitMqConnection : IRabbitMqConnection, IDisposable
             HostName = _configuration.GetRabbitMqHostName(),
             UserName = _configuration.GetRabbitMqUsername(),
             Password = _configuration.GetRabbitMqPassword(),
-            DispatchConsumersAsync = true
+            DispatchConsumersAsync = true,
         };
         
         try

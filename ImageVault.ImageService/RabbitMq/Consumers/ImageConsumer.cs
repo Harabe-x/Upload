@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
+using Amazon.S3;
 using ImageVault.ImageService.Data.Dtos.Image;
 using ImageVault.ImageService.Data.Interfaces;
 using ImageVault.ImageService.Data.Interfaces.Image;
@@ -72,7 +73,9 @@ public class ImageConsumer : IRabbitMqConsumer
             _channel.BasicNack(args.DeliveryTag, false , true );
         }
 
-        try
+
+    
+        // try
         {
             var imageData = await JsonSerializer.DeserializeAsync<ImageDataDto>(new MemoryStream(args.Body.ToArray()));
 
@@ -86,11 +89,11 @@ public class ImageConsumer : IRabbitMqConsumer
                 _logger.LogError(result.Error.Message);
             }
         }
-        catch (Exception e)
-        {
-            _logger.LogError($" Exception occured Type : {e.GetType()}  | Message : {e.Message}");
-            _channel.BasicNack(args.DeliveryTag, false , true );
-        }
+        // catch (Exception e)
+        // {
+        //     _logger.LogError($" Exception occured Type : {e.GetType()}  | Message : {e.Message}");
+        //     _channel.BasicNack(args.DeliveryTag, false , true );
+        // }
         
         _channel.BasicAck(args.DeliveryTag, false );
     }

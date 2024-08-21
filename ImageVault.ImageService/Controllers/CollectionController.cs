@@ -18,9 +18,27 @@ public class CollectionController : ControllerBase
         _imageManager = imageManager;
         _logger = logger; 
     }
+
+
+
+
+    [HttpPost("/ListCollections")]
+    public async Task<IActionResult> ListCollection([FromBody] string apiKey)
+    {
+        try
+        {
+            var result = await _imageManager.ListCollections(apiKey);
+            return result.IsSuccess
+                ? Ok(result.Value)
+                : BadRequest(result.Error);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.ToString());
+            return StatusCode(500, "Server error, we will try to fix it as soon as possible\n ");
+        }  
+    }
     
-    
-   
     [HttpPost("/CreateCollection")]
     public async Task<IActionResult>CreateCollection([FromBody] CreateCollectionDto collectionData)
     {

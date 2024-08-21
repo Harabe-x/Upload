@@ -18,6 +18,8 @@ public class ImageCollection
     public string? CollectionCoverUrl { get; set; }
 
     public ICollection<Image> ImagesCollection { get; set; }
+    
+    public uint TotalImages { get; set; } 
 
     public ImageCollection()
     {

@@ -3,6 +3,7 @@ using Amazon.S3;
 using Amazon.S3.Model;
 using ImageVault.ImageService.Data;
 using ImageVault.ImageService.Data.Dtos;
+using ImageVault.ImageService.Data.Dtos.Collection;
 using ImageVault.ImageService.Data.Dtos.Image;
 using ImageVault.ImageService.Data.Interfaces;
 using ImageVault.ImageService.Data.Interfaces.Amazon;
@@ -11,6 +12,7 @@ using ImageVault.ImageService.Data.Mappers;
 using ImageVault.ImageService.Data.Models;
 using ImageVault.ImageService.Extension;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace ImageVault.ImageService.Repository;
 
@@ -29,7 +31,7 @@ public class ImageManagerRepository : IImageManagerRepository
     public ImageManagerRepository(ApplicationDbContext dbContext, ILogger<ImageManagerRepository> logger,IAmazonS3Connection s3Connection, IApiKeyRepository apiKeyRepository,IConfiguration configuration)
     {
         _dbContext = dbContext;
-        _logger = logger;
+        _logger = logger;                   
         _apiKeyRepository = apiKeyRepository;
         _configuration = configuration;
         _s3Connection = s3Connection; 
@@ -39,22 +41,24 @@ public class ImageManagerRepository : IImageManagerRepository
     {
         var collectionName = imageData.Collection; 
         
-        if(ValidateCommonInput(imageData.ApiKey, ref collectionName,out var error,imageData.Key)) return new OperationResultDto<bool>(false, false, error);
+        if(!ValidateAndSetDefaults(imageData.ApiKey, ref collectionName,out var error,imageData.Key)) return new OperationResultDto<bool>(false, false, error);
 
-        var collection = await GetCollection(imageData.ApiKey, imageData.Collection);
+        var  collection = await GetCollection(imageData.ApiKey, imageData.Collection);
 
         if (collection == null)
         {
-            var result = await CreateCollection(imageData.ApiKey, imageData.Collection);
+            await CreateCollection(imageData.ApiKey, imageData.Collection);
 
-            if (!result.IsSuccess || result.Value == null)
-                return new OperationResultDto<bool>(false, false, new Error("Cannot create collection"));
-            collection = result.Value;
+            collection = await GetCollection(imageData.ApiKey, imageData.Collection);
+            
+            if (collection == null) return new OperationResultDto<bool>(false, false, new Error("Cannot create collection"));
         }
         
         var image = imageData.MapToImage(collection);
         
         collection.ImagesCollection.Add(image);
+
+        collection.TotalImages += 1; 
 
         return await SaveChanges()
             ? new OperationResultDto<bool>(true,true,null)
@@ -63,7 +67,7 @@ public class ImageManagerRepository : IImageManagerRepository
 
     public async Task<OperationResultDto<ImageDto>> GetImage(string apiKey, string imageKey, string collectionName = "default")
     {
-        if(ValidateCommonInput(apiKey, ref collectionName,out var error, imageKey)) return new OperationResultDto<ImageDto>(null, false, error);
+        if(!ValidateAndSetDefaults(apiKey, ref collectionName,out var error, imageKey)) return new OperationResultDto<ImageDto>(null, false, error);
         
         var collection = await GetCollection(apiKey, collectionName);
 
@@ -80,7 +84,7 @@ public class ImageManagerRepository : IImageManagerRepository
 
     public async Task<OperationResultDto<IEnumerable<ImageDto>>> GetImages(string apiKey, string collectionName = "default")
     {
-        if(ValidateCommonInput(apiKey, ref collectionName,out var error)) return new OperationResultDto<IEnumerable<ImageDto>>(null, false, error);
+        if(!ValidateAndSetDefaults(apiKey, ref collectionName,out var error)) return new OperationResultDto<IEnumerable<ImageDto>>(null, false, error);
         
         var collection = await GetCollection(apiKey, collectionName);
 
@@ -94,7 +98,7 @@ public class ImageManagerRepository : IImageManagerRepository
 
     public async Task<OperationResultDto<IEnumerable<ImageDto>>> GetPagedImages(string apiKey, int page, int limit, string collectionName = "default")
     {   
-        if(ValidateCommonInput(apiKey, ref collectionName,out var error)) return new OperationResultDto<IEnumerable<ImageDto>>(null, false, error);
+        if(!ValidateAndSetDefaults(apiKey, ref collectionName,out var error)) return new OperationResultDto<IEnumerable<ImageDto>>(null, false, error);
 
         var collection = await GetCollection(apiKey,collectionName);
         
@@ -110,7 +114,7 @@ public class ImageManagerRepository : IImageManagerRepository
 
     public async Task<OperationResultDto<bool>> DeleteImage(string apiKey, string imageKey, string collectionName = "default")
     {
-        if(ValidateCommonInput(apiKey, ref collectionName,out var error,imageKey)) return new OperationResultDto<bool>(false, false, error);
+        if(!ValidateAndSetDefaults(apiKey, ref collectionName,out var error,imageKey)) return new OperationResultDto<bool>(false, false, error);
 
         var collection = await GetCollection(apiKey, collectionName);
         
@@ -132,10 +136,26 @@ public class ImageManagerRepository : IImageManagerRepository
             : new OperationResultDto<bool>(false,false,new Error("An error occurred while deleting the image"));
     }
 
+    public async Task<OperationResultDto<IEnumerable<ImageCollectionDto>>> ListCollections(string apiKey)
+    {
+        if (string.IsNullOrWhiteSpace(apiKey))
+            return new OperationResultDto<IEnumerable<ImageCollectionDto>>(null, false,
+                new Error("Api key cannot be empty"));
+
+        var collections = await _dbContext.ImageCollections
+            .Where(x => x.ApiKey == apiKey)
+            .Select(x => x.MapToCollectionDto())
+            .ToListAsync();
+
+        return collections != null
+            ? new OperationResultDto<IEnumerable<ImageCollectionDto>>(collections, true, null)
+            : new OperationResultDto<IEnumerable<ImageCollectionDto>>(null, false, new Error("Collection not found"));
+    }
+
     public async Task<OperationResultDto<bool>> EditImage(string apiKey, string imageKey, string newImageTitle, string newImageDescription,
         string collectionName = "default")
     {
-        if(ValidateCommonInput(apiKey, ref collectionName,out var error,imageKey)) return new OperationResultDto<bool>(false, false, error);
+        if(!ValidateAndSetDefaults(apiKey, ref collectionName,out var error,imageKey)) return new OperationResultDto<bool>(false, false, error);
         
         var collection = await GetCollection(apiKey, collectionName);
         
@@ -157,17 +177,18 @@ public class ImageManagerRepository : IImageManagerRepository
 
     public async Task<OperationResultDto<ImageCollection>> CreateCollection(string apiKey, string collectionName, string? description = default)
     {  
-        if(ValidateCommonInput(apiKey, ref collectionName,out var error)) return new OperationResultDto<ImageCollection>(null, false, error);
+        if(!ValidateAndSetDefaults(apiKey, ref collectionName,out var error)) return new OperationResultDto<ImageCollection>(null, false, error);
         
         var keySearchResult = await _apiKeyRepository.GetKey(apiKey);
 
-        if (keySearchResult.IsSuccess) return new OperationResultDto<ImageCollection>(null, false, keySearchResult.Error);
+        if (!keySearchResult.IsSuccess) return new OperationResultDto<ImageCollection>(null, false, keySearchResult.Error);
         
         var collection = new ImageCollection()
         {
             ApiKey = apiKey,
             CollectionName = collectionName,
-            Description = description 
+            Description = description ,
+            TotalImages = 0
         };
 
         await _dbContext.ImageCollections.AddAsync(collection); 
@@ -179,7 +200,7 @@ public class ImageManagerRepository : IImageManagerRepository
 
     public async Task<OperationResultDto<bool>> EditCollection(string apiKey, string collectionName, string newCollectionName,string? newDescription = default)
     {
-        if(ValidateCommonInput(apiKey, ref collectionName,out var error)) return new OperationResultDto<bool>(false, false, error);
+        if(!ValidateAndSetDefaults(apiKey, ref collectionName,out var error)) return new OperationResultDto<bool>(false, false, error);
         
         if (collectionName == "default")
             return new OperationResultDto<bool>(false,false,new Error("Cannot edit default image collection"));
@@ -201,7 +222,7 @@ public class ImageManagerRepository : IImageManagerRepository
 
     public async Task<OperationResultDto<bool>> DeleteCollection(string apiKey, string collectionName)
     {
-        if(ValidateCommonInput(apiKey, ref collectionName,out var error)) return new OperationResultDto<bool>(false, false, error);
+        if(!ValidateAndSetDefaults(apiKey, ref collectionName,out var error)) return new OperationResultDto<bool>(false, false, error);
 
         if (collectionName == "default")
             return new OperationResultDto<bool>(false,false,new Error("Cannot delete default image collection"));
@@ -237,13 +258,15 @@ public class ImageManagerRepository : IImageManagerRepository
 
     private async Task<ImageCollection?> GetCollection(string apiKey, string collectionName = "default")
     {
-        var collection = await _dbContext.ImageCollections.Include(imageCollection => imageCollection.ImagesCollection)
-            .FirstOrDefaultAsync(x => x.CollectionName == collectionName && apiKey == x.ApiKey);
+        var collection = await
+            _dbContext.ImageCollections
+                .Include(imageCollection => imageCollection.ImagesCollection)
+                .FirstOrDefaultAsync(x => x.CollectionName == collectionName && apiKey == x.ApiKey);
 
         return collection; 
     }
 
-    private static bool ValidateCommonInput(string apiKey,  ref string collectionName, out Error error,string? imageKey = "Foo")
+    private static bool ValidateAndSetDefaults(string apiKey,  ref string collectionName, out Error error,string? imageKey = "Foo")
     {
         var stringBuilder = new StringBuilder();
         
@@ -260,6 +283,8 @@ public class ImageManagerRepository : IImageManagerRepository
 
         if (string.IsNullOrWhiteSpace(collectionName)) collectionName = "default";
 
+        collectionName = collectionName.ToLower(); 
+        
         error = new Error(stringBuilder.ToString());
 
         return stringBuilder.ToString() == string.Empty; 
