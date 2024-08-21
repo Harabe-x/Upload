@@ -27,7 +27,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IUserAuthenticationRepository, UserAuthenticationRepository>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IRabbitMqMessageSender, RabbitMqMessageSender>();
-builder.Services.AddSingleton<IRabitMqConnection, RabbitMqConnection>();
+builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
 builder.Services.AddScoped<IAdminUserRepository, AdminUserRepository>();
 builder.Services.AddHostedService<ServicesTokenProvider>();
 

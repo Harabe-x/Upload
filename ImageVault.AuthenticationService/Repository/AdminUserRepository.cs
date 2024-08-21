@@ -6,6 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ImageVault.AuthenticationService.Repository;
 
+
+/// <summary>
+///  <inheritdoc cref="IAdminUserRepository"/>
+/// </summary>
 public class AdminUserRepository : IAdminUserRepository
 {
     private readonly ApplicationDbContext _dbContext;
@@ -16,19 +20,19 @@ public class AdminUserRepository : IAdminUserRepository
     }
 
 
-    public async Task<OperationResultDto<ApplicationUser>> GetAdminUser()
+    public async Task<OperationResult<ApplicationUser>> GetAdminUser()
     {
         try
         {
             var admin = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == "admin@imagevault.com");
 
             return admin != null
-                ? new OperationResultDto<ApplicationUser>(admin, true, null)
-                : new OperationResultDto<ApplicationUser>(null, false, new Error("Admin User not found"));
+                ? new OperationResult<ApplicationUser>(admin, true, null)
+                : new OperationResult<ApplicationUser>(null, false, new Error("Admin User not found"));
         }
         catch (Exception e)
         {
-            return new OperationResultDto<ApplicationUser>(null, false, new Error(e.Message));
+            return new OperationResult<ApplicationUser>(null, false, new Error(e.Message));
         }
     }
 }

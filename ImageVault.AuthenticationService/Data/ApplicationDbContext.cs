@@ -5,12 +5,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ImageVault.AuthenticationService.Data;
 
+
+/// <summary>
+/// Class responsible for managing the database context of the application,
+/// including identity management and user authentication.
+/// </summary>
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
-    public ApplicationDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
-    {
-    }
+    
+    /// <summary>
+    ///  Constructor for ApplicationDbContext
+    /// </summary>
+    /// <param name="dbContextOptions">DbContext configuration options</param>
+    public ApplicationDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions) { }
 
+    /// <summary>
+    /// Methods which defines Identity roles
+    /// </summary>
+    /// <param name="builder"></param>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

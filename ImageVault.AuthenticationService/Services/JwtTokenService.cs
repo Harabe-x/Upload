@@ -8,6 +8,9 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace ImageVault.AuthenticationService.Services;
 
+/// <summary>
+///  <inheritdoc cref="IJwtTokenService"/>
+/// </summary>
 public class JwtTokenService : IJwtTokenService
 {
     private readonly IConfiguration _configuration;

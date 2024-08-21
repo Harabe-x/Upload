@@ -26,6 +26,11 @@ public class ServicesTokenProvider : BackgroundService
         _logger = logger;
     }
 
+    /// <summary>
+    ///  Sends JWT tokens to other services at 30-minute intervals
+    /// </summary>
+    /// <param name="stoppingToken"></param>
+    /// <exception cref="NullReferenceException"></exception>
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)

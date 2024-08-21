@@ -11,6 +11,10 @@ using Microsoft.AspNetCore.Identity;
 
 namespace ImageVault.AuthenticationService.Repository;
 
+
+/// <summary>
+/// <inheritdoc cref="IUserAuthenticationRepository"/>
+/// </summary>
 public class UserAuthenticationRepository : IUserAuthenticationRepository
 {
     private readonly IConfiguration _configuration;
@@ -41,62 +45,62 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
         _jwtTokenService = jwtTokenService;
     }
 
-    public async Task<OperationResultDto<AuthenticationResultDto>> CreateAccount(RegisterAccountDto accountDto)
+    public async Task<OperationResult<AuthenticationResult>> CreateAccount(RegisterAccount account)
     {
-        if (!ValidateRegisterDto(accountDto))
-            return new OperationResultDto<AuthenticationResultDto>(null, false, new Error("Invalid user data"));
+        if (!ValidateRegisterDto(account))
+            return new OperationResult<AuthenticationResult>(null, false, new Error("Invalid user data"));
 
-        var user = accountDto.MapUser();
+        var user = account.MapUser();
 
-        var identityResult = await _userManager.CreateAsync(user, accountDto.Password);
+        var identityResult = await _userManager.CreateAsync(user, account.Password);
 
         if (!identityResult.Succeeded)
         {
             _logger.LogWarning(
                 $"User registration data validation failed \nError:{string.Join("\n", identityResult.Errors.Select(x => x.Code))} ");
 
-            return new OperationResultDto<AuthenticationResultDto>(null, false,
+            return new OperationResult<AuthenticationResult>(null, false,
                 new Error("The provided data was invalid"));
         }
 
         var addingRoleResult = await _userManager.AddToRoleAsync(user, "User");
 
         if (!addingRoleResult.Succeeded)
-            return new OperationResultDto<AuthenticationResultDto>(null, false,
+            return new OperationResult<AuthenticationResult>(null, false,
                 new Error("Sorry, something went wrong ..."));
 
-        _rabbitMqMessageSender.SendMessage(accountDto.MapToUserData(user.Id), _configuration.GetUserQueueName());
+        _rabbitMqMessageSender.SendMessage(account.MapToUserData(user.Id), _configuration.GetUserQueueName());
 
-        return new OperationResultDto<AuthenticationResultDto>(await CreateAuthenticationResultDto(user), true, null);
+        return new OperationResult<AuthenticationResult>(await CreateAuthenticationResultDto(user), true, null);
     }
 
-    public async Task<OperationResultDto<AuthenticationResultDto>> LoginUser(LoginDto loginDto)
+    public async Task<OperationResult<AuthenticationResult>> LoginUser(Login login)
     {
-        var user = await _userManager.FindByEmailAsync(loginDto.Email);
+        var user = await _userManager.FindByEmailAsync(login.Email);
 
         if (user == null)
-            return new OperationResultDto<AuthenticationResultDto>(null, false, new Error("User does not exists"));
+            return new OperationResult<AuthenticationResult>(null, false, new Error("User does not exists"));
 
-        var isLoginSucceeded = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+        var isLoginSucceeded = await _signInManager.CheckPasswordSignInAsync(user, login.Password, false);
 
         if (!isLoginSucceeded.Succeeded)
-            return new OperationResultDto<AuthenticationResultDto>(null, false, new Error("Invalid login credentials"));
+            return new OperationResult<AuthenticationResult>(null, false, new Error("Invalid login credentials"));
 
-        return new OperationResultDto<AuthenticationResultDto>(await CreateAuthenticationResultDto(user),
+        return new OperationResult<AuthenticationResult>(await CreateAuthenticationResultDto(user),
             isLoginSucceeded.Succeeded, null);
     }
 
-    private bool ValidateRegisterDto(RegisterAccountDto accountDto)
+    private bool ValidateRegisterDto(RegisterAccount account)
     {
-        return _validationService.ValidateData("ValidateName", accountDto.FirstName)
-               && _validationService.ValidateData("ValidateName", accountDto.LastName)
-               && _validationService.ValidateData("ValidatePassword", accountDto.Password);
+        return _validationService.ValidateData("ValidateName", account.FirstName)
+               && _validationService.ValidateData("ValidateName", account.LastName)
+               && _validationService.ValidateData("ValidatePassword", account.Password);
     }
 
-    private async Task<AuthenticationResultDto> CreateAuthenticationResultDto(ApplicationUser user)
+    private async Task<AuthenticationResult> CreateAuthenticationResultDto(ApplicationUser user)
     {
         var role = await _userManager.GetRolesAsync(user);
 
-        return new AuthenticationResultDto(user.Email, _jwtTokenService.CreateToken(user, role.FirstOrDefault()));
+        return new AuthenticationResult(user.Email, _jwtTokenService.CreateToken(user, role.FirstOrDefault()));
     }
 }

@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.RateLimiting;
 
 namespace ImageVault.AuthenticationService.Controllers;
 
+/// <summary>
+/// A controller that handles authentication operations 
+/// </summary>
 [Route("api/auth")]
 [Controller]
 public class UserAuthenticationController : ControllerBase
@@ -22,7 +25,7 @@ public class UserAuthenticationController : ControllerBase
     [HttpPost("register")]
     [AllowAnonymous]
     [EnableRateLimiting("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterAccountDto accountData)
+    public async Task<IActionResult> Register([FromBody] RegisterAccount accountData)
     {
         try
         {
@@ -43,7 +46,7 @@ public class UserAuthenticationController : ControllerBase
     [AllowAnonymous]
     [HttpPost("login")]
     [EnableRateLimiting("login")]
-    public async Task<IActionResult> Login([FromBody] LoginDto loginData)
+    public async Task<IActionResult> Login([FromBody] Login loginData)
     {
         try
         {

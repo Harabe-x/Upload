@@ -5,10 +5,21 @@ using RabbitMQ.Client.Exceptions;
 
 namespace ImageVault.AuthenticationService.RabbitMq;
 
-public class RabbitMqConnection : IRabitMqConnection, IDisposable
+
+/// <summary>
+/// <inheritdoc cref="IRabbitMqConnection"/>
+/// </summary>
+public class RabbitMqConnection : IRabbitMqConnection, IDisposable
 {
+    
+    /// <summary>
+    ///  Object for reading configuration file. 
+    /// </summary>
     private readonly IConfiguration _configuration;
 
+    /// <summary>
+    ///  Object for message logging
+    /// </summary>
     private readonly ILogger<RabbitMqConnection> _logger;
 
     public RabbitMqConnection(IConfiguration configuration, ILogger<RabbitMqConnection> logger)
@@ -18,6 +29,9 @@ public class RabbitMqConnection : IRabitMqConnection, IDisposable
         InitializeConnection();
     }
 
+   /// <summary>
+   ///  Disposes used resources 
+   /// </summary>
     public void Dispose()
     {
         Connection.Dispose();
@@ -25,6 +39,9 @@ public class RabbitMqConnection : IRabitMqConnection, IDisposable
 
     public IConnection Connection { get; private set; }
 
+    /// <summary>
+    ///  Initializes the connection to AMQP
+    /// </summary>
     private void InitializeConnection()
     {
         try

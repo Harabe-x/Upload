@@ -5,11 +5,16 @@ using RabbitMQ.Client;
 
 namespace ImageVault.AuthenticationService.RabbitMq;
 
+
+/// <summary>
+///  <inheritdoc cref="IRabbitMqMessageSender"/>
+/// </summary>
 public class RabbitMqMessageSender : IRabbitMqMessageSender
 {
-    private readonly IRabitMqConnection _connection;
 
-    public RabbitMqMessageSender(IRabitMqConnection connection)
+    private readonly IRabbitMqConnection _connection;
+
+    public RabbitMqMessageSender(IRabbitMqConnection connection)
     {
         _connection = connection;
     }
