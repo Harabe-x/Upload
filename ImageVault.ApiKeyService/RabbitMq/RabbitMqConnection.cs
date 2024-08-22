@@ -5,6 +5,10 @@ using RabbitMQ.Client.Exceptions;
 
 namespace ImageVault.ApiKeyService.RabbitMq;
 
+
+/// <summary>
+/// <inheritdoc cref="IRabbitMqConnection"/>
+/// </summary>
 public class RabbitMqConnection : IRabbitMqConnection
 {
     private readonly IConfiguration _configuration;

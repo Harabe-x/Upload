@@ -2,6 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ImageVault.ApiKeyService.Data.Models;
 
+/// <summary>
+///  API key model that is stored in the database
+/// </summary>
 public class ApiKey
 {
     public ApiKey()

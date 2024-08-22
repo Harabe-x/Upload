@@ -39,6 +39,7 @@ public static class IConfigurationExtension
     {
         return configuration.GetSection("RabbitMq")["Host"] ?? throw new NullReferenceException();
     }
+    
     /// <summary>
     ///  Reads RabbitMQ User Service queue name  
     /// </summary>

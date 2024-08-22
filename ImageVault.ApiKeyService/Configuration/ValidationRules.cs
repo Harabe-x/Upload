@@ -1,14 +1,23 @@
+using ImageVault.ApiKeyService.Data.Interfaces.Services;
 using ImageVault.ApiKeyService.Services;
 
 namespace ImageVault.ApiKeyService.Configuration;
 
-public static class ValidationRules
+
+/// <summary>
+/// A class that adds validation rules to the validator
+/// </summary>
+public class DataValidationRules
 {
-    public static void AddValidatioRules(this DataValidationService validationService)
+    /// <summary>
+    ///  Adds defined validation rules to the DataValidator
+    /// </summary>
+    /// <param name="validationService"></param>
+    public static void AddRules(IDataValidationService validationService)
     {
         validationService.AddCustomValidationRule<string>("ValidateKeyName",
             s => { return !string.IsNullOrEmpty(s) && s.Length > 3; });
-
+        
         validationService.AddCustomValidationRule<uint>("ValidateKeyCapacity", capacity => capacity > 0);
     }
 }

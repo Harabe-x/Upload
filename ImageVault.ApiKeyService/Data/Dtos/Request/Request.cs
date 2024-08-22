@@ -1,4 +1,4 @@
-namespace ImageVault.AuthenticationService.Data.Dtos.Request;
+namespace ImageVault.ApiKeyService.Data.Dtos.Request;
 
 
 /// <summary>

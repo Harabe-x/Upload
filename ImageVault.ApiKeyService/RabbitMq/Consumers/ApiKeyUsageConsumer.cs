@@ -8,8 +8,20 @@ using RabbitMQ.Client.Events;
 
 namespace ImageVault.ApiKeyService.RabbitMq.Consumers;
 
+/// <summary>
+/// 
+///  This class implements <see cref="IRabbitMqConsumer"/>. <inheritdoc cref="IRabbitMqConsumer"/>
+/// </summary>
 public class ApiKeyUsageConsumer : IRabbitMqConsumer
 {
+    public string Name => "ApiKeyUsage";
+   
+    public DateTime StartedAt { get; private set;  }
+
+    public TimeSpan WorkTime => DateTime.Now - StartedAt; 
+
+    public bool IsRunning { get; private set;  }
+    
     private readonly IConfiguration _configuration;
 
     private readonly IRabbitMqConnection _rabbitMqConnection;
@@ -33,6 +45,9 @@ public class ApiKeyUsageConsumer : IRabbitMqConsumer
 
     public void Start()
     {
+        IsRunning = true;
+        StartedAt = DateTime.Now;
+        
         _channel = _rabbitMqConnection.Connection.CreateModel();
 
         _channel.QueueDeclare(_configuration.GetApiKeyUsageQueue(), true, false);
@@ -62,7 +77,7 @@ public class ApiKeyUsageConsumer : IRabbitMqConsumer
 
         try
         {
-            var apiKeyUsage = await JsonSerializer.DeserializeAsync<ApiKeyUsageDto>(new MemoryStream(content));
+            var apiKeyUsage = await JsonSerializer.DeserializeAsync<ApiKeyUsage>(new MemoryStream(content));
 
             using var scope = _scopeFactory.CreateAsyncScope();
 

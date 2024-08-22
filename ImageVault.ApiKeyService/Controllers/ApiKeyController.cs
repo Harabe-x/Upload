@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ImageVault.ApiKeyService.Controllers;
 
+
+/// <summary>
+///  Controller that allows the user to manage API keys
+/// </summary>
 [Controller]
 [Route("/api/apikey")]
 public class ApiKeyController : ControllerBase
@@ -21,6 +25,11 @@ public class ApiKeyController : ControllerBase
         _logger = logger;
     }
 
+    /// <summary>
+    ///  Gets data about specified API key 
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
     [HttpPost("get")]
     [Authorize]
     public async Task<IActionResult> GetKey([FromBody] string key)
@@ -45,7 +54,11 @@ public class ApiKeyController : ControllerBase
             return StatusCode(500, new Error("Internal server error. We will try to fix it as soon as possible"));
         }
     }
-
+    
+    /// <summary>
+    ///  Gets all API keys created by user
+    /// </summary>
+    /// <returns>All user API keys</returns>
     [HttpPost("getKeys")]
     [Authorize]
     public async Task<IActionResult> GetKeys()
@@ -67,18 +80,23 @@ public class ApiKeyController : ControllerBase
         }
     }
 
+    /// <summary>
+    ///  Adds API key to the database
+    /// </summary>
+    /// <param name="apiKey"></param>
+    /// <returns>Added API key</returns>
     [HttpPost("add")]
     [Authorize]
-    public async Task<IActionResult> AddKey([FromBody] AddApiKeyDto apiKeyDto)
+    public async Task<IActionResult> AddKey([FromBody] AddApiKey apiKey)
     {
-        if (apiKeyDto == null)
+        if (apiKey == null)
             return BadRequest(new Error("Api key data can't be empty"));
 
         var id = User.GetClaimValue(ClaimTypes.NameIdentifier);
 
         try
         {
-            var result = await _apiKeyRepository.AddKey(apiKeyDto, id);
+            var result = await _apiKeyRepository.AddKey(apiKey, id);
 
             return result.IsSuccess
                 ? Ok(result.Value)
@@ -93,9 +111,14 @@ public class ApiKeyController : ControllerBase
         }
     }
 
+    /// <summary>
+    ///  Edits API key in database
+    /// </summary>
+    /// <param name="newApiKeyData"></param>
+    /// <returns></returns>
     [HttpPatch("editKey")]
     [Authorize]
-    public async Task<IActionResult> UpdateKey([FromBody] EditApiKeyDto newApiKeyData)
+    public async Task<IActionResult> UpdateKey([FromBody] EditApiKey newApiKeyData)
     {
         if (string.IsNullOrEmpty(newApiKeyData.Key) || newApiKeyData == null)
             return BadRequest(new Error("Api key can't be empty"));
@@ -118,6 +141,11 @@ public class ApiKeyController : ControllerBase
         }
     }
 
+    /// <summary>
+    ///  Deletes API key from database
+    /// </summary>
+    /// <param name="key">Key to delete</param>
+    /// <returns></returns>
     [HttpDelete("deleteKey")]
     [Authorize]
     public async Task<IActionResult> DeleteKey([FromBody] string key)

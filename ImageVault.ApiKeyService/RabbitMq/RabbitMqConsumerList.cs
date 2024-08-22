@@ -3,6 +3,9 @@ using ImageVault.ApiKeyService.RabbitMq.Consumers;
 
 namespace ImageVault.ApiKeyService.RabbitMq;
 
+/// <summary>
+/// <inheritdoc cref="IRabbitMqConsumerList"/>
+/// </summary>
 public class RabbitMqConsumerList : IRabbitMqConsumerList
 {
     private readonly List<IRabbitMqConsumer> _consumers;

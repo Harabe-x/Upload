@@ -3,9 +3,14 @@ using ImageVault.ApiKeyService.Data.Dtos;
 using ImageVault.ApiKeyService.Data.Interfaces.ApiKey;
 using ImageVault.ApiKeyService.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using ApiKey = ImageVault.ApiKeyService.Data.Models.ApiKey;
 
 namespace ImageVault.ApiKeyService.Repository;
 
+
+/// <summary>
+///  <inheritdoc cref="IAdminApiKeyRepository   "/>
+/// </summary>
 public class AdminApiKeyRepository : IAdminApiKeyRepository
 {
     private readonly ApplicationDbContext _dbContext;
@@ -23,15 +28,15 @@ public class AdminApiKeyRepository : IAdminApiKeyRepository
         return await _dbContext.ApiKeys.FirstOrDefaultAsync(x => x.Key == apiKey);
     }
 
-    public async Task<OperationResultDto<bool>> AddUsageToTheApiKey(ApiKeyUsageDto apiKeyUsageDto)
+    public async Task<OperationResultDto<bool>> AddUsageToTheApiKey(ApiKeyUsage apiKeyUsage)
     {
-        var apiKey = await _dbContext.ApiKeys.FirstOrDefaultAsync(x => x.Key == apiKeyUsageDto.key);
+        var apiKey = await _dbContext.ApiKeys.FirstOrDefaultAsync(x => x.Key == apiKeyUsage.key);
 
         if (apiKey == null)
             return new OperationResultDto<bool>(false, false,
                 new Error($"ApiKey Not Found in{typeof(AdminApiKeyRepository)} this shouldn't have happened  "));
 
-        apiKey.StorageUsed += apiKeyUsageDto.usedData;
+        apiKey.StorageUsed += apiKeyUsage.usedData;
 
         _dbContext.ApiKeys.Update(apiKey);
 

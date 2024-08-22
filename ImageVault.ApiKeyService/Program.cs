@@ -24,7 +24,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 var validationService = new DataValidationService();
 
-validationService.AddValidatioRules();
+DataValidationRules.AddRules(validationService);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
