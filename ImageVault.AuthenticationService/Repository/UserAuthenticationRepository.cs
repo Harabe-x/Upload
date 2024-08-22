@@ -47,7 +47,7 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
 
     public async Task<OperationResult<AuthenticationResult>> CreateAccount(RegisterAccount account)
     {
-        if (!ValidateRegisterDto(account))
+        if (!_validationService.ValidateData("ValidateRegisterData",account))
             return new OperationResult<AuthenticationResult>(null, false, new Error("Invalid user data"));
 
         var user = account.MapUser();
@@ -76,6 +76,10 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
 
     public async Task<OperationResult<AuthenticationResult>> LoginUser(Login login)
     {
+
+        if (_validationService.ValidateData("ValidateLoginData", login))
+            return new OperationResult<AuthenticationResult>(null, false, new Error("Login data validation failed"));
+        
         var user = await _userManager.FindByEmailAsync(login.Email);
 
         if (user == null)
@@ -89,14 +93,7 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
         return new OperationResult<AuthenticationResult>(await CreateAuthenticationResultDto(user),
             isLoginSucceeded.Succeeded, null);
     }
-
-    private bool ValidateRegisterDto(RegisterAccount account)
-    {
-        return _validationService.ValidateData("ValidateName", account.FirstName)
-               && _validationService.ValidateData("ValidateName", account.LastName)
-               && _validationService.ValidateData("ValidatePassword", account.Password);
-    }
-
+    
     private async Task<AuthenticationResult> CreateAuthenticationResultDto(ApplicationUser user)
     {
         var role = await _userManager.GetRolesAsync(user);

@@ -4,6 +4,7 @@ using ImageVault.AuthenticationService.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace ImageVault.AuthenticationService.Controllers;
 
@@ -16,10 +17,12 @@ public class UserAuthenticationController : ControllerBase
 {
     private readonly IUserAuthenticationRepository _userAuthenticationRepository;
 
-    public UserAuthenticationController(IUserAuthenticationRepository userAuthenticationRepository,
-        IJwtTokenService jwtTokenService)
+    private readonly ILogger<UserAuthenticationController> _logger; 
+    
+    public UserAuthenticationController(IUserAuthenticationRepository userAuthenticationRepository, ILogger<UserAuthenticationController> logger)
     {
         _userAuthenticationRepository = userAuthenticationRepository;
+        _logger = logger;
     }
 
     [HttpPost("register")]
@@ -39,6 +42,7 @@ public class UserAuthenticationController : ControllerBase
         }
         catch (Exception e)
         {
+            _logger.LogError(e.ToString());
             return StatusCode(500, "Internal Server Error");
         }
     }
@@ -60,6 +64,7 @@ public class UserAuthenticationController : ControllerBase
         }
         catch (Exception e)
         {
+            _logger.LogError(e.ToString());
             return Unauthorized("Login failed");
         }
     }

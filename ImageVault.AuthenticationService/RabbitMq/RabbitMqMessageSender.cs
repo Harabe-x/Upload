@@ -11,12 +11,14 @@ namespace ImageVault.AuthenticationService.RabbitMq;
 /// </summary>
 public class RabbitMqMessageSender : IRabbitMqMessageSender
 {
-
     private readonly IRabbitMqConnection _connection;
 
-    public RabbitMqMessageSender(IRabbitMqConnection connection)
+    private readonly ILogger<RabbitMqMessageSender> _logger; 
+    
+    public RabbitMqMessageSender(IRabbitMqConnection connection,ILogger<RabbitMqMessageSender> logger)
     {
         _connection = connection;
+        _logger = logger; 
     }
 
     public void SendMessage<T>(T message, string queue)
@@ -29,6 +31,8 @@ public class RabbitMqMessageSender : IRabbitMqMessageSender
 
         var body = Encoding.UTF8.GetBytes(jsonObject);
 
+        _logger.LogInformation($"Message sent via amqp Queue: {queue}, Time: {DateTime.Now} ");
+        
         channel.BasicPublish("", queue, true, body: body);
     }
 }

@@ -56,11 +56,12 @@ public class RabbitMqConnection : IRabbitMqConnection, IDisposable
 
             Connection = factory.CreateConnection();
         }
-        catch (BrokerUnreachableException e)
+        catch (BrokerUnreachableException)
         {
             Thread.Sleep(TimeSpan.FromSeconds(5));
             InitializeConnection();
             _logger.LogError("Connection to Rabbitmq service failed");
         }
+        _logger.LogInformation("Connected to RabbitMq Server");
     }
 }
