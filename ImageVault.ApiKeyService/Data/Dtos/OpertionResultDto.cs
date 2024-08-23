@@ -9,4 +9,4 @@ namespace ImageVault.ApiKeyService.Data.Dtos;
 /// <param name="IsSuccess"> A flag identifying whether the operation is successful </param>
 /// <param name="Error"> An object representing error </param>
 /// <typeparam name="T"> Type of value</typeparam>
-public record OperationResultDto<T>(T Value, bool IsSuccess, Error Error);
+public record OperationResult<T>(T Value, bool IsSuccess, Error Error);

@@ -28,12 +28,12 @@ public class AdminApiKeyRepository : IAdminApiKeyRepository
         return await _dbContext.ApiKeys.FirstOrDefaultAsync(x => x.Key == apiKey);
     }
 
-    public async Task<OperationResultDto<bool>> AddUsageToTheApiKey(ApiKeyUsage apiKeyUsage)
+    public async Task<OperationResult<bool>> AddUsageToTheApiKey(ApiKeyUsage apiKeyUsage)
     {
         var apiKey = await _dbContext.ApiKeys.FirstOrDefaultAsync(x => x.Key == apiKeyUsage.key);
 
         if (apiKey == null)
-            return new OperationResultDto<bool>(false, false,
+            return new OperationResult<bool>(false, false,
                 new Error($"ApiKey Not Found in{typeof(AdminApiKeyRepository)} this shouldn't have happened  "));
 
         apiKey.StorageUsed += apiKeyUsage.usedData;
@@ -41,8 +41,8 @@ public class AdminApiKeyRepository : IAdminApiKeyRepository
         _dbContext.ApiKeys.Update(apiKey);
 
         return await SaveChanges()
-            ? new OperationResultDto<bool>(true, true, null)
-            : new OperationResultDto<bool>(false, false,
+            ? new OperationResult<bool>(true, true, null)
+            : new OperationResult<bool>(false, false,
                 new Error($"_dbContext.SaveChanges() failed in {typeof(AdminApiKeyRepository)}"));
     }
 

@@ -8,10 +8,12 @@ namespace ImageVault.ApiKeyService.Data.Dtos;
 /// <param name="KeyName"> API key name</param>
 /// <param name="Key"> API key</param>
 /// <param name="KeyCapacity">The maximum amount bytes of data an API key can use </param>
+/// <param name="StorageUsed"> Storage used by API key </param>
 public record ApiKey
 (
     string UserId,
     string KeyName,
     string Key,
-    ulong KeyCapacity
+    ulong KeyCapacity, 
+    ulong StorageUsed
 );

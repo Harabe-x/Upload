@@ -37,54 +37,59 @@ public class ApiKeyRepository : IApiKeyRepository
         _configuration = configuration; 
     }
 
-    public async Task<OperationResultDto<ApiKey>> AddKey(AddApiKey apiKeyData, string userId)
+    public async Task<OperationResult<ApiKey>> AddKey(AddApiKey apiKeyData, string userId)
     {
         if (!_validationService.ValidateData("ValidateKeyName", apiKeyData.KeyName) ||
             !_validationService.ValidateData("ValidateKeyCapacity", apiKeyData.KeyCapacity))
-            return new OperationResultDto<ApiKey>(null, false, new Error("Invalid key data"));
+            return new OperationResult<ApiKey>(null, false, new Error("Invalid key data"));
 
         var apiKey = apiKeyData.MapToApiKey(userId);
-
+        
         await _dbContext.ApiKeys.AddAsync(apiKey);
 
         SendApiKeyCopyToImageService(apiKey.Key, apiKey.UserId, ApiKeyOperationType.Create);
         
         return await SaveChanges()
-            ? new OperationResultDto<ApiKey>(apiKey.MapToApiKeyDto(), true, null)
-            : new OperationResultDto<ApiKey>(null, false, new Error("Something went wrong ..."));
+            ? new OperationResult<ApiKey>(apiKey.MapToApiKeyDto(), true, null)
+            : new OperationResult<ApiKey>(null, false, new Error("Something went wrong ..."));
     }
 
-    public async Task<OperationResultDto<IEnumerable<ApiKey>>> GetKeys(string userId)
+    public async Task<OperationResult<IEnumerable<ApiKey>>> GetKeys(string userId)
     {
+
+        if (string.IsNullOrWhiteSpace(userId))
+            return new OperationResult<IEnumerable<ApiKey>>(null , false, new Error("Something went wrong. Please try again later."));
+        
         var result = await _dbContext.ApiKeys
             .Where(x => x.UserId == userId)
             .Select(x => x.MapToApiKeyDto())
             .ToListAsync();
-        return new OperationResultDto<IEnumerable<ApiKey>>(result, true, null);
+        return new OperationResult<IEnumerable<ApiKey>>(result, true, null);
     }
 
-    public async Task<OperationResultDto<ApiKey>> GetKey(string key, string userId)
+    public async Task<OperationResult<ApiKey>> GetKey(string key, string userId)
     {
+
+        if (string.IsNullOrWhiteSpace())
+            return new OperationResult<ApiKey>(null, false, new Error("Provided key was empty")); 
         var apiKey = await GetApiKey(key, userId);
 
         if (apiKey == null)
-            return new OperationResultDto<ApiKey>(null, false, new Error("Api key doesn't exists"));
+            return new OperationResult<ApiKey>(null, false, new Error("Api key doesn't exists"));
 
-        return new OperationResultDto<ApiKey>(apiKey.MapToApiKeyDto(), true, null);
+        return new OperationResult<ApiKey>(apiKey.MapToApiKeyDto(), true, null);
     }
 
-    public async Task<OperationResultDto<ApiKey>> EditKey(EditApiKey newApiKeyData, string userId, string key)
+    public async Task<OperationResult<ApiKey>> EditKey(EditApiKey newApiKeyData, string userId, string key)
     {
         if (!_validationService.ValidateData("ValidateKeyName", newApiKeyData.KeyName) ||
             !_validationService.ValidateData("ValidateKeyCapacity", newApiKeyData.KeyCapacity))
-            return new OperationResultDto<ApiKey>(null, false, new Error("Invalid key data"));
+            return new OperationResult<ApiKey>(null, false, new Error("Invalid key data"));
 
         var apiKey = await GetApiKey(key, userId);
 
         if (apiKey == null)
-            return new OperationResultDto<ApiKey>(null, false, new Error("Api key doesn't exists"));
-
-        
+            return new OperationResult<ApiKey>(null, false, new Error("Api key doesn't exists"));
 
         apiKey.KeyName = newApiKeyData.KeyName;
         apiKey.StorageCapacity = newApiKeyData.KeyCapacity;
@@ -92,24 +97,24 @@ public class ApiKeyRepository : IApiKeyRepository
         _dbContext.ApiKeys.Update(apiKey);
 
         return await SaveChanges()
-            ? new OperationResultDto<ApiKey>(apiKey.MapToApiKeyDto(), true, null)
-            : new OperationResultDto<ApiKey>(null, false, null);
+            ? new OperationResult<ApiKey>(apiKey.MapToApiKeyDto(), true, null)
+            : new OperationResult<ApiKey>(null, false, null);
     }
 
-    public async Task<OperationResultDto<bool>> DeleteKey(string key, string userId)
+    public async Task<OperationResult<bool>> DeleteKey(string key, string userId)
     {
         var apiKey = await GetApiKey(key, userId);
 
         if (apiKey == null)
-            return new OperationResultDto<bool>(false, false, new Error("Api key doesn't exists"));
+            return new OperationResult<bool>(false, false, new Error("Api key doesn't exists"));
 
         _dbContext.ApiKeys.Remove(apiKey);
 
         SendApiKeyCopyToImageService(apiKey.Key, apiKey.UserId, ApiKeyOperationType.Delete);
         
         return await SaveChanges()
-            ? new OperationResultDto<bool>(true, true, null)
-            : new OperationResultDto<bool>(false, false, null);
+            ? new OperationResult<bool>(true, true, null)
+            : new OperationResult<bool>(false, false, null);
     }
 
     private async Task<bool> SaveChanges()

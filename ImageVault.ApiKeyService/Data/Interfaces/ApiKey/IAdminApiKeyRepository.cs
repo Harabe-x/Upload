@@ -18,6 +18,6 @@ public interface IAdminApiKeyRepository
     /// Adds usage information to the specified API key.
     /// </summary>
     /// <param name="apiKeyUsage">The usage information to be added to the API key.</param>
-    /// <returns>A task that represents the asynchronous operation. The task result contains an <see cref="OperationResultDto{T}"/> indicating the success or failure of the operation.</returns>
-    Task<OperationResultDto<bool>> AddUsageToTheApiKey(ApiKeyUsage apiKeyUsage);
+    /// <returns>A task that represents the asynchronous operation. The task result contains an <see cref="OperationResult{T}"/> indicating the success or failure of the operation.</returns>
+    Task<OperationResult<bool>> AddUsageToTheApiKey(ApiKeyUsage apiKeyUsage);
 }
