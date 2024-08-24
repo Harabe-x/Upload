@@ -18,9 +18,7 @@ namespace ImageVault.ApiKeyService.Repository;
 public class ApiKeyRepository : IApiKeyRepository
 {
     private readonly ApplicationDbContext _dbContext;
-
-    private readonly ILogger<ApiKeyRepository> _logger;
-
+    
     private readonly IDataValidationService _validationService;
 
     private readonly IRabbitMqMessageSender _messageSender;
@@ -28,13 +26,12 @@ public class ApiKeyRepository : IApiKeyRepository
     private readonly IConfiguration _configuration; 
 
     public ApiKeyRepository(ApplicationDbContext dbContext, IDataValidationService validationService,
-        ILogger<ApiKeyRepository> logger,IRabbitMqMessageSender messageSender, IConfiguration configuration)
+        IRabbitMqMessageSender messageSender, IConfiguration configuration)
     {
         _dbContext = dbContext;
         _validationService = validationService;
-        _logger = logger;
         _messageSender = messageSender;
-        _configuration = configuration; 
+        _configuration = configuration;
     }
 
     public async Task<OperationResult<ApiKey>> AddKey(AddApiKey apiKeyData, string userId)
@@ -70,14 +67,13 @@ public class ApiKeyRepository : IApiKeyRepository
     public async Task<OperationResult<ApiKey>> GetKey(string key, string userId)
     {
 
-        if (string.IsNullOrWhiteSpace())
-            return new OperationResult<ApiKey>(null, false, new Error("Provided key was empty")); 
-        var apiKey = await GetApiKey(key, userId);
+        if (string.IsNullOrWhiteSpace(key))
+            return new OperationResult<ApiKey>(null, false, new Error("Provided key was empty"));
+        var apiKey = await GetApiKey(key, userId); 
 
-        if (apiKey == null)
-            return new OperationResult<ApiKey>(null, false, new Error("Api key doesn't exists"));
-
-        return new OperationResult<ApiKey>(apiKey.MapToApiKeyDto(), true, null);
+        return apiKey == null 
+            ? new OperationResult<ApiKey>(null, false, new Error("Api key doesn't exists")) 
+            : new OperationResult<ApiKey>(apiKey.MapToApiKeyDto(), true, null);
     }
 
     public async Task<OperationResult<ApiKey>> EditKey(EditApiKey newApiKeyData, string userId, string key)
@@ -122,7 +118,7 @@ public class ApiKeyRepository : IApiKeyRepository
         return await _dbContext.SaveChangesAsync() > 0;
     }
     
-    private async Task<Data.Models.ApiKey> GetApiKey(string key, string userId)
+    private async Task<Data.Models.ApiKey?> GetApiKey(string key, string userId)
     {
         return await _dbContext.ApiKeys.FirstOrDefaultAsync(x => x.Key == key && x.UserId == userId);
     }
