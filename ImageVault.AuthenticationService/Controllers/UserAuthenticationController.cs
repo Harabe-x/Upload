@@ -11,7 +11,7 @@ namespace ImageVault.AuthenticationService.Controllers;
 /// <summary>
 /// A controller that handles authentication operations 
 /// </summary>
-[Route("api/auth")]
+[Route("/api/v1/auth")]
 [Controller]
 public class UserAuthenticationController : ControllerBase
 {
@@ -25,8 +25,8 @@ public class UserAuthenticationController : ControllerBase
         _logger = logger;
     }
 
-    [HttpPost("register")]
     [AllowAnonymous]
+    [HttpPost("register")]
     [EnableRateLimiting("register")]
     public async Task<IActionResult> Register([FromBody] RegisterAccount accountData)
     {

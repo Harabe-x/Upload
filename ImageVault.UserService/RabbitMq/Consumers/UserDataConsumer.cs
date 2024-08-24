@@ -2,20 +2,32 @@ using System.Text;
 using System.Text.Json;
 using ImageVault.UserService.Data.Dtos;
 using ImageVault.UserService.Data.Interfaces;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 namespace ImageVault.UserService.RabbitMq;
 
+
+/// <summary>
+///  <inheritdoc cref="IRabbitMqConsumer"/>
+/// </summary>
 public class UserDataConsumer : IRabbitMqConsumer
 {
+    public string Name => "UserDataConsumer";
+
+    public TimeSpan WorkTime => DateTime.Now - StartedAt; 
+    
+    public DateTime StartedAt { get; private set; }
+    
+    public bool IsRunning { get; private set; }
+    
     private readonly IRabbitMqConnection _connection;
 
     private readonly ILogger<UserDataConsumer> _logger;
 
     private IServiceScopeFactory _scopeFactory; 
-
-
+    
     private IModel _channel; 
 
     public UserDataConsumer(IRabbitMqConnection connection,
@@ -28,7 +40,10 @@ public class UserDataConsumer : IRabbitMqConsumer
 
     public async void Start()
     {
-         _channel  = _connection.Connection.CreateModel();
+        StartedAt = DateTime.Now; 
+        IsRunning = true;
+        
+        _channel  = _connection.Connection.CreateModel();
 
         _channel.QueueDeclare("UserData", true, false);
 
@@ -49,9 +64,7 @@ public class UserDataConsumer : IRabbitMqConsumer
         var userRepository = scope.ServiceProvider.GetService<IUserRepository>();        
         try
         {
-            
-            
-            var userData = JsonSerializer.Deserialize<UserDataDto>(json);
+            var userData = JsonSerializer.Deserialize<UserData>(json);
 
             var result = await userRepository.AddUser(userData, userData.Id);
 
@@ -67,13 +80,12 @@ public class UserDataConsumer : IRabbitMqConsumer
 
     public async void Stop()
     {
-        _connection?.Connection.Close();
+        IsRunning = false; 
+        _channel.Close();
     }
 
     public void Dispose()
     {
-        
+        GC.SuppressFinalize(this);
     }
-    
-    
 }

@@ -8,7 +8,7 @@ namespace ImageVault.AuthenticationService.Configuration;
 /// <summary>
 /// A class that adds validation rules to the validator
 /// </summary>
-public class DataValidationRules
+public static class DataValidationRules
 {
     /// <summary>
     ///  Adds defined validation rules to the DataValidator

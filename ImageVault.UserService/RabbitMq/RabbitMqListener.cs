@@ -2,6 +2,9 @@ using ImageVault.UserService.Data.Interfaces;
 
 namespace ImageVault.UserService.RabbitMq;
 
+/// <summary>
+///  <inheritdoc cref="IRabbitMqListener"/>
+/// </summary>
 public class RabbitMqListener : IRabbitMqListener
 {
     public IEnumerable<IRabbitMqConsumer> Consumers { get; }

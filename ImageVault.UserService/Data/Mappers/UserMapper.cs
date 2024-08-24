@@ -4,15 +4,31 @@ using ImageVault.UserService.Data.Models;
 
 namespace ImageVault.UserService.Data.Mappers;
 
+
+/// <summary>
+///  User Mapper 
+/// </summary>
 public static class UserMapper
 {
-    public static UserDataDto MapToUserDataDto(this UserModel user)
+    
+    /// <summary>
+    ///  This method is responsible for mapping <see cref="UserModel"/> to <see cref="UserData"/> 
+    /// </summary>
+    /// <param name="user">mapped object</param>
+    /// <returns></returns>
+    public static UserData MapToUserDataDto(this UserModel user)
     {
-        return new UserDataDto(user.Id, user.FirstName, user.LastName, user.ColorSchema.ToString(), user.Email,
+        return new UserData(user.Id, user.FirstName, user.LastName, user.ColorSchema.ToString(), user.Email,
             user.ProfilePictureUrl);
     }
 
-    public static UserModel MapToUserModel(this UserDataDto user, string id)
+    /// <summary>
+    ///  This method is responsible for mapping <see cref="UserData"/> to <see cref="UserModel"/> 
+    /// </summary>
+    /// <param name="user"></param>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public static UserModel MapToUserModel(this UserData user, string id)
     {
         return new UserModel
         {

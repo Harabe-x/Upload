@@ -5,6 +5,9 @@ using RabbitMQ.Client;
 
 namespace ImageVault.UserService.RabbitMq;
 
+/// <summary>
+///  <inheritdoc cref="IRabbitMqMessageSender"/>
+/// </summary>
 public class RabbitMqMessageSender : IRabbitMqMessageSender
 {
     private readonly IRabbitMqConnection _connection;

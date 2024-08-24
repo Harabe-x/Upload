@@ -8,9 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ImageVault.UserService.Controllers;
 
+/// <summary>
+///  Controller which is responsible for managing user data
+/// </summary>
 [Authorize]
 [Controller]
-[Route("/api/account")]
+[Route("/api/v1/user")]
 public class UserController : ControllerBase
 {
     private readonly IUserRepository _userRepository;
@@ -20,8 +23,12 @@ public class UserController : ControllerBase
         _userRepository = userRepository;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetValue()
+    /// <summary>
+    /// Gets user from the database 
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("get")]
+    public async Task<IActionResult>GetUserData()
     {
         var id = User.GetClaimValue(ClaimTypes.NameIdentifier);
 
@@ -37,16 +44,21 @@ public class UserController : ControllerBase
         }
     }
 
+    /// <summary>
+    ///  Creates a new user in the database
+    /// </summary>
+    /// <param name="userData"></param>
+    /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> CreateUser([FromBody] UserDataDto Value)
+    public async Task<IActionResult> CreateUser([FromBody] UserData userData)
     {
         var id = User.GetClaimValue(ClaimTypes.NameIdentifier);
 
-        if (User.GetClaimValue(ClaimTypes.Email) != Value.Email) return BadRequest(new Error("Invalid email"));
+        if (User.GetClaimValue(ClaimTypes.Email) != userData.Email) return BadRequest(new Error("Invalid email"));
 
         try
         {
-            var result = await _userRepository.AddUser(Value, id);
+            var result = await _userRepository.AddUser(userData, id);
 
             return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
@@ -56,14 +68,19 @@ public class UserController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Updates a user data in database
+    /// </summary>
+    /// <param name="newUserData"></param>
+    /// <returns></returns>
     [HttpPatch]
-    public async Task<IActionResult> UpdateValue([FromBody] UserDataDto newValue)
+    public async Task<IActionResult> UpdateUser([FromBody] UpdateUser newUserData)
     {
         var id = User.GetClaimValue(ClaimTypes.NameIdentifier);
 
         try
         {
-            var result = await _userRepository.UpdateUser(newValue, id);
+            var result = await _userRepository.UpdateUser(newUserData, id);
 
             return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
@@ -73,6 +90,10 @@ public class UserController : ControllerBase
         }
     }
 
+    /// <summary>
+    ///  Removes user from database 
+    /// </summary>
+    /// <returns></returns>
     [HttpDelete]
     public async Task<IActionResult> DeleteUser()
     {

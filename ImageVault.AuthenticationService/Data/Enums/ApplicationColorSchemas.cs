@@ -1,3 +1,4 @@
+// ReSharper disable InconsistentNaming
 namespace ImageVault.AuthenticationService.Data.Enums;
 /// <summary>
 /// . Enum representing web preferred theme in the web application

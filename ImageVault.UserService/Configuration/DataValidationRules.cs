@@ -4,8 +4,15 @@ using ImageVault.UserService.Data.Interfaces.Services;
 
 namespace ImageVault.UserService.Configuration;
 
-public class DataValidationRules
+/// <summary>
+/// A class that adds validation rules to the validator
+/// </summary>
+public static class DataValidationRules
 {
+    /// <summary>
+    ///  Adds defined validation rules to the DataValidator
+    /// </summary>
+    /// <param name="validationService"></param>
     public static void AddRules(IDataValidationService validationService)
     {
         validationService.AddCustomValidationRule<string>("ValidateName", str => { return str.All(char.IsLetter); });
@@ -18,7 +25,7 @@ public class DataValidationRules
                    str.Any(chr => char.IsDigit(chr));
         });
 
-        validationService.AddCustomValidationRule<UserDataDto>("ValidateUserDataDto", userData =>
+        validationService.AddCustomValidationRule<UserData>("ValidateUserDataDto", userData =>
         {
             return validationService.ValidateData("ValidateName", userData.FirstName)
                    && validationService.ValidateData("ValidateName", userData.LastName)

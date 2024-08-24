@@ -2,9 +2,9 @@ namespace ImageVault.AuthenticationService.Configuration;
 
 
 /// <summary>
-/// a class that helps you quickly read specific values from the configuration
+/// a class that helps you quickly read specific values from the configuration using <see cref="IConfiguration"/>
 /// </summary>
-public static class IConfigurationExtension
+public static class ConfigurationExtension
 {
     
     /// <summary>
