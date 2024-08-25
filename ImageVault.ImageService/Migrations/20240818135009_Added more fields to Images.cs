@@ -16,7 +16,7 @@ namespace ImageVault.ImageService.Migrations
                 newName: "ImageFormat");
 
             migrationBuilder.AddColumn<string>(
-                name: "ApiKey",
+                name: "Key",
                 table: "Images",
                 type: "nvarchar(max)",
                 nullable: false,
@@ -48,7 +48,7 @@ namespace ImageVault.ImageService.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "ApiKey",
+                name: "Key",
                 table: "Images");
 
             migrationBuilder.DropColumn(

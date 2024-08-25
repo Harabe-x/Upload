@@ -6,6 +6,7 @@ using ImageVault.ImageService.Data.Dtos.ApiKey;
 using ImageVault.ImageService.Data.Interfaces;
 using ImageVault.ImageService.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using ApiKey = ImageVault.ImageService.Data.Dtos.ApiKey.ApiKey;
 
 namespace ImageVault.ImageService.Repository;
 
@@ -18,27 +19,27 @@ public class ApiKeyRepository : IApiKeyRepository
         _dbContext = dbContext;
     }
     
-    public async Task<OperationResultDto<ApiKey>> GetKey(string key)
+    public async Task<OperationResultDto<Data.Models.ApiKey>> GetKey(string key)
     {
         if (string.IsNullOrWhiteSpace(key))
-            return new OperationResultDto<ApiKey>(null, false, new Error("Api Key cannot be null or empty"));
+            return new OperationResultDto<Data.Models.ApiKey>(null, false, new Error("Api Key cannot be null or empty"));
 
         var apiKey = await _dbContext.ApiKeys.FirstOrDefaultAsync(x => x.Key == key );
 
         return apiKey != null
-            ? new OperationResultDto<ApiKey>(apiKey, true, null)
-            : new OperationResultDto<ApiKey>(null, false, new Error("Api key not found"));
+            ? new OperationResultDto<Data.Models.ApiKey>(apiKey, true, null)
+            : new OperationResultDto<Data.Models.ApiKey>(null, false, new Error("Api key not found"));
     }
 
-    public async Task<OperationResultDto<bool>> CreateKey(ApiKeyDto apiKey)
+    public async Task<OperationResultDto<bool>> CreateKey(ApiKey apiKey)
     {
-        if (string.IsNullOrWhiteSpace(apiKey.ApiKey) || string.IsNullOrWhiteSpace(apiKey.UserId))
+        if (string.IsNullOrWhiteSpace(apiKey.Key) || string.IsNullOrWhiteSpace(apiKey.UserId))
             return new OperationResultDto<bool>(false, false, new Error("Api key data was null or empty"));
 
         
-        var key = new ApiKey()
+        var key = new Data.Models.ApiKey()
         {
-            Key = apiKey.ApiKey,
+            Key = apiKey.Key,
             UserId = apiKey.UserId
         };
 
@@ -50,11 +51,11 @@ public class ApiKeyRepository : IApiKeyRepository
     }
     
 
-    public async Task<OperationResultDto<bool>> EditKey(ApiKeyDto apiKey)
+    public async Task<OperationResultDto<bool>> EditKey(ApiKey apiKey)
     {
-        if (string.IsNullOrWhiteSpace(apiKey.ApiKey) || string.IsNullOrWhiteSpace(apiKey.UserId) || string.IsNullOrWhiteSpace(apiKey.NewKey)) 
+        if (string.IsNullOrWhiteSpace(apiKey.Key) || string.IsNullOrWhiteSpace(apiKey.UserId) || string.IsNullOrWhiteSpace(apiKey.NewKey)) 
             return new OperationResultDto<bool>(false, false, new Error("Api key data was null or empty"));
-        var key = await _dbContext.ApiKeys.FirstOrDefaultAsync(x => x.Key == apiKey.ApiKey);
+        var key = await _dbContext.ApiKeys.FirstOrDefaultAsync(x => x.Key == apiKey.Key);
         
         if (key == null)
             return new OperationResultDto<bool>(false, false, new Error("Api key not found"));
@@ -68,11 +69,11 @@ public class ApiKeyRepository : IApiKeyRepository
             : new OperationResultDto<bool>(false, false, new Error("Something went wrong."));
     }
 
-    public async Task<OperationResultDto<bool>> DeleteKey(ApiKeyDto apiKey)
+    public async Task<OperationResultDto<bool>> DeleteKey(ApiKey apiKey)
     {
-        if (string.IsNullOrWhiteSpace(apiKey.ApiKey) || string.IsNullOrWhiteSpace(apiKey.UserId))
+        if (string.IsNullOrWhiteSpace(apiKey.Key) || string.IsNullOrWhiteSpace(apiKey.UserId))
             return new OperationResultDto<bool>(false, false, new Error("Api key data was null or empty"));
-        var key = await _dbContext.ApiKeys.FirstOrDefaultAsync(x => x.Key == apiKey.ApiKey);
+        var key = await _dbContext.ApiKeys.FirstOrDefaultAsync(x => x.Key == apiKey.Key);
 
         if (key == null)
             return new OperationResultDto<bool>(false, false, new Error("Api key not found"));

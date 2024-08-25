@@ -5,6 +5,10 @@ using RabbitMQ.Client;
 
 namespace ImageVault.UploadService.RabbitMq;
 
+
+/// <summary>
+/// <inheritdoc cref="IRabbitMqMessageSender"/>
+/// </summary>
 public class RabbitMqMessageSender : IRabbitMqMessageSender
 {
     private readonly IRabbitMqConnection _connection;

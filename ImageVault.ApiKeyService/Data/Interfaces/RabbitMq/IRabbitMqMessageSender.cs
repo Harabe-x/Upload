@@ -7,10 +7,10 @@ namespace ImageVault.ApiKeyService.Data.Interfaces.RabbitMq;
 public interface IRabbitMqMessageSender
 {
     /// <summary>
-    /// Sends a message of a specified type to the designated RabbitMQ queue.
+    /// Sends a Message of a specified type to the designated RabbitMQ queue.
     /// </summary>
-    /// <typeparam name="T">The type of the message to be sent.</typeparam>
-    /// <param name="message">The message object to be sent to the queue.</param>
-    /// <param name="queue">The name of the RabbitMQ queue to which the message will be sent.</param>
+    /// <typeparam name="T">The type of the Message to be sent.</typeparam>
+    /// <param name="message">The Message object to be sent to the queue.</param>
+    /// <param name="queue">The name of the RabbitMQ queue to which the Message will be sent.</param>
     void SendMessage<T>(T message, string queue);
 }

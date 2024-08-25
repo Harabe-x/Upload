@@ -15,7 +15,6 @@ public class RabbitMqConsumerList : IRabbitMqConsumerList
     public RabbitMqConsumerList(UserDataConsumer userDataConsumer)
     {
         _consumers = new List<IRabbitMqConsumer>();
-
         _consumers.Add(userDataConsumer); 
     }
     

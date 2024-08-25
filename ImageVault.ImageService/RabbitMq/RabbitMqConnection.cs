@@ -35,8 +35,8 @@ public class RabbitMqConnection : IRabbitMqConnection
         {
             Connection = connectionFactory.CreateConnection();
         }
-        catch (BrokerUnreachableException e)
-        {
+        catch (BrokerUnreachableException)
+        { 
             _logger.LogError("Connection to Rabbitmq service failed");
             Thread.Sleep(TimeSpan.FromSeconds(5));
             InitializeConnection();

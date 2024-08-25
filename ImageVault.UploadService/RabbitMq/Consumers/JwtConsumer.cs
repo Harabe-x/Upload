@@ -8,13 +8,26 @@ using RabbitMQ.Client.Events;
 
 namespace ImageVault.UploadService.RabbitMq.Consumers;
 
+
+/// <summary>
+///  <inheritdoc cref="IRabbitMqConsumer"/>
+/// </summary>
 public class JwtConsumer : IRabbitMqConsumer
 {
+    public string Name => "JwtConsumer"; 
+    
+    public TimeSpan WorkTime => DateTime.Now - StartedAt; 
+        
+    public DateTime StartedAt { get; private set; }
+    
+    public bool IsRunning { get; private set; }
+    
     private readonly IConfiguration _configuration;
+    
     private readonly IRabbitMqConnection _connection;
-
+    
     private readonly IJwtTokenProvider _tokenProvider;
-
+    
     private IModel _channel;
 
     public JwtConsumer(IRabbitMqConnection connection, IConfiguration configuration, IJwtTokenProvider tokenProvider)
@@ -23,9 +36,12 @@ public class JwtConsumer : IRabbitMqConsumer
         _configuration = configuration;
         _tokenProvider = tokenProvider;
     }
-
+    
     public void Start()
     {
+        StartedAt = DateTime.Now;
+        IsRunning = true;
+        
         _channel = _connection.Connection.CreateModel();
 
         _channel.QueueDeclare(_configuration.GetRabbitMqJwtTokenQueueName(), true, false);
@@ -37,16 +53,6 @@ public class JwtConsumer : IRabbitMqConsumer
         _channel.BasicConsume(_configuration.GetRabbitMqJwtTokenQueueName(), true, consumer);
     }
 
-    public void Stop()
-    {
-        _channel.Close();
-    }
-
-    public void Dispose()
-    {
-        _channel.Dispose();
-    }
-
     private async Task HadnleMessage(object sender, BasicDeliverEventArgs args)
     {
         var message = args.Body.ToArray();
@@ -54,8 +60,19 @@ public class JwtConsumer : IRabbitMqConsumer
         var jwt = Encoding.UTF8.GetString(message);
         jwt = RemoveQuoteFromString(jwt);
 
-        Console.WriteLine(jwt);
         _tokenProvider.Token = jwt;
+    }
+    
+    
+    public void Stop()
+    {
+        IsRunning = false;  
+        _channel.Close();
+    }
+
+    public void Dispose()
+    {
+        _channel.Dispose();
     }
 
     private static string RemoveQuoteFromString(string s)

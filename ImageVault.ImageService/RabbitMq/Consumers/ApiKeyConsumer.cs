@@ -7,6 +7,7 @@ using ImageVault.ImageService.Data.Models;
 using ImageVault.ImageService.Extension;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using ApiKey = ImageVault.ImageService.Data.Dtos.ApiKey.ApiKey;
 
 namespace ImageVault.ImageService.RabbitMq.Consumers;
 
@@ -71,7 +72,7 @@ public class ApiKeyConsumer : IRabbitMqConsumer
                 return; 
             }
             
-            var apiKey = await JsonSerializer.DeserializeAsync<ApiKeyDto>(new MemoryStream(args.Body.ToArray()));
+            var apiKey = await JsonSerializer.DeserializeAsync<ApiKey>(new MemoryStream(args.Body.ToArray()));
 
             var result = apiKey?.OperationType switch
             {

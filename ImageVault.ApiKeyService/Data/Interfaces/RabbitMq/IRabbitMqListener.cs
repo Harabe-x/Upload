@@ -17,7 +17,7 @@ public interface IRabbitMqListener : IDisposable
     /// Stops the RabbitMQ listener.
     /// </summary>
     /// <remarks>
-    /// This method stops the listening process, disconnecting from the RabbitMQ broker and halting message reception.
+    /// This method stops the listening process, disconnecting from the RabbitMQ broker and halting Message reception.
     /// </remarks>
     void Stop();
 }

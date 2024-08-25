@@ -3,6 +3,9 @@ using ImageVault.UploadService.Data.Interfaces.RabbitMq;
 
 namespace ImageVault.UploadService.RabbitMq;
 
+/// <summary>
+/// <inheritdoc cref="IRabbitMqListener"/>
+/// </summary>
 public class RabbitMqListener : IRabbitMqListener
 {
     private readonly IRabbitMqConsumerList _rabbitMqConsumerList;

@@ -11,7 +11,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ImageVault.UploadService.Controllers;
 
-[Route("/api/upload")]
+
+/// <summary>
+///  Controller responsible for uploading images to the server 
+/// </summary>
+[Route("/api/v1/upload")]
 [Controller]
 [AllowAnonymous]
 public class UploadController : ControllerBase
@@ -26,8 +30,8 @@ public class UploadController : ControllerBase
         _logger = logger;
     }
     
-    [HttpPost("Upload")]
-    public async Task<IActionResult> TestController( ImageUploadData imageUploadData)
+    [HttpPost]
+    public async Task<IActionResult> UploadImage(ImageUploadData imageUploadData)
     {
         try
         {

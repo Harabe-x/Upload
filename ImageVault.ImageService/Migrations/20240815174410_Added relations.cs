@@ -25,7 +25,7 @@ namespace ImageVault.ImageService.Migrations
             migrationBuilder.RenameColumn(
                 name: "UserId",
                 table: "ImageCollections",
-                newName: "ApiKey");
+                newName: "Key");
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_ImageCollections",
@@ -56,7 +56,7 @@ namespace ImageVault.ImageService.Migrations
                 newName: "ImageCollection");
 
             migrationBuilder.RenameColumn(
-                name: "ApiKey",
+                name: "Key",
                 table: "ImageCollection",
                 newName: "UserId");
 

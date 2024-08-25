@@ -27,7 +27,7 @@ public class RequestLoggingMiddleware
     }
 
     /// <summary>
-    /// Sends message via AMQP to Metrics Service
+    /// Sends Message via AMQP to Metrics Service
     /// </summary>
     /// <param name="context">Request data</param>
     /// <param name="configuration">Object that allows read configuration</param>

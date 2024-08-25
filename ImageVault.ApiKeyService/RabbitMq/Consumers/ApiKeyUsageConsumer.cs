@@ -94,7 +94,7 @@ public class ApiKeyUsageConsumer : IRabbitMqConsumer
 
             if (!result.IsSuccess)
             {
-                _logger.LogCritical(result.Error.message);
+                _logger.LogCritical(result.Error.Message);
                 _channel.BasicNack(args.DeliveryTag, false, true);
                 return;
             }

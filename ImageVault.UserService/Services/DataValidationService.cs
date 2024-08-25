@@ -3,6 +3,10 @@ using ImageVault.UserService.Data.Interfaces.Services;
 
 namespace ImageVault.UserService.Services;
 
+
+/// <summary>
+///  <inheritdoc cref="IDataValidationService"/> 
+/// </summary>
 public class DataValidationService : IDataValidationService
 {
     private readonly ConcurrentDictionary<string, object> _validationRules;

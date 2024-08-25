@@ -8,36 +8,36 @@ namespace ImageVault.UserService.Data.Interfaces;
 public interface IUserRepository
 {
     /// <summary>
-    /// Adds a new user to the repository.
+    /// Adds a new user to the database.
     /// </summary>
     /// <param name="userData">The data of the user to be added.</param>
     /// <param name="id">The unique identifier for the user.</param>
     /// <returns>
-    /// A task that represents the asynchronous operation. The task result contains an <see cref="OperationResultDto{UserData}"/>
+    /// A task that represents the asynchronous operation. The task result contains an <see cref="OperationResult{T}"/>
     /// </returns>
-    Task<OperationResultDto<UserData>> AddUser(UserData userData, string id);
+    Task<OperationResult<UserData>> AddUser(UserData userData, string id);
 
     /// <summary>
-    /// Retrieves a user from the repository by their email address.
+    /// Retrieves a user from the database by their email address.
     /// </summary>
     /// <param name="email">The email address of the user to be retrieved.</param>
     /// <returns>
-    /// A task that represents the asynchronous operation. The task result contains an <see cref="OperationResultDto{UserData}"/>
+    /// A task that represents the asynchronous operation. The task result contains an <see cref="OperationResult{T}"/>
     /// </returns>
-    Task<OperationResultDto<UserData>> GetUser(string email);
+    Task<OperationResult<UserData>> GetUser(string email);
 
     /// <summary>
-    /// Updates the data of an existing user in the repository.
+    /// Updates the data of an existing user in the database.
     /// </summary>
     /// <param name="newUserData">The new data for the user.</param>
     /// <param name="id">The unique identifier of the user to be updated.</param>
     /// <returns>
-    /// A task that represents the asynchronous operation. The task result contains an <see cref="OperationResultDto{UserData}"/>
+    /// A task that represents the asynchronous operation. The task result contains an <see cref="OperationResult{T}"/>
     /// </returns>
-    Task<OperationResultDto<UserData>> UpdateUser(UpdateUser newUserData, string id);
+    Task<OperationResult<UserData>> UpdateUser(UpdateUser newUserData, string id);
 
     /// <summary>
-    /// Deletes a user from the repository by their email address.
+    /// Deletes a user from the database by their email address.
     /// </summary>
     /// <param name="email">The email address of the user to be deleted.</param>
     /// <returns>
