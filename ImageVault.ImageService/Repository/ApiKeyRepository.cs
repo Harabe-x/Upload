@@ -10,6 +10,9 @@ using ApiKey = ImageVault.ImageService.Data.Dtos.ApiKey.ApiKey;
 
 namespace ImageVault.ImageService.Repository;
 
+/// <summary>
+/// <inheritdoc cref="IApiKeyRepository"/>
+/// </summary>
 public class ApiKeyRepository : IApiKeyRepository
 {
     private readonly ApplicationDbContext _dbContext;

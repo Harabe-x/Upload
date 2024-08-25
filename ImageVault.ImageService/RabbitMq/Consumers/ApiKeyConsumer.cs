@@ -11,6 +11,9 @@ using ApiKey = ImageVault.ImageService.Data.Dtos.ApiKey.ApiKey;
 
 namespace ImageVault.ImageService.RabbitMq.Consumers;
 
+/// <summary>
+///  <inheritdoc cref="IRabbitMqConsumer"/>
+/// </summary>
 public class ApiKeyConsumer : IRabbitMqConsumer
 {
     public string Name => "ApiKeyConsumer"; 

@@ -3,6 +3,9 @@ using ImageVault.ImageService.RabbitMq.Consumers;
 
 namespace ImageVault.ImageService.RabbitMq;
 
+/// <summary>
+/// <inheritdoc cref="IRabbitMqConsumerList"/>
+/// </summary>
 public class RabbitMqConsumerList : IRabbitMqConsumerList
 {
     public IEnumerable<IRabbitMqConsumer> Consumers => _consumers; 

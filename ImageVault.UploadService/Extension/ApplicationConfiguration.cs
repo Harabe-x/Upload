@@ -66,7 +66,7 @@ public static class ApplicationConfiguration
                             Id = "Bearer"
                         }
                     },
-                    new string[] { }
+                    new string[] {  }
                 }
             });
         });

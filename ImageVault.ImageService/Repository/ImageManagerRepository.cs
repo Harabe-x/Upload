@@ -16,6 +16,9 @@ using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace ImageVault.ImageService.Repository;
 
+/// <summary>
+/// <inheritdoc cref="IImageManagerRepository" /> 
+/// </summary>
 public class ImageManagerRepository : IImageManagerRepository
 {
     private readonly ILogger<ImageManagerRepository> _logger; 

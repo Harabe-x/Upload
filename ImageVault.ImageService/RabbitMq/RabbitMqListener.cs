@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace ImageVault.ImageService.RabbitMq;
 
+/// <summary>
+/// <inheritdoc cref="IRabbitMqListener"/>
+/// </summary>
 public class RabbitMqListener : IRabbitMqListener
 {
 

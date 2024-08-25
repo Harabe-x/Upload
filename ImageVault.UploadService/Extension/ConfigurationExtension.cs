@@ -14,8 +14,7 @@ public static class ConfigurationExtension
     /// <exception cref="InvalidOperationException"></exception>
     public static string GetS3BucketName(this IConfiguration configuration)
     {
-        return configuration.GetSection("AmazonS3")["BucketName"] ??
-               throw new InvalidOperationException("BucketName is not configured in Amazon section.");
+        return configuration.GetSection("AmazonS3")["BucketName"] ?? throw new InvalidOperationException("BucketName is not configured in Amazon section.");
     }
 
     /// <summary>

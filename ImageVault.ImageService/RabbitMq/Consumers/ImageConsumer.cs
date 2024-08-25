@@ -13,6 +13,10 @@ using RabbitMQ.Client.Events;
 
 namespace ImageVault.ImageService.RabbitMq.Consumers;
 
+
+/// <summary>
+///  <inheritdoc cref="IRabbitMqConsumer"/>
+/// </summary>
 public class ImageConsumer : IRabbitMqConsumer
 {
 

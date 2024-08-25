@@ -4,7 +4,6 @@ namespace ImageVault.ImageService.Data.Dtos.ApiKey;
 
 /// <summary>
 ///  A record representing API key
-/// 
 /// </summary>
 /// <param name="Key"> API Key </param>
 /// <param name="UserId"></param>
