@@ -12,4 +12,4 @@ namespace ImageVault.ImageService.Data.Dtos.ApiKey;
 /// <remarks>
 ///   This record is only used to verify that the specified API key actually exists in the API Key service
 /// </remarks>
-public record ApiKey (string Key, string UserId,string NewKey, ApiKeyOperationType OperationType); 
+public record ApiKey (string Key, string UserId,string NewKey, ApiKeyOperationType OperationType);  

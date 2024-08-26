@@ -5,7 +5,6 @@ namespace ImageVault.ImageService.Extension;
 /// </summary>
 public static class ConfigurationExtension
 {
-        
     /// <summary>
     ///  Reads RabbitMQ username from configuration
     /// </summary>
@@ -39,7 +38,6 @@ public static class ConfigurationExtension
         return configuration.GetSection("RabbitMq")["Host"] ?? throw new NullReferenceException();
     }
 
-
     /// <summary>
     ///  Reads Image Queue name
     /// </summary>
@@ -51,7 +49,6 @@ public static class ConfigurationExtension
         return configuration.GetSection("RabbitMq").GetSection("Queues")["ImageQueue"] ?? throw new NullReferenceException();
         ;
     }
-
     
     /// <summary>
     ///  Reads API queue name
@@ -63,8 +60,6 @@ public static class ConfigurationExtension
     {
         return configuration.GetSection("RabbitMq").GetSection("Queues")["ApiQueue"] ?? throw new NullReferenceException();
     }
-
-    
    
     /// <summary>
     ///  Reads S3 Bucket name  from configuration
@@ -74,7 +69,19 @@ public static class ConfigurationExtension
     /// <exception cref="InvalidOperationException"></exception>
     public static string GetS3BucketName(this IConfiguration configuration)
     {
-        return configuration.GetSection("AmazonS3")["BucketName"] ?? throw new InvalidOperationException("BucketName is not configured in Amazon section.");
+        return configuration.GetSection("AmazonS3")["BucketName"] ?? throw new NullReferenceException("BucketName is not configured in Amazon section.");
+    }
+    
+    /// <summary>
+    ///  Reads API key exchange name 
+    /// </summary>
+    /// <param name="configuration"></param>
+    /// <returns>API key exchange name</returns>
+    /// <exception cref="NullReferenceException"></exception>
+    public static string GetApiKeyExchangeName(this IConfiguration configuration)
+    {
+        return configuration.GetSection("RabbitMq").GetSection("Exchanges")["ApiKeyExchange"] ??
+               throw new NullReferenceException();
     }
 
 

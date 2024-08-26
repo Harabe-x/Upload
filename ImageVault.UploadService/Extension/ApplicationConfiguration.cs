@@ -1,6 +1,7 @@
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.RateLimiting;
 using ImageVault.UploadService.AmazonS3;
+using ImageVault.UploadService.Data;
 using ImageVault.UploadService.Data.Interfaces.AmazonS3;
 using ImageVault.UploadService.Data.Interfaces.RabbitMq;
 using ImageVault.UploadService.Data.Interfaces.Services;
@@ -10,6 +11,7 @@ using ImageVault.UploadService.RabbitMq.Consumers;
 using ImageVault.UploadService.Repository;
 using ImageVault.UploadService.Services;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 namespace ImageVault.UploadService.Extension;
@@ -26,13 +28,20 @@ public static class ApplicationConfiguration
         builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
         builder.Services.AddSingleton<IRabbitMqListener, RabbitMqListener>();
         builder.Services.AddSingleton<IRabbitMqConsumerList, RabbitMqConsumerList>();
-        builder.Services.AddSingleton<JwtConsumer>();
         builder.Services.AddScoped<IImageUploadRepository, ImageUploadRepository>();
         builder.Services.AddScoped<IRabbitMqMessageSender, RabbitMqMessageSender>();
         builder.Services.AddScoped<IImageProcessingService, ImageProcessingService>();
+        builder.Services.AddScoped<IApiKeyRepository, ApiKeyRepository>();
+        builder.Services.AddSingleton<ApiKeyConsumer>();
     }
     
-    
+    public static void RegisterDbContext(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        {
+            options.UseSqlServer(builder.Configuration.GetConnectionString("default"));
+        }); 
+    }
     /// <summary>
     ///  Adds a swagger and configures it so that authorization using the token's JWT is possible
     /// </summary>
@@ -118,3 +127,4 @@ public static class ApplicationConfiguration
         });
     }    
 }
+

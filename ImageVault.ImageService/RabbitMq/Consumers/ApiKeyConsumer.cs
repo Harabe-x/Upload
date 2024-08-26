@@ -46,17 +46,24 @@ public class ApiKeyConsumer : IRabbitMqConsumer
     
     public void Start()
     {
+        var queue = Guid.NewGuid().ToString();
+        
         StartedAt = DateTime.Now;
         IsRunning = true;
         _channel = _connection.Connection.CreateModel();
 
-        _channel.QueueDeclare(_configuration.GetApiKeyQueueName(), true, false);
+        
+        _channel.ExchangeDeclare(_configuration.GetApiKeyExchangeName() , ExchangeType.Fanout, true);
 
+        _channel.QueueDeclare(queue, true , false);
+
+        _channel.QueueBind(queue, _configuration.GetApiKeyExchangeName(), string.Empty);
+        
         var consumer = new AsyncEventingBasicConsumer(_channel);
 
         consumer.Received += HandleMessage;
         
-        _channel.BasicConsume(_configuration.GetApiKeyQueueName(), false, consumer);
+        _channel.BasicConsume(queue, false, consumer);
     }
 
     private async Task HandleMessage(object sender, BasicDeliverEventArgs args)
@@ -113,5 +120,5 @@ public class ApiKeyConsumer : IRabbitMqConsumer
     {
         GC.SuppressFinalize(this);
     }
-
+    
 }

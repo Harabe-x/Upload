@@ -58,19 +58,7 @@ public class ApiKeyUsageConsumer : IRabbitMqConsumer
 
         _channel.BasicConsume(_configuration.GetApiKeyUsageQueue(), false, consumer);
     }
-
-    public void Stop()
-    {
-        _channel.Close();
-    }
-
-    public void Dispose()
-    {
-        if (_disposed) return;
-        _channel.Dispose();
-        _disposed = true;
-    }
-
+    
     private async Task HandleMessage(object sender, BasicDeliverEventArgs args)
     {
         var content = args.Body.ToArray();
@@ -103,6 +91,20 @@ public class ApiKeyUsageConsumer : IRabbitMqConsumer
         }
         catch (Exception e)
         {
+            _logger.LogError(e.ToString());
         }
     }
+    
+    public void Stop()
+    {
+        _channel.Close();
+    }
+
+    public void Dispose()
+    {
+        if (_disposed) return;
+        _channel.Dispose();
+        _disposed = true;
+    }
+
 }

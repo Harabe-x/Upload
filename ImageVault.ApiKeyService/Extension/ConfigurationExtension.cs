@@ -51,10 +51,10 @@ public static class ConfigurationExtension
     
     
     /// <summary>
-    ///  Reads RabbitMQ ApiKey Service usage queue name  
+    ///  Reads RabbitMQ Key Service usage queue name  
     /// </summary>
     /// <param name="configuration"></param>
-    /// <returns> RabbitMq ApiKey Service usage queue name  </returns>
+    /// <returns> RabbitMq Key Service usage queue name  </returns>
     /// <exception cref="NullReferenceException">Occurs when IConfiguration was unable to read the specified value</exception>
 
     public static string? GetApiKeyUsageQueue(this IConfiguration configuration)
@@ -73,6 +73,17 @@ public static class ConfigurationExtension
         return configuration.GetSection("RabbitMq").GetSection("Queues")["ApiQueue"] ?? throw new NullReferenceException();
     }
 
-
+    
+    /// <summary>
+    ///  Reads API key exchange name 
+    /// </summary>
+    /// <param name="configuration"></param>
+    /// <returns>API key exchange name</returns>
+    /// <exception cref="NullReferenceException"></exception>
+    public static string GetApiKeyExchangeName(this IConfiguration configuration)
+    {
+        return configuration.GetSection("RabbitMq").GetSection("Exchanges")["ApiKeyExchange"] ?? throw new NullReferenceException(); 
+    }
+    
     
 }

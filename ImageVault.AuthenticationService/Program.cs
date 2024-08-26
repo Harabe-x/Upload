@@ -12,7 +12,7 @@ builder.RegisterDbContext();
 builder.AddJwtAuthentication();
 builder.AddRateLimiting();
 builder.AddX509Certificate2();
-
+builder.AddSwagger();   
 var app = builder.Build();
 
 app.UseDefaultFiles();

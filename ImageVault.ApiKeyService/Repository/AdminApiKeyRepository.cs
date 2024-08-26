@@ -34,7 +34,7 @@ public class AdminApiKeyRepository : IAdminApiKeyRepository
 
         if (apiKey == null)
             return new OperationResult<bool>(false, false,
-                new Error($"ApiKey Not Found in{typeof(AdminApiKeyRepository)} this shouldn't have happened  "));
+                new Error($"Key Not Found in{typeof(AdminApiKeyRepository)} this shouldn't have happened  "));
 
         apiKey.StorageUsed += apiKeyUsage.usedData;
 

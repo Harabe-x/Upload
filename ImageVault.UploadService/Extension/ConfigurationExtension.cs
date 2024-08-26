@@ -14,7 +14,8 @@ public static class ConfigurationExtension
     /// <exception cref="InvalidOperationException"></exception>
     public static string GetS3BucketName(this IConfiguration configuration)
     {
-        return configuration.GetSection("AmazonS3")["BucketName"] ?? throw new InvalidOperationException("BucketName is not configured in Amazon section.");
+        return configuration.GetSection("AmazonS3")["BucketName"] ??
+               throw new InvalidOperationException("BucketName is not configured in Amazon section.");
     }
 
     /// <summary>
@@ -25,7 +26,7 @@ public static class ConfigurationExtension
     /// <exception cref="NullReferenceException"></exception>
     public static string GetRabbitMqUsername(this IConfiguration configuration)
     {
-        return configuration.GetSection("RabbitMq")["Username"]  ?? throw new NullReferenceException();
+        return configuration.GetSection("RabbitMq")["Username"] ?? throw new NullReferenceException();
     }
 
     /// <summary>
@@ -51,14 +52,15 @@ public static class ConfigurationExtension
     }
 
     /// <summary>
-    ///  Reads RabbitMQ Upload Service JWT queue name from configuration
+    ///  Reads RabbitMQ Repository Service JWT queue name from configuration
     /// </summary>
     /// <param name="configuration"></param>
     /// <returns></returns>
     /// <exception cref="NullReferenceException"></exception>
     public static string GetRabbitMqJwtTokenQueueName(this IConfiguration configuration)
     {
-        return configuration.GetSection("RabbitMq").GetSection("Queues")["UploadServiceJwtQueue"] ?? throw new NullReferenceException();
+        return configuration.GetSection("RabbitMq").GetSection("Queues")["UploadServiceJwtQueue"] ??
+               throw new NullReferenceException();
     }
 
     /// <summary>
@@ -68,7 +70,8 @@ public static class ConfigurationExtension
     /// <returns>API key service endpoint url</returns>
     public static string GetApiKeyServiceEndpoint(this IConfiguration configuration)
     {
-        return configuration.GetSection("Endpoints").GetSection("ApiKeyService")["GetApiKeyEndpoint"] ?? throw new NullReferenceException();
+        return configuration.GetSection("Endpoints").GetSection("ApiKeyService")["GetApiKeyEndpoint"] ??
+               throw new NullReferenceException();
     }
 
     /// <summary>
@@ -78,7 +81,8 @@ public static class ConfigurationExtension
     /// <returns> API key usage queue name</returns>
     public static string GetApiKeyUsageQueue(this IConfiguration configuration)
     {
-        return configuration.GetSection("RabbitMq").GetSection("Queues")["ApiKeyUsageQueue"] ?? throw new NullReferenceException();
+        return configuration.GetSection("RabbitMq").GetSection("Queues")["ApiKeyUsageQueue"] ??
+               throw new NullReferenceException();
     }
 
     /// <summary>
@@ -88,7 +92,8 @@ public static class ConfigurationExtension
     /// <returns>Allowed file extensions</returns>
     public static IEnumerable<string> GetAllowedFileExtensions(this IConfiguration configuration)
     {
-        return configuration.GetSection("AppConfig").GetSection("AllowedExtensions").Get<string[]>() ?? throw new NullReferenceException();
+        return configuration.GetSection("AppConfig").GetSection("AllowedExtensions").Get<string[]>() ??
+               throw new NullReferenceException();
     }
 
     /// <summary>
@@ -98,7 +103,32 @@ public static class ConfigurationExtension
     /// <returns></returns>
     public static string GetImageQueueName(this IConfiguration configuration)
     {
-        return configuration.GetSection("RabbitMq").GetSection("Queues")["ImageQueue"] ?? throw new NullReferenceException();
+        return configuration.GetSection("RabbitMq").GetSection("Queues")["ImageQueue"] ??
+               throw new NullReferenceException();
     }
 
-}
+    /// <summary>
+    ///  Reads API key exchange name 
+    /// </summary>
+    /// <param name="configuration"></param>
+    /// <returns>API key exchange name</returns>
+    /// <exception cref="NullReferenceException"></exception>
+    public static string GetApiKeyExchangeName(this IConfiguration configuration)
+    {
+        return configuration.GetSection("RabbitMq").GetSection("Exchanges")["ApiKeyExchange"] ??
+               throw new NullReferenceException();
+    }
+
+    /// <summary>
+    ///  Reads RabbitMQ Image Service API key queue name  
+    /// </summary>
+    /// <param name="configuration"></param>
+    /// <returns> RabbitMq Image Service API key queue name  </returns>
+    /// <exception cref="NullReferenceException">Occurs when IConfiguration was unable to read the specified value</exception>
+    public static string? GetApiKeyQueueName(this IConfiguration configuration)
+    {
+        return configuration.GetSection("RabbitMq").GetSection("Queues")["ApiQueue"] ??
+               throw new NullReferenceException();
+    }
+     
+} 

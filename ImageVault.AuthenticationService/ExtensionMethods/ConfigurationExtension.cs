@@ -63,7 +63,7 @@ public static class ConfigurationExtension
     }
 
     /// <summary>
-    ///  Reads RabbitMQ Upload Service JWT queue name from configuration
+    ///  Reads RabbitMQ Repository Service JWT queue name from configuration
     /// </summary>
     /// <param name="configuration"></param>
     /// <returns></returns>

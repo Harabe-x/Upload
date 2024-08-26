@@ -1,3 +1,4 @@
+using System.IO.Enumeration;
 using System.Text;
 using System.Text.Json;
 using Amazon.S3;
@@ -11,6 +12,7 @@ using ImageVault.UploadService.Data.Interfaces.Services;
 using ImageVault.UploadService.Data.Interfaces.Upload;
 using ImageVault.UploadService.Data.Models;
 using ImageVault.UploadService.Extension;
+using ApiKey = ImageVault.UploadService.Data.Models.ApiKey;
 
 namespace ImageVault.UploadService.Repository;
 
@@ -22,11 +24,9 @@ public class ImageUploadRepository : IImageUploadRepository
 {
     private readonly IConfiguration _configuration;
 
-    private readonly HttpClient _httpClient;
-
+    private readonly IApiKeyRepository _apiKeyRepository; 
+    
     private readonly IImageProcessingService _imageProcessingService;
-
-    private readonly IJwtTokenProvider _jwtTokenProvider;
     
     private readonly ILogger<ImageUploadRepository> _logger;
     
@@ -35,16 +35,15 @@ public class ImageUploadRepository : IImageUploadRepository
     private readonly IAmazonS3Connection _s3Connection;
 
     public ImageUploadRepository(IAmazonS3Connection s3Connection, IConfiguration configuration,
-        ILogger<ImageUploadRepository> logger, IJwtTokenProvider jwtTokenProvider,
-        IRabbitMqMessageSender rabbitmqMessageSender, IImageProcessingService imageProcessingService)
-    {
+        ILogger<ImageUploadRepository> logger,
+        IRabbitMqMessageSender rabbitmqMessageSender, IImageProcessingService imageProcessingService,IApiKeyRepository apiKeyRepository)
+    { 
         _configuration = configuration;
         _s3Connection = s3Connection;
         _logger = logger;
-        _jwtTokenProvider = jwtTokenProvider;
         _rabbitmqMessageSender = rabbitmqMessageSender;
         _imageProcessingService = imageProcessingService;
-        _httpClient = new HttpClient();
+        _apiKeyRepository = apiKeyRepository; 
     }
     
     public async Task<OperationResultDto<ImageUploadResult>> UploadImage(ImageUploadData imageToUploadData)
@@ -57,17 +56,13 @@ public class ImageUploadRepository : IImageUploadRepository
             var apiKey = await GetApiKey(imageToUploadData.ApiKey);
 
             if (apiKey == null)
-                return new OperationResultDto<ImageUploadResult>(null, false, new Error("ApiKey not found."));
-
-            if (apiKey.storageUsed + (ulong)imageToUploadData.Image.Length > apiKey.storageCapacity)
-                return new OperationResultDto<ImageUploadResult>(null, false,
-                    new Error("The API key data limit has been reached"));
+                return new OperationResultDto<ImageUploadResult>(null, false, new Error("ApiKey does not exists."));
 
             if (!_imageProcessingService.IsFileFormatValid(imageToUploadData.Image))
                 return new OperationResultDto<ImageUploadResult>(null, false,
                     new Error("Currently we don't accept file "));
 
-            var request = await CreatePutObjectRequest(imageToUploadData, apiKey.userId);
+            var request = await CreatePutObjectRequest(imageToUploadData, apiKey.UserId);
 
             await _s3Connection.S3Client.PutObjectAsync(request);
 
@@ -76,7 +71,7 @@ public class ImageUploadRepository : IImageUploadRepository
 
             var fileFormat = imageToUploadData.UseCompression ? ".webp" : _imageProcessingService.GetFileFormat(imageToUploadData.Image);
             
-            SendRabbitMqMessages(apiKey.userId, imageSize, apiKey.key,request.Key,imageToUploadData.CollectionName,imageToUploadData.Title,imageToUploadData.Description,fileFormat);
+            SendRabbitMqMessages(apiKey.UserId, imageSize, apiKey.Key,request.Key,imageToUploadData.CollectionName,imageToUploadData.Title,imageToUploadData.Description,fileFormat);
 
             return new OperationResultDto<ImageUploadResult>(
                 CreateImageUploadResult(request, imageToUploadData, imageSize), true, null);
@@ -97,46 +92,11 @@ public class ImageUploadRepository : IImageUploadRepository
 
     private async Task<ApiKey?> GetApiKey(string key)
     {
-        var request = CreateHttpRequest(key);
-
-        var response = await _httpClient.SendAsync(request);
-
-        if (!response.IsSuccessStatusCode) return null;
-
-        var content = await response.Content.ReadAsStringAsync();
-
-        try
-        {
-            var apiKeyDto = JsonSerializer.Deserialize<ApiKey>(content);
-
-            return apiKeyDto;
-        }
-        catch (ArgumentNullException e)
-        {
-            _logger.LogError(e.Message);
-            return null;
-        }
-        catch (JsonException e)
-        {
-            _logger.LogError("Cannot parse empty json.");
-            return null;
-        }
+        var result = await _apiKeyRepository.GetKey(key);
+        
+        return result.Value;
     }
-
-    private HttpRequestMessage CreateHttpRequest(string key)
-    {
-        var request = new HttpRequestMessage
-        {
-            Method = HttpMethod.Post,
-            RequestUri = new Uri(_configuration.GetApiKeyServiceEndpoint()),
-            Content = JsonContent.Create(key)
-        };
-
-        request.Headers.Add("Authorization", "Bearer " + _jwtTokenProvider.Token);
-
-        return request;
-    }
-
+    
     private void SendRabbitMqMessages(string userId, ulong imageSize, string apiKey,string imageKey, string imageCollection, string imageTitle,string imageDescription,string fileFormat )
     {
         var apiKeyUsage = new ApiKeyUsageDto(userId, imageSize, apiKey);
@@ -192,6 +152,5 @@ public class ImageUploadRepository : IImageUploadRepository
         error = new Error(stringBuilder.ToString());
 
         return stringBuilder.ToString() == string.Empty; 
-        
     }
 }

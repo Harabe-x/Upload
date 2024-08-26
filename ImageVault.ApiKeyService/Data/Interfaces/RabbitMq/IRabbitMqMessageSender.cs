@@ -12,5 +12,6 @@ public interface IRabbitMqMessageSender
     /// <typeparam name="T">The type of the Message to be sent.</typeparam>
     /// <param name="message">The Message object to be sent to the queue.</param>
     /// <param name="queue">The name of the RabbitMQ queue to which the Message will be sent.</param>
-    void SendMessage<T>(T message, string queue);
+    /// <param name="exchange">The RabbitMq exchange name</param>
+    void SendMessage<T>(T message, string queue,string exchange = "" );
 }

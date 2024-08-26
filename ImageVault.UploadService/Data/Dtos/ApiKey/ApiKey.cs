@@ -1,25 +1,19 @@
 // ReSharper disable InconsistentNaming
+
+using ImageVault.UploadService.Data.Enums;
+
 namespace ImageVault.UploadService.Data.Dtos.ApiKey;
 
 
 
 /// <summary>
-/// a record representing the API key
+///  A record representing API key
 /// </summary>
-/// <param name="id"></param>
-/// <param name="userId"></param>
-/// <param name="keyName"></param>
-/// <param name="key"></param>
-/// <param name="storageCapacity"></param>
-/// <param name="storageUsed"></param>
+/// <param name="Key"> API Key </param>
+/// <param name="UserId"></param>
+/// <param name="NewKey">New API key</param>
+/// <param name="OperationType">Operation to perform.</param>
 /// <remarks>
-/// This record is used to verify the API Key
+///   This record is only used to verify that the specified API key actually exists in the API Key service
 /// </remarks>
-public record ApiKey(
-    string id,
-    string userId,
-    string keyName,
-    string key,
-    ulong storageCapacity,
-    ulong storageUsed
-);
+public record ApiKey (string Key, string UserId,string NewKey, ApiKeyOperationType OperationType); 

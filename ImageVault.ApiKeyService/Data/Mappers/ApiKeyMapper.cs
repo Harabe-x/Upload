@@ -21,7 +21,6 @@ public static class ApiKeyMapper
         {
             UserId = userId,
             KeyName = apiKey.KeyName,
-            StorageCapacity = apiKey.KeyCapacity
         };
     }
 
@@ -32,6 +31,6 @@ public static class ApiKeyMapper
     /// <returns>An <see cref="ApiKey"/> DTO with properties copied from the <see cref="Models.ApiKey"/> object.</returns>
     public static ApiKey MapToApiKeyDto(this Models.ApiKey apiKey)
     {
-        return new ApiKey(apiKey.UserId, apiKey.KeyName, apiKey.Key, apiKey.StorageCapacity, apiKey.StorageUsed);
+        return new ApiKey(apiKey.UserId, apiKey.KeyName, apiKey.Key, apiKey.StorageUsed);
     }
 }

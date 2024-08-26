@@ -36,8 +36,7 @@ public class ApiKeyRepository : IApiKeyRepository
 
     public async Task<OperationResult<ApiKey>> AddKey(AddApiKey apiKeyData, string userId)
     {
-        if (!_validationService.ValidateData("ValidateKeyName", apiKeyData.KeyName) ||
-            !_validationService.ValidateData("ValidateKeyCapacity", apiKeyData.KeyCapacity))
+        if (!_validationService.ValidateData("ValidateKeyName", apiKeyData.KeyName))
             return new OperationResult<ApiKey>(null, false, new Error("Invalid key data"));
 
         var apiKey = apiKeyData.MapToApiKey(userId);
@@ -78,8 +77,7 @@ public class ApiKeyRepository : IApiKeyRepository
 
     public async Task<OperationResult<ApiKey>> EditKey(EditApiKey newApiKeyData, string userId, string key)
     {
-        if (!_validationService.ValidateData("ValidateKeyName", newApiKeyData.KeyName) ||
-            !_validationService.ValidateData("ValidateKeyCapacity", newApiKeyData.KeyCapacity))
+        if (!_validationService.ValidateData("ValidateKeyName", newApiKeyData.KeyName))
             return new OperationResult<ApiKey>(null, false, new Error("Invalid key data"));
 
         var apiKey = await GetApiKey(key, userId);
@@ -88,7 +86,6 @@ public class ApiKeyRepository : IApiKeyRepository
             return new OperationResult<ApiKey>(null, false, new Error("Api key doesn't exists"));
 
         apiKey.KeyName = newApiKeyData.KeyName;
-        apiKey.StorageCapacity = newApiKeyData.KeyCapacity;
 
         _dbContext.ApiKeys.Update(apiKey);
 
@@ -127,6 +124,8 @@ public class ApiKeyRepository : IApiKeyRepository
     {
         var apiKeyTransferData = new ApiKeyTransferData(key, userId, newKey, operationType);
         
-        _messageSender.SendMessage(apiKeyTransferData, _configuration.GetApiKeyQueueName());
+        Console.WriteLine(apiKeyTransferData.ToString());
+        
+        _messageSender.SendMessage(apiKeyTransferData, _configuration.GetApiKeyQueueName(),_configuration.GetApiKeyExchangeName());
     }
 }

@@ -16,16 +16,24 @@ public class RabbitMqMessageSender : IRabbitMqMessageSender
         _connection = connection;
     }
 
-    public void SendMessage<T>(T message, string queue)
+    public void SendMessage<T>(T message, string queue,string exchange = "")
     {
         var channel = _connection.Connection.CreateModel();
 
         channel.QueueDeclare(queue, true, false);
 
+        if (exchange != string.Empty)
+        {
+            channel.ExchangeDeclare(exchange, ExchangeType.Fanout , true);
+            channel.QueueBind(queue, exchange,"");
+        }
+        
         var jsonObject = JsonSerializer.Serialize(message);
 
         var body = Encoding.UTF8.GetBytes(jsonObject);
-
-        channel.BasicPublish("", queue, true, body: body);
+        Console.WriteLine($"{queue} {exchange}");
+        channel.BasicPublish(exchange, queue, true, body: body);
     }
+
+    
 }

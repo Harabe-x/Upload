@@ -14,10 +14,9 @@ public class RabbitMqConsumerList : IRabbitMqConsumerList
 
     public IEnumerable<IRabbitMqConsumer> Consumers => _consumers; 
     
-    public RabbitMqConsumerList(JwtConsumer jwtConsumer)
+    public RabbitMqConsumerList(ApiKeyConsumer apiKeyConsumer)
     {
-        _consumers = new List<IRabbitMqConsumer>();
-        _consumers.Add(jwtConsumer);
+        _consumers = [ apiKeyConsumer ];
     }
 
     public IEnumerable<IRabbitMqConsumer> GetConsumers()
