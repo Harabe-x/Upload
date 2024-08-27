@@ -49,8 +49,8 @@ public class RabbitMqConnection : IRabbitMqConnection, IDisposable
             var factory = new ConnectionFactory
             {
                 HostName = _configuration.GetRabbitMqHostName(),
-                UserName = _configuration.GetRabbitMqUsername(),
-                Password = _configuration.GetRabbitMqPassword(),
+                UserName =  EnvironmentVariables.GetRabbitMqUsername(),
+                Password =  EnvironmentVariables.GetRabbitMqPassword(), 
                 DispatchConsumersAsync = true
             };
 

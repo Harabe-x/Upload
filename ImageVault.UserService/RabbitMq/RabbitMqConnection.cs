@@ -1,3 +1,4 @@
+using ImageVault.UserService.Configuration;
 using ImageVault.UserService.Data.Interfaces;
 using ImageVault.UserService.Extension;
 using RabbitMQ.Client;
@@ -34,8 +35,8 @@ public class RabbitMqConnection : IRabbitMqConnection, IDisposable
         var factory = new ConnectionFactory
         {
             HostName = _configuration.GetRabbitMqHostName(),
-            UserName = _configuration.GetRabbitMqUsername(),
-            Password = _configuration.GetRabbitMqPassword(),
+            UserName = EnvironmentVariables.GetRabbitMqUsername(),
+            Password = EnvironmentVariables.GetRabbitMqPassword(),
             DispatchConsumersAsync = true,
         };
         

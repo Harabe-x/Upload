@@ -15,27 +15,6 @@ public static class ConfigurationExtension
         return configuration.GetSection("RabbitMq")["Host"];
     }
     
-    /// <summary>
-    ///  Reads RabbitMQ Username from configuration
-    /// </summary>
-    /// <param name="configuration"></param>
-    /// <returns> RabbitMq Username</returns>
-    /// <exception cref="NullReferenceException">Occurs when IConfiguration was unable to read the specified value</exception>
-    public static string? GetRabbitMqUsername(this IConfiguration configuration)
-    {
-        return configuration.GetSection("RabbitMq")["Username"] ?? throw new NullReferenceException();
-    }
-    
-    /// <summary>
-    ///  Reads RabbitMQ Password from configuration
-    /// </summary>
-    /// <param name="configuration"></param>
-    /// <returns> RabbitMq Password</returns>
-    /// <exception cref="NullReferenceException">Occurs when IConfiguration was unable to read the specified value</exception>
-    public static string? GetRabbitMqPassword(this IConfiguration configuration)
-    {
-        return configuration.GetSection("RabbitMq")["Password"] ?? throw new NullReferenceException();
-    }
 
     
     /// <summary>

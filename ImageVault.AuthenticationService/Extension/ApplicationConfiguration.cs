@@ -106,7 +106,7 @@ public  static class ApplicationConfiguration
                 ValidAudience = builder.Configuration["JWT:Audience"],
                 IssuerSigningKey =
                     new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])) 
+                        Encoding.UTF8.GetBytes(EnvironmentVariables.GetJwtSigningKey())) 
             };
         });
     }
@@ -119,7 +119,7 @@ public  static class ApplicationConfiguration
     {
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+            options.UseSqlServer(EnvironmentVariables.GetDatabaseConnectionString());
         });
 
 

@@ -35,7 +35,7 @@ public static class ApplicationConfiguration
     {
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseSqlServer(builder.Configuration.GetConnectionString("default"));
+            options.UseSqlServer(EnvironmentVariables.GetDatabaseConnectionString());
         });
 
     }
@@ -97,7 +97,7 @@ public static class ApplicationConfiguration
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = builder.Configuration["JWT:Issuer"],
                 ValidAudience = builder.Configuration["JWT:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"]))
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(EnvironmentVariables.GetJwtSigningKey()))
             };
         });
    

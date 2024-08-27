@@ -19,7 +19,6 @@ public class ImageController : ControllerBase
         _logger = logger; 
     }
     
-    
     [HttpPost("get")]
     public async Task<IActionResult>GetImage([FromBody] GetImageDto imageData) 
     {
@@ -94,8 +93,8 @@ public class ImageController : ControllerBase
     [HttpDelete("delete")]
     public async Task<IActionResult>DeleteImage([FromBody] DeleteImageDto imageData)
     {
-         try
-        {
+         try 
+         {
             var result = await _imageManager.DeleteImage(imageData.ApiKey,imageData.ImageKey,imageData.ImageKey);
 
             return result.IsSuccess
@@ -108,6 +107,5 @@ public class ImageController : ControllerBase
             return StatusCode(500, "Server error, we will try to fix it as soon as possible\n ");
         }
     }
-
     
 }

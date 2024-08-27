@@ -1,3 +1,5 @@
+using Azure.Identity;
+using ImageVault.UploadService.Configuration;
 using ImageVault.UploadService.Data.Interfaces.RabbitMq;
 using ImageVault.UploadService.Extension;
 using RabbitMQ.Client;
@@ -34,8 +36,8 @@ public class RabbitMqConnection : IRabbitMqConnection, IDisposable
         var factory = new ConnectionFactory
         {
             HostName = _configuration.GetRabbitMqHostName(),
-            UserName = _configuration.GetRabbitMqUsername(),
-            Password = _configuration.GetRabbitMqPassword(),
+            UserName = EnvironmentVariables.GetRabbitMqUsername(),
+            Password = EnvironmentVariables.GetRabbitMqPassword(),
             DispatchConsumersAsync = true
         };
 

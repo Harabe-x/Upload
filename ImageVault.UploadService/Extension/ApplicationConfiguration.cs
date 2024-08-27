@@ -1,6 +1,7 @@
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.RateLimiting;
 using ImageVault.UploadService.AmazonS3;
+using ImageVault.UploadService.Configuration;
 using ImageVault.UploadService.Data;
 using ImageVault.UploadService.Data.Interfaces.AmazonS3;
 using ImageVault.UploadService.Data.Interfaces.RabbitMq;
@@ -39,7 +40,7 @@ public static class ApplicationConfiguration
     {
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseSqlServer(builder.Configuration.GetConnectionString("default"));
+            options.UseSqlServer(EnvironmentVariables.GetDatabaseConnectionString());
         }); 
     }
     /// <summary>
@@ -101,15 +102,6 @@ public static class ApplicationConfiguration
             options.QueueLimit = 0;
         }));
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddCors(options =>
-        {
-            options.AddPolicy("AllowSpecificOrigin", builder =>
-            {
-                builder.WithOrigins("https://localhost:5174")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();
-            });
-        });
     }
 
     /// <summary>

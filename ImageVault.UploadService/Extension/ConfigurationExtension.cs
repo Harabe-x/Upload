@@ -18,27 +18,6 @@ public static class ConfigurationExtension
                throw new InvalidOperationException("BucketName is not configured in Amazon section.");
     }
 
-    /// <summary>
-    ///  Reads RabbitMQ username from configuration
-    /// </summary>
-    /// <param name="configuration"></param>
-    /// <returns> RabbitMq Username</returns>
-    /// <exception cref="NullReferenceException"></exception>
-    public static string GetRabbitMqUsername(this IConfiguration configuration)
-    {
-        return configuration.GetSection("RabbitMq")["Username"] ?? throw new NullReferenceException();
-    }
-
-    /// <summary>
-    ///  Reads RabbitMQ Password from configuration
-    /// </summary>
-    /// <param name="configuration"></param>
-    /// <returns> RabbitMq Password</returns>
-    /// <exception cref="NullReferenceException">Occurs when IConfiguration was unable to read the specified value</exception>
-    public static string GetRabbitMqPassword(this IConfiguration configuration)
-    {
-        return configuration.GetSection("RabbitMq")["Password"] ?? throw new NullReferenceException();
-    }
 
     /// <summary>
     ///  Reads RabbitMQ Host from configuration 
@@ -60,17 +39,6 @@ public static class ConfigurationExtension
     public static string GetRabbitMqJwtTokenQueueName(this IConfiguration configuration)
     {
         return configuration.GetSection("RabbitMq").GetSection("Queues")["UploadServiceJwtQueue"] ??
-               throw new NullReferenceException();
-    }
-
-    /// <summary>
-    /// Gets endpoint url of API key service
-    /// </summary>
-    /// <param name="configuration"></param>
-    /// <returns>API key service endpoint url</returns>
-    public static string GetApiKeyServiceEndpoint(this IConfiguration configuration)
-    {
-        return configuration.GetSection("Endpoints").GetSection("ApiKeyService")["GetApiKeyEndpoint"] ??
                throw new NullReferenceException();
     }
 

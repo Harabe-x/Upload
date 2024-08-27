@@ -5,6 +5,11 @@ WORKDIR /app
 
 ENV ASPNETCORE_Kestrel__Certificates__Default__Password=TestPassword
 ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+ENV RABBITMQ_USERNAME = YOUR_USERNAME
+ENV RABBITMQ_PASSWORD = YOUR_PASSWORD
+ENV DB_CONNECTION_STRING = YOUR_CONNECTION_STRING
+ENV JWT_SIGNING_KEY = YOUR_SIGNING_KEY
+
 
 RUN mkdir /https
 COPY ../certs/aspnetapp.pfx /https/
