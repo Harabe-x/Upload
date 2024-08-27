@@ -9,4 +9,7 @@ packages/
 node_modules/
 # File types 
 *.pfx
+# SUPER SECRET FOLDER 
+
+super_secret/
 
