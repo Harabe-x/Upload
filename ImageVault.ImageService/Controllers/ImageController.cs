@@ -20,7 +20,7 @@ public class ImageController : ControllerBase
     }
     
     
-    [HttpPost("/GetImage")]
+    [HttpPost("get")]
     public async Task<IActionResult>GetImage([FromBody] GetImageDto imageData) 
     {
         try
@@ -37,8 +37,25 @@ public class ImageController : ControllerBase
             return StatusCode(500, "Server error, we will try to fix it as soon as possible\n ");
         }
     }
+
+    [HttpPost("get/paged")]
+    public async Task<IActionResult> GetPagedImages([FromBody] GetImagesDto imageData, [FromQuery] int pageNumber = 1, [FromQuery] int limit = 10 )
+    {
+        try
+        {
+            var result = await _imageManager.GetPagedImages(imageData.ApiKey, pageNumber, limit, imageData.CollectionName);
+            return result.IsSuccess
+                ? Ok(result.Value)
+                : BadRequest(result.Error);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.ToString());
+            return StatusCode(500, "Server error, we will try to fix it as soon as possible\n ");
+        }
+    }
     
-    [HttpPost("/GetImages")]
+    [HttpPost("get/all")]
     public async Task<IActionResult>GetImages([FromBody] GetImagesDto imageData)
     {
         try
@@ -56,8 +73,7 @@ public class ImageController : ControllerBase
         }
     }
     
-    
-    [HttpPatch("/EditImage")]
+    [HttpPatch("edit")]
     public async Task<IActionResult> EditImage([FromBody] EditImageDto imageData)
     {
         try
@@ -75,7 +91,7 @@ public class ImageController : ControllerBase
         }
     }
     
-    [HttpDelete("/DeleteImage")]
+    [HttpDelete("delete")]
     public async Task<IActionResult>DeleteImage([FromBody] DeleteImageDto imageData)
     {
          try

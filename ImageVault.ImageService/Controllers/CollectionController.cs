@@ -22,7 +22,7 @@ public class CollectionController : ControllerBase
 
 
 
-    [HttpPost("/ListCollections")]
+    [HttpPost("list")]
     public async Task<IActionResult> ListCollection([FromBody] string apiKey)
     {
         try
@@ -39,7 +39,7 @@ public class CollectionController : ControllerBase
         }  
     }
     
-    [HttpPost("/CreateCollection")]
+    [HttpPost("create")]
     public async Task<IActionResult>CreateCollection([FromBody] CreateCollectionDto collectionData)
     {
         try
@@ -59,7 +59,7 @@ public class CollectionController : ControllerBase
     }
     
     
-    [HttpPatch("/EditCollection")]
+    [HttpPatch("edit")]
     public async Task<IActionResult> EditCollection([FromBody] EditCollectionDto collectionData)
     {
         try
@@ -78,7 +78,7 @@ public class CollectionController : ControllerBase
         }
     }
     
-    [HttpDelete("/DeleteCollection")]
+    [HttpDelete("delete")]
     public async Task<IActionResult>DeleteCollection([FromBody] DeleteCollectionDto collectionData)
     {
          try

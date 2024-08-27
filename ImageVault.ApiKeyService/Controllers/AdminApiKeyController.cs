@@ -7,7 +7,7 @@ namespace ImageVault.ApiKeyService.Controllers;
 /// <summary>
 ///  A controller that supports other services that need detailed data about an API key  
 /// </summary>
-[Route("/api/admin/apikey")]
+[Route("/api/v1/admin/apikey")]
 [Controller]
 public class AdminApiKeyController : ControllerBase
 {

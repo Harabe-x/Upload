@@ -12,7 +12,7 @@ namespace ImageVault.ApiKeyService.Controllers;
 ///  Controller that allows the user to manage API keys
 /// </summary>
 [Controller]
-[Route("/api/apikey")]
+[Route("/api/v1/apikey")]
 public class ApiKeyController : ControllerBase
 {
     private readonly IApiKeyRepository _apiKeyRepository;

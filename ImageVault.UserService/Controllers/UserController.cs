@@ -43,37 +43,14 @@ public class UserController : ControllerBase
             return StatusCode(500, new Error("Internal server error"));
         }
     }
-
-    /// <summary>
-    ///  Creates a new user in the database
-    /// </summary>
-    /// <param name="userData"></param>
-    /// <returns></returns>
-    [HttpPost]
-    public async Task<IActionResult> CreateUser([FromBody] UserData userData)
-    {
-        var id = User.GetClaimValue(ClaimTypes.NameIdentifier);
-
-        if (User.GetClaimValue(ClaimTypes.Email) != userData.Email) return BadRequest(new Error("Invalid email"));
-
-        try
-        {
-            var result = await _userRepository.AddUser(userData, id);
-
-            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
-        }
-        catch (Exception)
-        {
-            return StatusCode(500, new Error("Internal server error"));
-        }
-    }
+    
 
     /// <summary>
     /// Updates a user data in database
     /// </summary>
     /// <param name="newUserData"></param>
     /// <returns></returns>
-    [HttpPatch]
+    [HttpPatch("edit")]
     public async Task<IActionResult> UpdateUser([FromBody] UpdateUser newUserData)
     {
         var id = User.GetClaimValue(ClaimTypes.NameIdentifier);
@@ -94,7 +71,7 @@ public class UserController : ControllerBase
     ///  Removes user from database 
     /// </summary>
     /// <returns></returns>
-    [HttpDelete]
+    [HttpDelete("delete")]
     public async Task<IActionResult> DeleteUser()
     {
         var id = User.GetClaimValue(ClaimTypes.NameIdentifier);
