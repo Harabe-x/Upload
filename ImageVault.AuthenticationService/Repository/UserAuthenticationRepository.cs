@@ -77,7 +77,7 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
     public async Task<OperationResult<AuthenticationResult>> LoginUser(Login login)
     {
 
-        if (_validationService.ValidateData("ValidateLoginData", login))
+        if (!_validationService.ValidateData("ValidateLoginData", login))
             return new OperationResult<AuthenticationResult>(null, false, new Error("Login data validation failed"));
         
         var user = await _userManager.FindByEmailAsync(login.Email);

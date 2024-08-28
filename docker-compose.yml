@@ -26,7 +26,10 @@ services:
       - "2100:2100"
       - "2101:2101"
     volumes:
-      - ./certs:/https
+      - ./certs:/https  
+    env_file:
+      - "ImageVault.AuthenticationService/.env"
+  
   
   imagevault.userservice:
     image: ${DOCKER_REGISTRY-}imagevaultuserservice
@@ -38,6 +41,9 @@ services:
       - "2104:2104"
     volumes:
       - ./certs:/https
+    env_file:
+          - "ImageVault.UserService/.env"
+
 
   imagevault.requestmetricsservice:
     image: ${DOCKER_REGISTRY-}imagevaultrequestmetricsservice
@@ -68,6 +74,9 @@ services:
     ports :
      - "2107:2107"
      - "2108:2108"
+    env_file:
+       - "ImageVault.ApiKeyService/.env"
+    
  
   imagevault.uploadservice:
     image: ${DOCKER_REGISTRY-}imagevaultuploadservice
@@ -76,7 +85,9 @@ services:
       dockerfile: ImageVault.UploadService/Dockerfile
     ports : 
      - "2109:2109"
-     - "2110:2110" 
+     - "2110:2110"
+    env_file:
+      - "ImageVault.UploadService/.env"
 
   imagevault.imageservice:
     image: ${DOCKER_REGISTRY-}imagevaultimageservice
@@ -86,6 +97,8 @@ services:
     ports : 
      - "2111:2111"
      - "2112:2112" 
+    env_file: 
+      - "ImageVault.ImageService/.env"
 
 volumes:
   rabbitMq:

@@ -9,7 +9,7 @@ packages/
 node_modules/
 # File types 
 *.pfx
-# SUPER SECRET FOLDER 
-
+# SECRETS 
 super_secret/
-
+.env*
+AuthenticationService
