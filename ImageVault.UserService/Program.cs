@@ -15,7 +15,6 @@ builder.AddX509Certificate2();
 var app = builder.Build();
 
 app.AddRabbitMqConsumer();
-app.UseMiddleware<RequestLoggingMiddleware>();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseAuthentication();

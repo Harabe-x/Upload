@@ -65,7 +65,7 @@ public class CollectionController : ControllerBase
         try
         {
             var result = await _imageManager.EditCollection(collectionData.ApiKey, collectionData.CollectionName,
-                collectionData.CollectionName, collectionData.NewCollectionDescription);
+                collectionData.NewCollectionName, collectionData.NewCollectionDescription);
 
             return result.IsSuccess
                 ? Ok(result.Value)

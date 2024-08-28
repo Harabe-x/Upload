@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace ImageVault.UploadService.Extension;
 
-public static class IApplicationBuilderExtension
+public static class RabbitMqListenerManager
 {
     private static IRabbitMqListener _listener;
     

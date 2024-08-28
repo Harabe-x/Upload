@@ -63,7 +63,7 @@ public interface IImageManagerRepository
     /// <returns>
     /// An <see cref="OperationResultDto{T}"/> containing a boolean value indicating whether the image was successfully edited.
     /// </returns>
-    Task<OperationResultDto<bool>> EditImage(string apiKey, string imageKey, string newImageTitle, string newImageDescription, string collectionName = "default");
+    Task<OperationResultDto<bool>> EditImage(string apiKey, string collectionName , string imageKey,  string newImageTitle, string newImageDescription);
 
     /// <summary>
     /// Deletes an image from the database.

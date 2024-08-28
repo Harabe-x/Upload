@@ -6,5 +6,6 @@ namespace ImageVault.ImageService.Data.Dtos.Image;
 /// <param name="ApiKey">The API key used for authentication.</param>
 /// <param name="ImageKey">The unique key identifying the image to be edited.</param>
 /// <param name="NewTitle">The new title for the image.</param>
+/// <param name="CollectionName">The collection to which the image belongs</param>
 /// <param name="NewDescription">The new description for the image.</param>
-public record EditImageDto(string ApiKey, string ImageKey, string NewTitle, string NewDescription);
+public record EditImageDto(string ApiKey,string CollectionName,string ImageKey, string NewTitle, string NewDescription);

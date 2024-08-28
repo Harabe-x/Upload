@@ -35,7 +35,7 @@ public static class ImageMapper
             Description = imageData.Description ,
             UserId = imageData.UserId,
             ImageCollectionId = collection.Id,
-            Key = collection.ApiKey,
+            Key = imageData.Key,
             ImageSize = imageData.ImageSize,
             ImageFormat = imageData.FileFormat,
             Url = "dckyy64qykbap.cloudfront.net/" + imageData.Key

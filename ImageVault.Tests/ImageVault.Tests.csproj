@@ -22,13 +22,13 @@
 
     <ItemGroup>
       <Folder Include="ApiKeyService\" />
-      <Folder Include="ImageService\" />
       <Folder Include="MetricsService\" />
       <Folder Include="UserService\" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\ImageVault.AuthenticationService\ImageVault.AuthenticationService.csproj" />
+      <ProjectReference Include="..\ImageVault.UploadService\ImageVault.UploadService.csproj" />
     </ItemGroup>
 
 </Project>

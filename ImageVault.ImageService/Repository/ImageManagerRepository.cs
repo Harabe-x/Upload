@@ -155,8 +155,7 @@ public class ImageManagerRepository : IImageManagerRepository
             : new OperationResultDto<IEnumerable<ImageCollectionDto>>(null, false, new Error("Collection not found"));
     }
 
-    public async Task<OperationResultDto<bool>> EditImage(string apiKey, string imageKey, string newImageTitle, string newImageDescription,
-        string collectionName = "default")
+    public async Task<OperationResultDto<bool>> EditImage(string apiKey, string collectionName,string imageKey, string newImageTitle, string newImageDescription)
     {
         if(!ValidateAndSetDefaults(apiKey, ref collectionName,out var error,imageKey)) return new OperationResultDto<bool>(false, false, error);
         

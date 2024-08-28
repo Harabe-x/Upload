@@ -77,7 +77,7 @@ public class ImageController : ControllerBase
     {
         try
         {
-            var result = await _imageManager.EditImage(imageData.ApiKey, imageData.ImageKey,imageData.NewTitle, imageData.NewDescription);
+            var result = await _imageManager.EditImage(imageData.ApiKey, imageData.CollectionName,  imageData.ImageKey,imageData.NewTitle, imageData.NewDescription);
 
             return result.IsSuccess
                 ? Ok(result.Value)
@@ -95,7 +95,7 @@ public class ImageController : ControllerBase
     {
          try 
          {
-            var result = await _imageManager.DeleteImage(imageData.ApiKey,imageData.ImageKey,imageData.ImageKey);
+            var result = await _imageManager.DeleteImage(imageData.ApiKey,imageData.ImageKey,imageData.CollectionName);
 
             return result.IsSuccess
                 ? Ok(result.Value)
