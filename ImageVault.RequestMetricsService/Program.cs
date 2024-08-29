@@ -32,25 +32,21 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultAuthenticateScheme =
-        options.DefaultChallengeScheme =
-            options.DefaultForbidScheme =
-                options.DefaultSignInScheme =
-                    options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuer = true,
-        ValidateAudience = true,
+        ValidIssuer = "imagevault.tech",
+        ValidAudience = "imagevault.tech",
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("EnvironmentVariabldsadasdsadasdasdsdasasdasdasdasdasdasdaes.GetJwtSigningKey()")),
         ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["JWT:Issuer"],
-        ValidAudience = builder.Configuration["JWT:Audience"],
-        IssuerSigningKey =
-            new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])) // probably this code gonna fuck up 
+        ValidateLifetime = true,
+        ValidateAudience = true,
+        ValidateIssuer = true, 
     };
 });
+builder.Services.AddAuthorization();
 
 builder.WebHost.ConfigureKestrel(options =>
 {

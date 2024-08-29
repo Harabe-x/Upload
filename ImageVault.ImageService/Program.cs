@@ -1,4 +1,5 @@
 
+using ImageVault.ImageService.Configuration;
 using ImageVault.ImageService.Extension;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ builder.AddSwagger();
 builder.AddJwtAuthentication();
 
 var app = builder.Build();
+Console.WriteLine(EnvironmentVariables.GetJwtSigningKey());
 
 app.UseSwagger();
 app.UseSwaggerUI();

@@ -1,5 +1,8 @@
+
+
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using Azure.Identity;
 using ImageVault.UserService.Configuration;
 using ImageVault.UserService.Data;
 using ImageVault.UserService.Data.Interfaces;
@@ -8,7 +11,10 @@ using ImageVault.UserService.RabbitMq;
 using ImageVault.UserService.Repository;
 using ImageVault.UserService.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -73,34 +79,27 @@ public static class ApplicationConfiguration
                 }
             });
         });
-
-
-       
     }
 
     public static void AddJwtAuthentication(this WebApplicationBuilder builder)
     {
-     
         builder.Services.AddAuthentication(options =>
         {
-            options.DefaultAuthenticateScheme =
-                options.DefaultChallengeScheme =
-                    options.DefaultForbidScheme =
-                        options.DefaultSignInScheme =
-                            options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer(options =>
         {
             options.TokenValidationParameters = new TokenValidationParameters
             {
-                ValidateIssuer = true,
-                ValidateAudience = true,
+                ValidIssuer = "imagevault.tech",
+                ValidAudience = "imagevault.tech",
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(EnvironmentVariables.GetJwtSigningKey())),
                 ValidateIssuerSigningKey = true,
-                ValidIssuer = builder.Configuration["JWT:Issuer"],
-                ValidAudience = builder.Configuration["JWT:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(EnvironmentVariables.GetJwtSigningKey()))
+                ValidateLifetime = true,
+                ValidateAudience = true,
+                ValidateIssuer = true, 
             };
         });
-   
+        builder.Services.AddAuthorization();
     }
 
     public static void AddX509Certificate2(this WebApplicationBuilder builder)

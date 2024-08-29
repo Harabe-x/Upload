@@ -1,4 +1,6 @@
+using System;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using ImageVault.UserService.Data.Dtos;
 using ImageVault.UserService.Data.Interfaces;
 using ImageVault.UserService.Data.Models;
@@ -11,7 +13,6 @@ namespace ImageVault.UserService.Controllers;
 /// <summary>
 ///  Controller which is responsible for managing user data
 /// </summary>
-[Authorize]
 [Controller]
 [Route("/api/v1/user")]
 public class UserController : ControllerBase
@@ -27,6 +28,7 @@ public class UserController : ControllerBase
     /// Gets user from the database 
     /// </summary>
     /// <returns></returns>
+    [Authorize]
     [HttpGet("get")]
     public async Task<IActionResult>GetUserData()
     {
@@ -35,7 +37,7 @@ public class UserController : ControllerBase
         try
         {
             var result = await _userRepository.GetUser(id);
-
+            
             return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
         catch (Exception)
@@ -50,6 +52,7 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="newUserData"></param>
     /// <returns></returns>
+    [Authorize]
     [HttpPatch("edit")]
     public async Task<IActionResult> UpdateUser([FromBody] UpdateUser newUserData)
     {
@@ -71,6 +74,7 @@ public class UserController : ControllerBase
     ///  Removes user from database 
     /// </summary>
     /// <returns></returns>
+    [Authorize]
     [HttpDelete("delete")]
     public async Task<IActionResult> DeleteUser()
     {

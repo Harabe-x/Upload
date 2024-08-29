@@ -46,24 +46,21 @@ public static class ApplicationConfiguration
     {
         builder.Services.AddAuthentication(options =>
         {
-            options.DefaultAuthenticateScheme =
-                options.DefaultChallengeScheme =
-                    options.DefaultForbidScheme =
-                        options.DefaultSignInScheme =
-                            options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer(options =>
         {
             options.TokenValidationParameters = new TokenValidationParameters
             {
-                ValidateIssuer = true,
-                ValidateAudience = true,
+                ValidIssuer = "imagevault.tech",
+                ValidAudience = "imagevault.tech",
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(EnvironmentVariables.GetJwtSigningKey())),
                 ValidateIssuerSigningKey = true,
-                ValidIssuer = builder.Configuration["JWT:Issuer"],
-                ValidAudience = builder.Configuration["JWT:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(EnvironmentVariables.GetJwtSigningKey()))
+                ValidateLifetime = true,
+                ValidateAudience = true,
+                ValidateIssuer = true, 
             };
         });
-        
+        builder.Services.AddAuthorization();
     }
 
     public static void AddSwagger(this WebApplicationBuilder builder)

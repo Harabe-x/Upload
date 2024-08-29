@@ -1,3 +1,4 @@
+using ImageVault.ApiKeyService.Configuration;
 using ImageVault.ApiKeyService.Extension;
 using ImageVault.ApiKeyService.Middleware;
 

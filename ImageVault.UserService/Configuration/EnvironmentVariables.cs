@@ -47,7 +47,6 @@ public static class EnvironmentVariables
         return Environment.GetEnvironmentVariable("JWT_SIGNING_KEY") ?? 
                throw new NullReferenceException("Environment variable not found. Desired variable: JWT_SIGNING_KEY");
     }
-
     /// <summary>
     /// Retrieves the database connection string from environment variables.
     /// </summary>
@@ -63,5 +62,4 @@ public static class EnvironmentVariables
                throw new NullReferenceException(
                    "Environment variable not found. Desired variable: DB_CONNECTION_STRING");
     }
-    
 }

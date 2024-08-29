@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace ImageVault.UserService.Data.Interfaces;
 
 /// <summary>

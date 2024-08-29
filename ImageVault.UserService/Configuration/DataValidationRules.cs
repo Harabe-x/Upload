@@ -1,3 +1,4 @@
+using System;
 using ImageVault.UserService.Data.Dtos;
 using ImageVault.UserService.Data.Enums;
 using ImageVault.UserService.Data.Interfaces.Services;

@@ -1,3 +1,5 @@
+using System;
+
 namespace ImageVault.UserService.Data.Interfaces;
 
 /// <summary>
