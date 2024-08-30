@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageVault.ImageService", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageVault.Tests", "ImageVault.Tests\ImageVault.Tests.csproj", "{49842B25-A7D8-4356-931C-3A2FDC3C32BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageVault.RequestMetricsService", "ImageVault.RequestMetricsService\ImageVault.RequestMetricsService.csproj", "{DE8D47C6-9A5C-4570-ABAB-8EB8A41FB89F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,10 @@ Global
 		{49842B25-A7D8-4356-931C-3A2FDC3C32BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49842B25-A7D8-4356-931C-3A2FDC3C32BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49842B25-A7D8-4356-931C-3A2FDC3C32BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE8D47C6-9A5C-4570-ABAB-8EB8A41FB89F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE8D47C6-9A5C-4570-ABAB-8EB8A41FB89F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE8D47C6-9A5C-4570-ABAB-8EB8A41FB89F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE8D47C6-9A5C-4570-ABAB-8EB8A41FB89F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,37 +1,29 @@
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using ImageVault.ApiKeyService.Configuration;
-using ImageVault.ApiKeyService.Data;
-using ImageVault.ApiKeyService.Data.Interfaces.ApiKey;
-using ImageVault.ApiKeyService.Data.Interfaces.RabbitMq;
-using ImageVault.ApiKeyService.Data.Interfaces.Services;
-using ImageVault.ApiKeyService.RabbitMq;
-using ImageVault.ApiKeyService.RabbitMq.Consumers;
-using ImageVault.ApiKeyService.Repository;
-using ImageVault.ApiKeyService.Services;
+using Azure.Identity;
+using ImageVault.RequestMetricsService.Data;
+using ImageVault.RequestMetricsService.Data.Interfaces;
+using ImageVault.RequestMetricsService.Data.Interfaces.RabbitMq;
+using ImageVault.RequestMetricsService.RabbitMq;
+using ImageVault.RequestMetricsService.RabbitMq.Consumers;
+using ImageVault.RequestMetricsService.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
-namespace ImageVault.ApiKeyService.Extension;
+namespace ImageVault.RequestMetricsService.Configuration;
 
 public static class ApplicationConfiguration
 {
-
     public static void RegisterServices(this WebApplicationBuilder builder)
     {
-        var validationService = new DataValidationService();
-        DataValidationRules.AddRules(validationService);
-
-        builder.Services.AddSingleton<IDataValidationService>(validationService);
-        builder.Services.AddSingleton<IRabbitMqListener, RabbitMqListener>(); 
+        builder.Services.AddScoped<IUserRequestMetricsRepository, UserRequestMetricsRepository>();
+        builder.Services.AddScoped<IRequestRepository, RequestRepository>();
         builder.Services.AddSingleton<IRabbitMqConsumerList, RabbitMqConsumerList>();
+        builder.Services.AddSingleton<IRabbitMqListener, RabbitMqListener>();
         builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
-        builder.Services.AddSingleton<ApiKeyUsageConsumer>();
-        builder.Services.AddScoped<IApiKeyRepository, ApiKeyRepository>();
-        builder.Services.AddScoped<IRabbitMqMessageSender, RabbitMqMessageSender>();
-        builder.Services.AddScoped<IAdminApiKeyRepository, AdminApiKeyRepository>();
+        builder.Services.AddSingleton<RequestInfoConsumer>();
     }
 
     public static void RegisterDbContext(this WebApplicationBuilder builder)
@@ -60,6 +52,7 @@ public static class ApplicationConfiguration
                 ValidateIssuer = true, 
             };
         });
+        
         builder.Services.AddAuthorization();
     }
 
@@ -97,11 +90,7 @@ public static class ApplicationConfiguration
             });
         });
     }
-    
-    /// <summary>
-    ///  Adds the X509Certificate2 certificate
-    /// </summary>
-    /// <param name="builder"></param>
+
     public static void AddX509Certificate2(this WebApplicationBuilder builder)
     {
         builder.WebHost.ConfigureKestrel(options =>
@@ -111,7 +100,9 @@ public static class ApplicationConfiguration
                 config.ServerCertificate = new X509Certificate2("/https/aspnetapp.pfx", "TestPassword");
             });
         });
+
     }
+    
     public static void AddCors(this WebApplicationBuilder builder)
     {
         builder.Services.AddCors(options =>
@@ -125,5 +116,4 @@ public static class ApplicationConfiguration
                 });
         });
     }
-    
 }

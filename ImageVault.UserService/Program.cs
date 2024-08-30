@@ -1,5 +1,6 @@
 using ImageVault.UserService.Configuration;
 using ImageVault.UserService.Extension;
+using ImageVault.UserService.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,11 +11,13 @@ builder.RegisterServices();
 builder.RegisterDbContext();
 builder.AddJwtAuthentication();
 builder.AddX509Certificate2();
+builder.AddCors();
 builder.AddSwagger();
 
 
 var app = builder.Build();
 
+app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 app.AddRabbitMqConsumer();

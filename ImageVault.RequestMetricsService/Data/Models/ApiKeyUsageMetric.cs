@@ -13,9 +13,7 @@ public class ApiKeyUsageMetric
 
     public string ApiKey { get; set; }
 
-    public int ImageUploaded { get; set; }
+    public int TotalImages { get; set; }
 
-    public double StorageUsedGb { get; set; }
-
-    public double StorageAvailableGb { get; set; }
+    public ulong StorageUsed { get; set; }
 }

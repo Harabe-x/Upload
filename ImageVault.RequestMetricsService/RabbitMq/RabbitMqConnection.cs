@@ -1,3 +1,4 @@
+using ImageVault.RequestMetricsService.Configuration;
 using ImageVault.RequestMetricsService.Data.Interfaces;
 using ImageVault.RequestMetricsService.Extension;
 using RabbitMQ.Client;
@@ -32,8 +33,8 @@ public class RabbitMqConnection : IRabbitMqConnection, IDisposable
             var factory = new ConnectionFactory
             {
                 HostName = _configuration.GetRabbitMqHostName(),
-                UserName = _configuration.GetRabbitMqUsername(),
-                Password = _configuration.GetRabbitMqPassword(),
+                UserName = EnvironmentVariables.GetRabbitMqUsername(),
+                Password = EnvironmentVariables.GetRabbitMqPassword(), 
                 DispatchConsumersAsync = true
             };
 

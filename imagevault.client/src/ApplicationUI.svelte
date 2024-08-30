@@ -12,9 +12,7 @@
     import ImagesPage from "@/lib/Pages/Images/ImagesPage.svelte";
     import ProfilePage from "@/lib/Pages/Settings/Profile/ProfilePage.svelte";
     import BillingPage from "@/lib/Pages/Settings/Billing/BillingPage.svelte";
-    import NotFoundPage from "@/lib/Pages/InfoPages/NotFoundPage.svelte";
     import LoginPage from "@/lib/Pages/UserAuth/LoginPage.svelte";
-    import RegisterPage from "@/lib/Pages/UserAuth/RegisterPage.svelte";
     import {getContext} from "svelte";
 
     const navbarStateStore = getNavBarStateStore();

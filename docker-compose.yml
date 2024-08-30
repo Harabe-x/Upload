@@ -55,6 +55,9 @@ services:
       - "2106:2106"
     volumes:
       - ./certs:/https
+    env_file:
+          - "ImageVault.RequestMetricsService/.env"
+
 
   sqlserver:
     build: MsSqlServer/

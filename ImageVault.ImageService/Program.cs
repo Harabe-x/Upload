@@ -10,10 +10,10 @@ builder.RegisterServices();
 builder.RegisterDbContext();
 builder.AddSwagger();
 builder.AddJwtAuthentication();
-
+builder.AddCors();
 var app = builder.Build();
-Console.WriteLine(EnvironmentVariables.GetJwtSigningKey());
 
+app.UseCors("AllowAll");
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseRabbitMqListener();

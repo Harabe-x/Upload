@@ -7,7 +7,8 @@ import {
     HTTP_STATUS_UNAUTHORIZED,
     NOTIFICATION_TYPE_ERROR,
     NOTIFICATION_TYPE_SUCCESS,
-    USER_ENDPOINT_URL
+    GET_USER_ENDPOINT_URL,
+    EDIT_USER_ENDPOINT_URL
 } from "@/js/Constants.js";
 import {getNotificationsStore} from "@/js/State/UserInterface/ToastNotificationStore.js";
 import {getThemeStore} from "@/js/State/UserInterface/ThemeStore.js";
@@ -40,7 +41,7 @@ export function getUserDataStore() {
                 const authStore = getAuthStore();
                 const storeData = get(authStore);
 
-                const response = await axios.get(USER_ENDPOINT_URL, {
+                const response = await axios.get(GET_USER_ENDPOINT_URL, {
                     headers: { "Authorization": `Bearer ${storeData.token}` }
                 });
 
@@ -78,7 +79,7 @@ export function getUserDataStore() {
 
 
             try {
-                const response = await  axios.patch(USER_ENDPOINT_URL, {
+                const response = await  axios.patch(EDIT_USER_ENDPOINT_URL, {
                     "firstName": firstName,
                     "lastName": lastName,
                     "dataTheme": preferedColorSchema,

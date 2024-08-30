@@ -31,38 +31,140 @@ static_resources:
             virtual_hosts:
             - name: local_service
               domains: ["*"]
+           
               routes:
               - match:
-                  prefix: "/api/auth/test"
+                  prefix: "/api/v1/auth/login"
                 route:
-                  prefix_rewrite: /api/auth/test
+                  prefix_rewrite: /api/v1/auth/login
+                  cluster: AuthenticationService
+    
+              - match:
+                  prefix: "/api/v1/auth/register"
+                route:
+                  prefix_rewrite: /api/v1/auth/register
                   cluster: AuthenticationService
               
               - match:
-                  prefix: "/api/auth/login"
+                  prefix: "/api/v1/auth/pingauth"
                 route:
-                  prefix_rewrite: /api/auth/login
+                  prefix_rewrite: /api/v1/auth/pingauth
                   cluster: AuthenticationService
               
               - match:
-                  prefix: "/api/auth/register"
+                  prefix: "/api/v1/user/get"
                 route:
-                  prefix_rewrite: "/api/auth/register"
-                  cluster: AuthenticationService
-              
+                  prefix_rewrite: /api/v1/user/get
+                  cluster: UserService
+                  
               - match:
-                  prefix: "/api/auth/pingauth"
+                  prefix: "/api/v1/user/edit"
                 route:
-                  prefix_rewrite: /api/auth/pingauth
-                  cluster: AuthenticationService
-              
-              - match:
-                  prefix: "/api/user"
-                route:
-                  prefix_rewrite: /api/user
+                  prefix_rewrite: /api/v1/user/edit
                   cluster: UserService
 
+              - match:
+                  prefix: "/api/v1/user/delete"
+                route:
+                  prefix_rewrite: /api/v1/user/delete
+                  cluster: UserService
 
+              - match:
+                  prefix: "/api/v1/user/delete"
+                route:
+                  prefix_rewrite: /api/v1/user/delete
+                  cluster: UserService
+                  
+              - match:
+                  prefix: "/api/v1/apikey/get"
+                route:
+                  prefix_rewrite: /api/v1/apikey/list
+                  cluster: ApiKeyService
+
+              - match:
+                  prefix: "/api/v1/apikey/list"
+                route:
+                  prefix_rewrite: /api/v1/apikey/list
+                  cluster: ApiKeyService
+
+              - match:
+                  prefix: "/api/v1/apikey/add"
+                route:
+                  prefix_rewrite: /api/v1/apikey/add
+                  cluster: ApiKeyService
+
+              - match:
+                  prefix: "/api/v1/apikey/edit"
+                route:
+                  prefix_rewrite: /api/v1/apikey/edit
+                  cluster: ApiKeyService
+                  
+              - match:
+                  prefix: "/api/v1/apikey/delete"
+                route:
+                  prefix_rewrite: /api/v1/apikey/delete
+                  cluster: ApiKeyService
+              
+              - match:
+                  prefix: "/api/v1/upload"
+                route:
+                  prefix_rewrite: /api/v1/upload
+                  cluster: UploadService
+              - match:
+                  prefix: "/api/v1/collection/list"
+                route:
+                  prefix_rewrite: "/api/v1/collection/list"
+                  cluster: ImageService
+            
+              - match:
+                  prefix: "/api/v1/collection/create"
+                route:
+                  prefix_rewrite: "/api/v1/collection/create"
+                  cluster: ImageService
+            
+              - match:
+                  prefix: "/api/v1/collection/edit"
+                route:
+                  prefix_rewrite: "/api/v1/collection/edit"
+                  cluster: ImageService
+            
+              - match:
+                  prefix: "/api/v1/collection/delete"
+                route:
+                  prefix_rewrite: "/api/v1/collection/delete"
+                  cluster: ImageService
+            
+              - match:
+                  prefix: "/api/v1/image/get"
+                route:
+                  prefix_rewrite: "/api/v1/image/get"
+                  cluster: ImageService
+            
+              - match:
+                  prefix: "/api/v1/image/get/paged"
+                route:
+                  prefix_rewrite: "/api/v1/image/get/paged"
+                  cluster: ImageService
+            
+              - match:
+                  prefix: "/api/v1/image/get/all"
+                route:
+                  prefix_rewrite: "/api/v1/image/get/all"
+                  cluster: ImageService
+            
+              - match:
+                  prefix: "/api/v1/image/edit"
+                route:
+                  prefix_rewrite: "/api/v1/image/edit"
+                  cluster: ImageService
+            
+              - match:
+                  prefix: "/api/v1/image/delete"
+                route:
+                  prefix_rewrite: "/api/v1/image/delete"
+                  cluster: ImageService
+
+  
   clusters:
   - name: AuthenticationService
     type: LOGICAL_DNS
@@ -88,4 +190,52 @@ static_resources:
               socket_address:
                 address: imagevault.userservice
                 port_value: 2104
+  - name: ImageService
+    type: LOGICAL_DNS
+    dns_lookup_family: V4_ONLY
+    load_assignment:
+      cluster_name: ImageService
+      endpoints:
+      - lb_endpoints:
+        - endpoint:
+            address:
+              socket_address:
+                address: imagevault.imageservice
+                port_value: 2111
   
+  - name: UploadService
+    type: LOGICAL_DNS
+    dns_lookup_family: V4_ONLY
+    load_assignment:
+      cluster_name: UploadService
+      endpoints:
+      - lb_endpoints:
+        - endpoint:
+            address:
+              socket_address:
+                address: imagevault.uploadservice
+                port_value: 2110
+  - name: MetricsService
+    type: LOGICAL_DNS
+    dns_lookup_family: V4_ONLY
+    load_assignment:
+      cluster_name: MetricsService
+      endpoints:
+      - lb_endpoints:
+        - endpoint:
+            address:
+              socket_address:
+                address: imagevault.metricsservice
+                port_value: 2106
+  - name: ApiKeyService
+    type: LOGICAL_DNS
+    dns_lookup_family: V4_ONLY
+    load_assignment:
+      cluster_name: ApiKeyService
+      endpoints:
+      - lb_endpoints:
+        - endpoint:
+            address:
+              socket_address:
+                address: imagevault.apikeyservice
+                port_value: 2108

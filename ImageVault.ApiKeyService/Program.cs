@@ -12,9 +12,11 @@ builder.RegisterDbContext();
 builder.AddX509Certificate2();
 builder.AddJwtAuthentication();
 builder.AddSwagger();
-
+builder.AddCors();
 var app = builder.Build();
 
+
+app.UseCors("ALlowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<RequestLoggingMiddleware>();

@@ -11,10 +11,13 @@ public class RequestRepository : IRequestRepository
 
     private readonly ILogger<IRequestRepository> _logger;
 
-    public RequestRepository(ApplicationDbContext dbContext, ILogger<IRequestRepository> logger)
+    private readonly IUserRequestMetricsRepository _metricsRepository; 
+
+    public RequestRepository(ApplicationDbContext dbContext, ILogger<IRequestRepository> logger,IUserRequestMetricsRepository metricsRepository)
     {
         _dbContext = dbContext;
         _logger = logger;
+        _metricsRepository = metricsRepository; 
     }
 
     public async Task<bool> AddRequest(RequestDto requestData)
@@ -23,6 +26,9 @@ public class RequestRepository : IRequestRepository
 
         await _dbContext.Requests.AddAsync(request);
 
+        // even if user is unauthenticated it should count statistics for anon requests
+        await _metricsRepository.UpdateUserStatstics(requestData);
+        
         return await SaveChanges();
     }
 

@@ -27,24 +27,20 @@ public class UserRequestMetricsController : ControllerBase
     [Route("/get")]
     public async Task<IActionResult> GetUserMetrics()
     {
-        
-        
-    //     var id = User.GetClaimValue(ClaimTypes.NameIdentifier);
-    //
-    //     try
-    //     {
-    //         var metrics = await _metricsRepository.GetRequestMetrics(id);
-    //
-    //         return metrics != null ? Ok(metrics) : StatusCode(500, "Something went wrong");
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         _logger.LogError($" {e.Message} | {e.Source}");
-    //         // returning string as error message is temporary 
-    //         return StatusCode(500, "Internal server error");
-    //     }
-    // }
-    return Ok(); 
-    }
+        var id = User.GetClaimValue(ClaimTypes.NameIdentifier);
     
+        try
+        {
+            var metrics = await _metricsRepository.GetRequestMetrics(id);
+    
+            return metrics != null ? Ok(metrics) : StatusCode(500, "Something went wrong");
+        }
+        catch (Exception e)
+        {
+            _logger.LogError($" {e.Message} | {e.Source}");
+            // returning string as error message is temporary 
+            return StatusCode(500, "Internal server error");
+        }
+    }
 }
+    

@@ -12,17 +12,19 @@ builder.RegisterDbContext();
 builder.AddJwtAuthentication();
 builder.AddRateLimiting();
 builder.AddX509Certificate2();
-builder.AddSwagger();   
+builder.AddSwagger();
+builder.AddCors();
 var app = builder.Build();
 
+app.UseCors("AllowAll");
 app.UseDefaultFiles();
 app.UseStaticFiles();
-app.UseMiddleware<RequestLoggingMiddleware>();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseMiddleware<RequestLoggingMiddleware>();
 app.MapControllers();
 app.MapFallbackToFile("/index.html");
 

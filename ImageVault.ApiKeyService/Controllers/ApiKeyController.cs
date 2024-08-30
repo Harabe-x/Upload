@@ -59,7 +59,7 @@ public class ApiKeyController : ControllerBase
     ///  Gets all API keys created by user
     /// </summary>
     /// <returns>All user API keys</returns>
-    [HttpPost("getKeys")]
+    [HttpPost("list")]
     [Authorize]
     public async Task<IActionResult> GetKeys()
     {
@@ -116,7 +116,7 @@ public class ApiKeyController : ControllerBase
     /// </summary>
     /// <param name="newApiKeyData"></param>
     /// <returns></returns>
-    [HttpPatch("editKey")]
+    [HttpPatch("edit")]
     [Authorize]
     public async Task<IActionResult> UpdateKey([FromBody] EditApiKey newApiKeyData)
     {
@@ -146,7 +146,7 @@ public class ApiKeyController : ControllerBase
     /// </summary>
     /// <param name="key">Key to delete</param>
     /// <returns></returns>
-    [HttpDelete("deleteKey")]
+    [HttpDelete("delete")]
     [Authorize]
     public async Task<IActionResult> DeleteKey([FromBody] string key)
     {

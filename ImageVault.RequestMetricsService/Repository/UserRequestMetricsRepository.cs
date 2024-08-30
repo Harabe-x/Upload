@@ -19,11 +19,11 @@ public class UserRequestMetricsRepository : IUserRequestMetricsRepository
     {
         var userMetrics = await _dbContext.UsersRequestMetrics.FirstOrDefaultAsync(x => x.UserId == request.UserId);
 
-        if (userMetrics is not { })
+        if (userMetrics == null)
         {
             userMetrics = await CreateUserMetrics(request.UserId);
 
-            if (userMetrics is not { }) return false;
+            if (userMetrics == null) return false;
         }
 
         userMetrics.TotalRequests += 1;
