@@ -16,7 +16,7 @@ builder.AddCors();
 var app = builder.Build();
 
 
-app.UseCors("ALlowAll");
+app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<RequestLoggingMiddleware>();

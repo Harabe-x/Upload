@@ -93,8 +93,8 @@
                         <div class="w-full h-full flex flex-col items-center justify-center">
                             <LottiePlayer
                                     loop={true}
-                                    autoplay={true}
-                                    background="transparent"
+                                    autoplay={false}
+                                    background=""
                                     style="width: 32rem; margin-right: 1rem"
                                     src="https://lottie.host/a01f59c1-5f8a-49b1-b519-2bf3ea6653b2/9xoIpWGXxT.json">
                             </LottiePlayer>
