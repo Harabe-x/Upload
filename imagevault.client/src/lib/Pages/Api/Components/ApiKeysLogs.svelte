@@ -5,6 +5,7 @@
     import {onMount} from "svelte";
     import {getApiKeys} from "../../../../js/Temp/ApiKeysData.js";
     import SelectInput from "../../../Controls/Inputs/SelectInput.svelte";
+    import ApiKeySelector from "@/lib/Controls/Shared/ApiKeySelector.svelte";
 
     const apiKeysStore = getApiKeys();
 
@@ -27,11 +28,9 @@
 </script>
 
 <div class="flex flex-row items-center w-full">
-    <SelectInput title="Api Keys"   on:change={updateSelectedKey}>
-        {#each   $apiKeysStore.apiKeys as apiKey }
-            <option value={apiKey.Name} selected={$apiKeysStore.selectedApiKey === apiKey.Name} > {apiKey.Name} </option>
-        {/each}
-    </SelectInput>
+    <ApiKeySelector>
+        
+    </ApiKeySelector>
 
     <div class="ml-auto">
         <IconButton iconStyle="w-6" icon={ArrowDownTray}> Download </IconButton>

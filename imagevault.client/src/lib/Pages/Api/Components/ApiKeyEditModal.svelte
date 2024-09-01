@@ -2,7 +2,7 @@
    import TextInput from "../../../Controls/Inputs/TextInput.svelte";
    import IconButton from "../../../Controls/Buttons/IconButton.svelte";
    import { createEventDispatcher } from "svelte";
-   import { XMark, Check } from "svelte-hero-icons";
+   import {XMark, Check, ArrowPath} from "svelte-hero-icons";
    import { getApiKeys } from "../../../../js/Temp/ApiKeysData";
    import { validateStorage ,validateName} from "../../../../js/Temp/DataValidator";
    import {onEscapeAction,onEnterAction} from "../../../../js/UserInterface/Actions/ModalActions.js";
@@ -39,8 +39,9 @@
         <TextInput bind:value={param.key} disabled={true} label="Key"></TextInput>
       </div>
   
-      <div class="modal-action"> 
-          <IconButton buttonStyle="" iconStyle="w-4" icon={XMark} on:click={closeEditModal}>Close</IconButton>
+      <div class="modal-action ">
+          <IconButton buttonStyle="bg-accent text-secondary-content mr-auto" iconStyle="w-4"on:click={saveEditedKey} icon={ArrowPath}>Rotate</IconButton>
+          <IconButton buttonStyle="" iconStyle="w-4"  icon={XMark} on:click={closeEditModal}>Close</IconButton>
           <IconButton buttonStyle="bg-success text-secondary-content" iconStyle="w-4"on:click={saveEditedKey} icon={Check}>Save</IconButton>
       </div>
     </div>

@@ -1,6 +1,6 @@
 <script>
     import { getApiKeys } from "../../../../js/Temp/ApiKeysData";
-    import { Pencil,Trash,XMark,Check } from "svelte-hero-icons";
+    import { Pencil,Trash,XMark,Check , ArrowPathRoundedSquare} from "svelte-hero-icons";
     import IconButton from "../../../Controls/Buttons/IconButton.svelte";
     import ApiKeyEditModal from "./ApiKeyEditModal.svelte";
     import ApiKeyDeleteModal from './ApiKeyDeleteModal.svelte'

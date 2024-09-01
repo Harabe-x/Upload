@@ -12,6 +12,7 @@
     import {onMount} from "svelte";
     import DataFetchingPage from "@/lib/Pages/InfoPages/DataFetchingPage.svelte";
     import {get} from "svelte/store";
+    import ApiKeySelector from "@/lib/Controls/Shared/ApiKeySelector.svelte";
 
 
     const apiKeyStore = getApiKeys();
@@ -21,11 +22,7 @@
     })
 
 
-    function selectKey(event)
-    {
-        apiKeyStore.selectKey(event.detail.target.value);
-    }
-    
+
     const promise = getChartData();
     const promise2 = getChartData();
 </script>
@@ -34,11 +31,7 @@
 <!-- Card section -->
 <PageTopMenu>
     <div slot="leftSide">
-        <SelectInput on:change={selectKey} title="Selected key:">
-            {#each $apiKeyStore.apiKeys as key}
-                <option  selected={key.Name === $apiKeyStore.selectedApiKey.Name} value={key.Name}> {key.Name} </option>
-            {/each}
-        </SelectInput>
+        <ApiKeySelector></ApiKeySelector>
     </div>
     <div slot="rightSide">
         <IconButton iconStyle="w-4 mr-1" icon={ArrowPath}>
