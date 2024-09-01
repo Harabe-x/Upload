@@ -6,10 +6,11 @@
    import { getApiKeys } from "../../../../js/Temp/ApiKeysData";
    import { validateStorage ,validateName} from "../../../../js/Temp/DataValidator";
    import {onEscapeAction,onEnterAction} from "../../../../js/UserInterface/Actions/ModalActions.js";
+   import { getApiKeyStore} from "@/js/State/ApiKey/ApiKeyStore.js";
 
    const dispatcher = createEventDispatcher();
-   const apiKeysStore = getApiKeys();
-
+   const apiKeysStore = getApiKeyStore();
+   
    export let isModalVisable = false;
    export let param;
   function closeEditModal()
@@ -19,14 +20,12 @@
   
   function saveEditedKey()
   {
-    if(validateName(param.Name) && validateStorage(param.Storage))
+    if(validateName(param.keyName))
     {
-      apiKeysStore.updateKey(param,param.Name,param.Storage)
+        apiKeysStore.editKey(param.key, param.keyName)
       closeEditModal();
     }
   }
-
-
 </script> 
 
 
@@ -36,10 +35,8 @@
       <h3 class="font-bold text-lg">Add key</h3>
   
       <div class="mt-2 p-2">
-        <TextInput bind:value={param.Name} isError={!validateName(param.Name)} errorMessage="Name can't be empty or white space" label="Name"></TextInput>
-        <TextInput bind:value={param.Key} disabled={true} label="Key"></TextInput>
-        <TextInput bind:value={param.Storage} isError={!validateStorage(param.Storage)} errorMessage="Storage have to be a number" label="Storage"></TextInput>
-
+        <TextInput bind:value={param.keyName} isError={!validateName(param.keyName)} errorMessage="Name can't be empty or white space" label="Name"></TextInput>
+        <TextInput bind:value={param.key} disabled={true} label="Key"></TextInput>
       </div>
   
       <div class="modal-action"> 

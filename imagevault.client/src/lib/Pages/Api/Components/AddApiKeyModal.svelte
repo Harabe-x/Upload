@@ -7,25 +7,25 @@
      import { validateName,validateStorage } from "../../../../js/Temp/DataValidator";
      import { onEscapeAction,onEnterAction} from "../../../../js/UserInterface/Actions/ModalActions.js";
      import { focusAction } from "../../../../js/UserInterface/Actions/ElementStateAction.js";
+     import {getApiKeyStore} from "@/js/State/ApiKey/ApiKeyStore.js";
 
-     const apiKeyStore = getApiKeys();
+     const apiKeyStore = getApiKeyStore() 
      const dispatcher = createEventDispatcher();
      
     export let isModalVisable = false;
 
      let name = ''; 
-     let storage = '';
 
     function closeModal()
     {
         dispatcher('modalClosed');
     }
-    function addApiKeyToTheStore()
+    async function addApiKeyToTheStore()
     {
-      if(validateName(name) && validateStorage(storage))
+      if(validateName(name) )
       {
-
-          apiKeyStore.addApiKey(name,storage)
+          await apiKeyStore.addKey(name)
+          
           closeModal();
       }
      clearTextBoxes();
@@ -34,7 +34,6 @@
     function clearTextBoxes()
     {
         name = ''; 
-        storage = '';
     }
 
 </script>
@@ -46,7 +45,6 @@
   
       <div class="mt-2 p-2">
         <TextInput  bind:value={name} isError={!validateName(name)} errorMessage="Name can't be empty or white space" label="Name"></TextInput>
-        <TextInput bind:value={storage} isError={!validateStorage(storage)} errorMessage="Storage have to be a number" label="Storage"></TextInput>
       </div>
   
       <div class="modal-action">

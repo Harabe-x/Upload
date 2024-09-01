@@ -2,8 +2,8 @@
     import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 </script>
 
-
 <svelte:head>
+    <title>Loading ...</title>
 </svelte:head>
 
 <div class="w-full h-full flex flex-col items-center justify-center">

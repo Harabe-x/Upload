@@ -15,6 +15,7 @@ import {
 } from "@/js/Constants.js";
 import { getNotificationsStore } from "@/js/State/UserInterface/ToastNotificationStore.js";
 import { getAuthStore } from "@/js/State/Auth/AuthStore.js";
+import {Key} from "svelte-hero-icons";
 
 const apiKeyStore = writable({
     apiKeys: [],
@@ -89,11 +90,10 @@ export function getApiKeyStore() {
             const authStore = getAuthStore();
             const storeData = get(authStore);
 
-            const response = await axios.delete(APIKEY_DELETE_ENDPOINT_URL, {
-                headers: { "Authorization": `Bearer ${storeData.token}` },
-                data: { key }
-            });
-
+            var parsedKey = key.toString();
+            
+             var response = await axios.delete(APIKEY_DELETE_ENDPOINT_URL, { headers: {"Authorization": `Bearer ${storeData.token}`}, data: {key} } );         
+             
             if (response.status === HTTP_STATUS_UNAUTHORIZED) {
                 handleUnauthorized();
                 return;
@@ -110,6 +110,32 @@ export function getApiKeyStore() {
         }
     };
 
+    const addKey = async(key) => {
+        try {
+            const authStore = getAuthStore();
+            const storeData = get(authStore);
+
+            const response = await axios.post(APIKEY_ADD_ENDPOINT_URL, { keyName: key }, {
+                headers: { "Authorization": `Bearer ${storeData.token}` }
+            });
+
+            if (response.status === HTTP_STATUS_UNAUTHORIZED) {
+                handleUnauthorized();
+                return;
+            }
+
+            if (response.status === HTTP_STATUS_OK) {
+                notificationStore.sendNotification(NOTIFICATION_TYPE_SUCCESS, "API key added");
+                await fetchKeys();
+            } else {
+                notificationStore.sendNotification(NOTIFICATION_TYPE_ERROR, "Failed to add API key");
+            }
+        } catch (error) {
+            notificationStore.sendNotification(NOTIFICATION_TYPE_ERROR, error.response.data.message);
+        }
+    }
+    
+    
     const selectKey = (key) => {
         apiKeyStore.update(state => ({
             ...state,
@@ -123,6 +149,7 @@ export function getApiKeyStore() {
         editKey,
         deleteKey,
         selectKey,
+        addKey,
         rotateKey: async (key) => {
             // TODO: Implement rotateKey logic
         }

@@ -4,7 +4,7 @@ import { parse } from "svelte/compiler"
 
 export function validateName(str)
 {
-    return typeof str === 'string' && str.trim().length >  0    
+    return typeof str === 'string' && str.trim().length > 3   
 }
 export function validateStorage(number)
 {
