@@ -148,15 +148,15 @@ public class ApiKeyController : ControllerBase
     /// <returns></returns>
     [HttpDelete("delete")]
     [Authorize]
-    public async Task<IActionResult> DeleteKey([FromBody] string key)
+    public async Task<IActionResult> DeleteKey([FromBody] DeleteKey key)
     {
-        if (string.IsNullOrEmpty(key))
+        if (string.IsNullOrEmpty(key.Key))
             return BadRequest(new Error("Api key can't be empty"));
 
         var id = User.GetClaimValue(ClaimTypes.NameIdentifier);
         try
         {
-            var result = await _apiKeyRepository.DeleteKey(key, id);
+            var result = await _apiKeyRepository.DeleteKey(key.Key, id);
 
             return result.IsSuccess
                 ? NoContent()

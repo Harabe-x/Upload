@@ -139,7 +139,7 @@ export function getApiKeyStore() {
     const selectKey = (key) => {
         apiKeyStore.update(state => ({
             ...state,
-            selectedKey: state.apiKeys.find(apiKey => key === apiKey) || null
+            selectedKey: state.apiKeys.find(apiKey => key === apiKey.key) || null
         }));
     };
 

@@ -28,9 +28,7 @@
 </script>
 
 <div class="flex flex-row items-center w-full">
-    <ApiKeySelector>
-        
-    </ApiKeySelector>
+    <ApiKeySelector> </ApiKeySelector>
 
     <div class="ml-auto">
         <IconButton iconStyle="w-6" icon={ArrowDownTray}> Download </IconButton>

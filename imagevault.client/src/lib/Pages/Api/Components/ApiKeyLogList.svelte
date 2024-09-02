@@ -27,7 +27,7 @@
     onMount(() => {
         fetchLogs();
     })
-
+    
 </script>
 
 
