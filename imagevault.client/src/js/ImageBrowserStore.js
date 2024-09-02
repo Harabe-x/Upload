@@ -1,6 +1,6 @@
 import PreviousMap from "postcss/lib/previous-map";
 import { writable, get } from "svelte/store";
-
+import {HTTP_STATUS_OK} from "@/js/Constants.js"; 
 export default function createImageBrowserStore(apiKey) {
     const store = writable({
         images: [],
@@ -11,14 +11,13 @@ export default function createImageBrowserStore(apiKey) {
         isLoading: false,
     });
 
-    async function fetchImages(limit,currentImage = 0) {
+    async function fetchImages(collectionName,limit,currentImage = 0) {
         if (limit === undefined) return;
 
         try {
             const { currentPage } = get(store);
 
             store.update(state => ({ ...state, isLoading: true    }))
-
             const response = await fetch(`https://picsum.photos/v2/list?page=${currentPage}&limit=${limit}`);
             const data = await response.json();
             const imageUrls = data.map(item => item.download_url);

@@ -46,11 +46,15 @@ export function getApiKeyStore() {
             }
 
             if (response.status === HTTP_STATUS_OK) {
-                apiKeyStore.update(state => ({
-                    ...state,
-                    apiKeys: response.data
-                }));
-            } else {
+                apiKeyStore.update(state => {
+                    const newApiKeys = response.data;
+                    return {
+                        ...state,
+                        apiKeys: newApiKeys,
+                        selectedKey: state.selectedKey === null && newApiKeys.length > 0 ? newApiKeys[0] : state.selectedKey
+                    };
+                })}
+            else {
                 notificationStore.sendNotification(NOTIFICATION_TYPE_ERROR, "Failed to fetch API keys");
             }
 
