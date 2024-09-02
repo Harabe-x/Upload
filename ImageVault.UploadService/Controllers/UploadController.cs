@@ -31,10 +31,13 @@ public class UploadController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<IActionResult> UploadImage(ImageUploadData imageUploadData)
+    public async Task<IActionResult> UploadImage([FromForm]ImageUploadData imageUploadData)
     {
         try
         {
+            if (imageUploadData.Image == null)
+                return BadRequest(new Error("Image was not uploaded"));
+            
             var result = await _uploadRepository.UploadImage(imageUploadData);
             
             return result.IsSuccess

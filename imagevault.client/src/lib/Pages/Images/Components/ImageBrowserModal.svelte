@@ -13,16 +13,24 @@
     import IconDropdown from "../../../Controls/Dropdowns/IconDropdown.svelte";
     import DataFetchingPage from "@/lib/Pages/InfoPages/DataFetchingPage.svelte";
     import {onEscapeAction,onArrowLeftAction,onArrowRight} from "../../../../js/UserInterface/Actions/ModalActions.js";
+    import {getImageManagerStore} from "@/js/State/Image/ImageStore.js";
+    import {getNotificationsStore} from "@/js/State/UserInterface/ToastNotificationStore.js";
+    import {NOTIFICATION_TYPE_SUCCESS} from "@/js/Constants.js";
 
     export let isModalVisable = false;
     export let param;
-    let isError = false;
+    const imageManager = getImageManagerStore(); 
     const dispatcher = createEventDispatcher();
+    const notificationStore = getNotificationsStore(); 
+    let currentIndex = $param;
+    let  imageArrayLength = $imageManager.images.length; 
+    let isError = false;
+    let currentImage; 
 
+    
     function showLoadingAnimation()
     {
         isError = true;
-
     }
     function imageLoaded()
     {
@@ -33,14 +41,31 @@
     }
     function nextImage()
     {
-        param.nextImage();
+        if(currentIndex + 1 >= $imageManager.images.length ) 
+        {
+            // TODO : fetch more images 
+            currentIndex = 0; 
+            return;
+        }
+        
+        currentIndex += 1 ; 
     }
     function previousImage()
     {
-        param.previousImage();
+        if(currentIndex - 1 <= 0 )
+        {
+            // TODO : fetch previous page
+            currentIndex =  $imageManager.images.length - 1;
+            return;
+        }
+        
+        currentIndex -= 1;
     }
-
-
+    function sendNotification(message)
+    {
+        notificationStore.sendNotification(NOTIFICATION_TYPE_SUCCESS,message)
+    }
+    
 </script>
 
 {#if isModalVisable }
@@ -57,16 +82,16 @@
                 <div class="flex items-center w-1/3 justify-end mr-3 gap-3 sm:gap-1">
                     <div class="block sm:hidden">
                         <IconDropdown icon={EllipsisVertical}>
-                            <li><a><Icon src={ArrowDownTray} class="w-4" />Download</a></li>
-                            <li><a><Icon src={ArrowUpOnSquare} class="w-4" />Share</a></li>
-                            <li><a><Icon src={Trash} class="w-4" />Delete</a></li>
-                            <li><a><Icon src={InformationCircle} class="w-4" />File info</a></li>
+                            <li><button><Icon src={ArrowDownTray} class="w-4" />Download</button></li>
+                            <li ><button><Icon src={ArrowUpOnSquare} class="w-4" />Share</button></li>
+                            <li><button><Icon src={Trash} class="w-4" />Delete</button></li>
+                            <li><button><Icon src={InformationCircle} class="w-4" />File info</button></li>
                         </IconDropdown>
                     </div>
 
                     <!-- Buttons and dropdown for larger screens (tablet and desktop) -->
                     <div class="hidden sm:flex items-center gap-1">
-                        <IconButton icon={ArrowUpOnSquare} iconStyle="w-5" flipIcons={true}></IconButton>
+                        <IconButton icon={ArrowUpOnSquare}   iconStyle="w-5" flipIcons={true}></IconButton>
                         <IconButton icon={ArrowDownTray} iconStyle="w-5 sm:w-3" flipIcons={true} buttonStyle="bg-success text-primary-content">Download</IconButton>
                         <IconDropdown icon={EllipsisVertical}>
                             <li><a><Icon src={Trash} class="w-4" />Delete</a></li>
@@ -82,8 +107,8 @@
                 </div>
 
                 <div class="w-[70%] flex justify-center items-center overflow-hidden">
-                    {#key $param.currentImage}
-                        <img src={param.getCurrentImage()} on:load={imageLoaded}  class:hidden={isError}  on:error={showLoadingAnimation} alt=" " class="max-w-full max-h-full h-full w-full object-contain rounded-xl overflow-auto">
+                    {#key currentImage}
+                        <img src={ "https://"+$imageManager.images[currentIndex].imageUrl}  alt=" " class="max-w-full max-h-full h-full w-full object-contain rounded-xl overflow-auto">
                         {#if isError}
                                 <DataFetchingPage></DataFetchingPage>
                         {/if}

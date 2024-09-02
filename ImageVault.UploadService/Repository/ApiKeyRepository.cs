@@ -39,7 +39,9 @@ public class ApiKeyRepository : IApiKeyRepository
             UserId = apiKey.UserId
         };
 
+        
         await _dbContext.ApiKeys.AddAsync(key);
+        
 
         return await SaveChanges()
             ? new OperationResultDto<bool>(true, true, null)

@@ -15,6 +15,6 @@ public static class CollectionMapper
     /// <returns></returns>
     public static ImageCollectionDto MapToCollectionDto(this ImageCollection collection)
     {
-        return new ImageCollectionDto(collection.CollectionName, collection.Description, collection.CollectionCoverUrl, collection.TotalImages);
+        return new ImageCollectionDto(collection.Id,collection.CollectionName, collection.Description, collection.CollectionCoverUrl, collection.TotalImages);
     }
 }

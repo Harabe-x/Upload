@@ -38,11 +38,11 @@ public class ImageController : ControllerBase
     }
 
     [HttpPost("get/paged")]
-    public async Task<IActionResult> GetPagedImages([FromBody] GetImagesDto imageData, [FromQuery] int pageNumber = 1, [FromQuery] int limit = 10 )
+    public async Task<IActionResult> GetPagedImages([FromBody] GetPagedImages imageData)
     {
         try
         {
-            var result = await _imageManager.GetPagedImages(imageData.ApiKey, pageNumber, limit, imageData.CollectionName);
+            var result = await _imageManager.GetPagedImages(imageData.ApiKey, imageData.Page,imageData.Limit, imageData.CollectionName);
             return result.IsSuccess
                 ? Ok(result.Value)
                 : BadRequest(result.Error);

@@ -8,4 +8,4 @@ namespace ImageVault.ImageService.Data.Dtos.Collection;
 /// <param name="CollectionDescription">Description of the collection</param>
 /// <param name="CollectionCoverUrl">Url to collection cover </param>
 /// <param name="TotalImages">The total number of images contained in the collection</param>
-public record ImageCollectionDto(string CollectionName, string CollectionDescription, string CollectionCoverUrl,uint TotalImages);
+public record ImageCollectionDto(string Id,string CollectionName, string CollectionDescription, string CollectionCoverUrl,uint TotalImages);

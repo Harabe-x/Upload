@@ -5,19 +5,26 @@
     import {createEventDispatcher} from "svelte";
     import {Check, XMark} from "svelte-hero-icons";
     import {onEscapeAction,onEnterAction} from "../../../../js/UserInterface/Actions/ModalActions.js";
+    import {getImageManagerStore} from "@/js/State/Image/ImageStore.js";
 
     const dispatcher = createEventDispatcher();
+    const imageManagerStore = getImageManagerStore()
+    
     export let isModalVisable = false;
+    export let param; 
     let title;
     let description;
-
+  
 
     function closeModal()
     {
         dispatcher('modalClosed')
     }
-    function addCollection()
+    async function addCollection()
     {
+        if (title.length < 3) return 
+        
+        await imageManagerStore.addCollection(param.key, title, description)
         closeModal()
     }
 

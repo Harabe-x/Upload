@@ -7,7 +7,7 @@
     export let buttonStyle = null; 
     export let iconStyle = null; 
     export let flipIcons = false;
-
+    export let disabled = false; 
     function invokeEvent(event)
     {
        dispatcher(event.type)
@@ -15,7 +15,7 @@
 
 </script>
 
-<button class="btn btn-ghost btn-sm normal-case {buttonStyle}" on:click={invokeEvent}>
+<button class="btn btn-ghost btn-sm normal-case {buttonStyle}" {disabled} on:click={invokeEvent}>
     {#if flipIcons === false}
     <Icon src={icon} class="{iconStyle}"></Icon>
     <slot/>

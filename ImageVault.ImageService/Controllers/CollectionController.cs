@@ -23,11 +23,11 @@ public class CollectionController : ControllerBase
 
 
     [HttpPost("list")]
-    public async Task<IActionResult> ListCollection([FromBody] string apiKey)
+    public async Task<IActionResult> ListCollection([FromBody] ListCollections data)
     {
         try
         {
-            var result = await _imageManager.ListCollections(apiKey);
+            var result = await _imageManager.ListCollections(data.Key);
             return result.IsSuccess
                 ? Ok(result.Value)
                 : BadRequest(result.Error);

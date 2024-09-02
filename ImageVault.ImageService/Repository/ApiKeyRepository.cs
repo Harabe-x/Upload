@@ -46,8 +46,17 @@ public class ApiKeyRepository : IApiKeyRepository
             UserId = apiKey.UserId
         };
 
+        var defaultCollection = new ImageCollection()
+        {
+            ApiKey = apiKey.Key,
+            Description = "",
+            CollectionName = "default",
+        };
+        
         await _dbContext.ApiKeys.AddAsync(key);
-
+        // I need to add the default collection directly because if I wanted to get the ImageManagerRepository here it would create a circular dependency, and I definitely want to avoid that
+        await _dbContext.ImageCollections.AddAsync(defaultCollection);
+        
         return await SaveChanges()
             ? new OperationResultDto<bool>(true, true, null)
             : new OperationResultDto<bool>(false, false, new Error("Something went wrong")); 

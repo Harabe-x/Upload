@@ -1,12 +1,15 @@
 <script>
 import SelectInput from "@/lib/Controls/Inputs/SelectInput.svelte";
 import {getApiKeyStore} from "@/js/State/ApiKey/ApiKeyStore.js";
-import {onMount} from "svelte";
+import {createEventDispatcher, onMount} from "svelte";
 import {get} from "svelte/store";
+import {getImageManagerStore} from "@/js/State/Image/ImageStore.js";
+
 
 const apiKeyStore = getApiKeyStore(); 
-
-
+const dispatcher = createEventDispatcher()
+const imageManagerStore = getImageManagerStore()
+    
 onMount( async () => { 
     await fetchKeys();
 })
@@ -24,6 +27,9 @@ async function fetchKeys()
 function selectKey(event)
 {
     apiKeyStore.selectKey(event.detail.target.value);
+    imageManagerStore.clearFetchedData()
+    
+    dispatcher(event.type,event)
 }
 
 </script>
@@ -31,7 +37,7 @@ function selectKey(event)
 {#await apiKeyStore.fetchKeys()}
       Fetching
     {:then _ }
-    <SelectInput bind:value={$apiKeyStore.selectedKey.key} on:change={selectKey} title="Selected key:">
+    <SelectInput value={$apiKeyStore.selectedKey.key} on:change={selectKey} title="Selected key:">
         {#each $apiKeyStore.apiKeys as key (key.key)}
             <option value={key.key}> {key.keyName} </option>
         {/each}

@@ -64,7 +64,7 @@ export default function createImageBrowserStore(apiKey) {
                         fetchImages(32,state.images.length - 1);
                         return state;
                     }
-                    return state;``
+                    return state;
                 }
                 return { ...state, currentImage: prevImage };
             });

@@ -5,7 +5,7 @@
 
     export let collection;
     export let imgSrc;
-    export let displayImage = true;
+    export let displayImage = false;
 
     const dispatcher = createEventDispatcher();
 
@@ -20,10 +20,10 @@
     {
         console.log(event.type)
         dispatcher(event.type)
-     }
+    }
 </script>
 
-<div class="carousel-item w-full h-full lg:w-fit  rounded-xl sm:w-fit  cursor-pointer relative">
+<div class="carousel-item w-full h-full sm:w-full  lg:w-1/3  rounded-xl  cursor-pointer relative">
     {#if displayImage}
         <button on:click={dispatchEvent}>
             <img
@@ -37,11 +37,11 @@
             <span  class="text-white">{collection.CollectionName}</span>
         </div>
     {:else}
-              <button class="carousel-item max-h-full h-full w-full"  on:click={dispatchEvent}>
-                  <div class="flex flex-col  justify-center items-center max-h-full h-full w-full bg-base-300 rounded-md  max-w-[60%] lg:max-w-full md:max-w-full ">
-                      <span class="font-semibold ">{collection.CollectionName}</span>
-                  </div>
-              </button>
+        <button class="carousel-item max-h-full h-full w-full"  on:click={dispatchEvent}>
+            <div class="flex flex-col  justify-center items-center max-h-full h-full w-full bg-base-300 rounded-md  max-w-[60%] lg:max-w-full md:max-w-full ">
+                <span class="font-semibold ">{collection.CollectionName}</span>
+            </div>
+        </button>
     {/if}
 
 </div>
