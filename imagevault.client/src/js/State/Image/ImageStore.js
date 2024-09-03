@@ -13,23 +13,16 @@ import {
     UPLOAD_ENDPOINT_URL
 } from "@/js/Constants.js";
 import axios from "axios";  
-import { getApiKeyStore} from "@/js/State/ApiKey/ApiKeyStore.js";
 import { getAuthStore} from "@/js/State/Auth/AuthStore.js";
 import {getNotificationsStore} from "@/js/State/UserInterface/ToastNotificationStore.js";
-import {state} from "@lottiefiles/svelte-lottie-player/src/components/store.js";
-import createImageBrowserStore from "@/js/ImageBrowserStore.js";
-import {Fire} from "svelte-hero-icons";
-import {data} from "autoprefixer";
+;
 
-
-
-const page = 1; 
 
 const imageStore = writable({
       collections : [], 
       images : [], 
-      currentImage: 0,
       currentPage: 1,
+      limit : 5, 
       nextPageCallback : () => { }, 
       previousPageCallback : () => { },
     })
@@ -148,6 +141,20 @@ export function getImageManagerStore()
              notificationStore.sendNotification(NOTIFICATION_TYPE_ERROR, "Image upload failed")
          }
      }
+     const nextPage = () => { 
+        imageStore.update((state) =>  ({
+            ...state,
+            currentPage: state.currentPage + 1 
+        })) 
+     }
+     const previousPage = () => { 
+        imageStore.update((state) => {  
+            if(state.currentPage === 1) return state; 
+            
+            return { ...state, currentPage: state.currentPage - 1}
+        }); 
+     }
+     
 
      
     return { 
@@ -157,7 +164,9 @@ export function getImageManagerStore()
         addCollection, 
         deleteImage, 
         clearFetchedData,
-        uploadImage
+        uploadImage,
+        nextPage,
+        previousPage,
     }
 }
 

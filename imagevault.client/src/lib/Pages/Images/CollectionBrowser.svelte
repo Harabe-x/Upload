@@ -1,81 +1,116 @@
-  <script>
-    import {ArrowLeft, ArrowPath, Icon, Plus} from "svelte-hero-icons";
-    import IconButton from "../../Controls/Buttons/IconButton.svelte";
+<script>
     import PageTopMenu from "../../Controls/Shared/PageTopMenu.svelte";
-    import ImageFrame from "./Components/ImageFrame.svelte";
-    import ModalWindow from "../../Controls/Shared/ModalWindow.svelte";
-    import DataPaginator from "../../Controls/Shared/DataPaginator.svelte";
+    import IconButton from "../../Controls/Buttons/IconButton.svelte";
     import Card from "../../Controls/Cards/Card.svelte";
+    import ImageFrame from "./Components/ImageFrame.svelte";
+    import DataPaginator from "../../Controls/Shared/DataPaginator.svelte";
+    import CollectionBrowser from "./CollectionBrowser.svelte";
+    import ModalWindow from "../../Controls/Shared/ModalWindow.svelte";
+    import {ArrowLeft, ArrowPath, ArrowRight, Plus} from "svelte-hero-icons";
     import {onMount} from "svelte";
-    import pageHeaderNameStore from "../../../js/Temp/PageHeaderNameStore.js";
-    import {getSelectedCollectionDataStore} from "../../../js/Temp/SelectedCollectionStore.js";
-    import ImagesPage from "./ImagesPage.svelte";
-    import {getNavigationStore} from "../../../js/Temp/NavigationStore.js";
-    import createImageBrowserStore from "../../../js/ImageBrowserStore.js";
-    import {get} from "svelte/store";
+    import {getImageManagerStore} from "@/js/State/Image/ImageStore.js";
+    import {getApiKeyStore} from "@/js/State/ApiKey/ApiKeyStore.js";
+    import {get, writable} from "svelte/store";
+    import {getCollectionBrowserStore} from "@/js/State/Image/CollectionBrowserStore.js";
+    import PageHeaderNameStore from "@/js/Temp/PageHeaderNameStore.js";
+    import {navigate} from "svelte-routing";
 
-    const selectedPageStore = getSelectedCollectionDataStore();
-    const pageHeaderStore = pageHeaderNameStore()
-    const navigationStore = getNavigationStore()
-    const imageBrowserStore = createImageBrowserStore();
-    const imagesPerPage = 32;
-
+    const imageManagerStore = getImageManagerStore();
+    const apiKeyStore = getApiKeyStore();
+    const collectionBrowserStore = getCollectionBrowserStore()
+    const pageHeaderStore = PageHeaderNameStore()
+        
+    let selectedImage = writable({ selectedIndex : 0, apiKey: "", collectionName:""  })
     let imageModalToggleFunction;
     let addImageModalToggleFunction;
-    let nextPageFunction;
-    let previousPageFunction;
-
-    onMount(() => {
-        pageHeaderStore.update(_ => {
-            return get(selectedPageStore).CollectionName + ' Collection';
-        })
-
-        imageBrowserStore.setNextPageCallback(nextPageFunction)
-        imageBrowserStore.setPreviousPageCallback(previousPageFunction)
-        imageBrowserStore.fetchImages(imagesPerPage)
+    let addCollectionModalToggleFunction;
+    let addImageData;
+    
+    onMount(async () => {
+        pageHeaderStore.set( $collectionBrowserStore.collectionName + " collection")
+        await fetchNecessaryData()
     })
 
-    function changePage(event)
+    async function fetchNecessaryData()
     {
-        imageBrowserStore.goToSelectedPage(event.detail)
+        const apiStoreValue =   get(apiKeyStore)
+        await imageManagerStore.fetchCollections(apiStoreValue.selectedKey.key);
+        await imageManagerStore.fetchImages(apiStoreValue.selectedKey.key,$collectionBrowserStore.collectionName,$imageManagerStore.limit,1)
     }
 
-    function goBack()
+    async function nextPage()
     {
-        pageHeaderStore.update(_ => { return "Images"})
-        navigationStore.update(_ => { return ImagesPage });
+        if($imageManagerStore.images.length < $imageManagerStore.limit) return;
+
+        const apiStoreValue =   get(apiKeyStore)
+        imageManagerStore.nextPage();
+        await imageManagerStore.fetchImages(apiStoreValue.selectedKey.key,$collectionBrowserStore.collectionName,$imageManagerStore.limit,$imageManagerStore.currentPage)
+    }
+
+    async function previousPage()
+    {
+        const apiStoreValue =   get(apiKeyStore)
+        imageManagerStore.previousPage();
+        await imageManagerStore.fetchImages(apiStoreValue.selectedKey.key,$collectionBrowserStore.collectionName,$imageManagerStore.limit,$imageManagerStore.currentPage)
+    }
+
+    function openAddImageDialog()
+    {
+        const apiKeyData = get(apiKeyStore)
+        const imageManagerData = get(imageManagerStore)
+        addImageData = writable({
+            collections:imageManagerData.collections,
+            collection: $collectionBrowserStore.collectionName,
+            key : apiKeyData.selectedKey.key,
+        })
+
+        addImageModalToggleFunction();
+    }
+    function backToImagePage()
+    {
+        navigate("/app/images")
     }
 
 </script>
 
-<PageTopMenu>
-    <div slot="leftSide">
-        <IconButton icon={ArrowLeft} on:click={goBack} iconStyle="w-4 ml-1 ">Back</IconButton>
-    </div>
-
-    <div slot="rightSide">
-        <IconButton icon={ArrowPath} iconStyle="w-4 ml-1 ">Refresh</IconButton>
-    </div>
-</PageTopMenu>
-
-<div class="grid grid-rows-1">
-    <Card title="Collection Images" >
-        <div  slot="titleControl" class="ml-auto">
-            <IconButton icon={Plus} iconStyle="w-4" on:click={addImageModalToggleFunction} > Add Image  </IconButton>
+<div>
+    <PageTopMenu>
+        <div slot="leftSide">
+            <IconButton on:click={backToImagePage} iconStyle="w-4 mr-1" icon={ArrowLeft}>
+                Back
+            </IconButton>
         </div>
-            <div class="grid lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-1 gap-10">
-            {#each  $imageBrowserStore.images as image (image)}
-                <button on:click={() => { imageBrowserStore.selectImage(image);  imageModalToggleFunction() }}>
-                    <ImageFrame imgSrc={image}></ImageFrame>
+        <div slot="rightSide">
+            <IconButton iconStyle="w-4 mr-1" icon={ArrowPath}>
+                Refresh
+            </IconButton>
+        </div>
+
+    </PageTopMenu>
+
+</div>
+
+
+<div class="grid grid-cols-1 grid-rows-1">
+    <Card title="All Images">
+        <div slot="titleControl" class="ml-auto">
+            <IconButton icon={Plus} iconStyle="w-4" on:click={openAddImageDialog}>  Add Image </IconButton>
+        </div>
+        <div class="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-10">
+            {#each $imageManagerStore.images as image (image.key)}
+                <button on:click={() => { selectedImage.update((state) => ({ ...state, selectedIndex: $imageManagerStore.images.indexOf(image) , apiKey: $apiKeyStore.selectedKey, collectionName: image.collectionName  }));imageModalToggleFunction(); }}>
+                    <ImageFrame imgTitle={image.title} imgSrc={image.imageUrl}></ImageFrame>
                 </button>
+
             {/each}
         </div>
-
-        <div class="flex flex-row items-center justify-center mr-4  mt-5">
-            <DataPaginator on:navigatedToNextPage={changePage} on:navigatedToPreviousPage={changePage} bind:nextPage={nextPageFunction} bind:previousPage={previousPageFunction}></DataPaginator>
-        </div>
+            <div class="flex flex-row items-center justify-center mr-4  mt-5">
+                <DataPaginator currentPage={$imageManagerStore.currentPage} on:navigatedToNextPage={nextPage} on:navigatedToPreviousPage={previousPage} ></DataPaginator>
+            </div>
     </Card>
 </div>
 
-<ModalWindow type="AddImageModal" bind:toggleModal={addImageModalToggleFunction} ></ModalWindow>
-<ModalWindow type="ImageBrowserModal" param={imageBrowserStore} bind:toggleModal={imageModalToggleFunction}> </ModalWindow>
+
+<ModalWindow bind:toggleModal={imageModalToggleFunction} param={selectedImage} type="ImageBrowserModal" ></ModalWindow>
+<ModalWindow bind:toggleModal={addImageModalToggleFunction}  param={addImageData} type="AddImageModal" ></ModalWindow>
+<ModalWindow bind:toggleModal={addCollectionModalToggleFunction} param={$apiKeyStore.selectedKey} type="AddCollectionModal"></ModalWindow>

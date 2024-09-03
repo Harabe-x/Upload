@@ -3,7 +3,7 @@
     import { createEventDispatcher } from "svelte";
     import { ChevronLeft,ChevronRight } from "svelte-hero-icons";
     
-    let currentPage = 1;
+    export let currentPage = 1;
 
     
 
@@ -12,17 +12,12 @@
     // Returns pageNumber as event.detail
     export function nextPage()
     {   
-        currentPage += 1; 
-        dispatcher('navigatedToNextPage',currentPage)
+       dispatcher('navigatedToNextPage',currentPage)
     }
-    // Returns pageNumber as event.detail   
      export function previousPage()
     {
-        if(currentPage - 1 < 1) return; 
-
-        currentPage-=1;
         dispatcher('navigatedToPreviousPage',currentPage)
-    }
+     }
 
 </script>
 

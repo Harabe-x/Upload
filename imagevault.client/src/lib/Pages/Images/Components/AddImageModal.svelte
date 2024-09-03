@@ -27,7 +27,10 @@
     async function savePhoto()
     {
         isAddImageButtonDisabled = true; 
-        await imageManager.uploadImage(image, $param.key, collectionName, title, description, useCompression)
+        
+        if ($param.collection === "" ) await imageManager.uploadImage(image, $param.key, collectionName, title, description, useCompression)
+        else await imageManager.uploadImage(image, $param.key, $param.collection, title, description, useCompression)
+
         closeModal()
     }
     
@@ -40,11 +43,16 @@
             <TextInput disabled={true} label="Key"  bind:value={$param.key}></TextInput>
             <TextInput label="Title" bind:value={title}></TextInput>
             <TextInput label="Description" bind:value={description}></TextInput>
-            <SelectInput bind:value={collectionName}  title="Collection:">
-                {#each $param.collections as collection}
-                    <option  >{collection.collectionName}</option>
-                {/each}
-            </SelectInput>
+            
+            {#if $param.collection === ""}
+                <SelectInput bind:value={collectionName}  title="Collection:">
+                    {#each $param.collections as collection}
+                        <option  >{collection.collectionName}</option>
+                    {/each}
+                </SelectInput>
+                {:else }
+                <TextInput disabled={true} label="Collection"  bind:value={$param.collection}></TextInput>
+                 {/if}
             <ToggleSwitch title="Use compression ?" bind:value={useCompression}></ToggleSwitch>
             <FIleInput bind:value={image} label="Image"></FIleInput>
             <div class="modal-action  ">

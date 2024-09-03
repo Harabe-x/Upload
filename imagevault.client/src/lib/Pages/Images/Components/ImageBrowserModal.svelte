@@ -16,56 +16,59 @@
     import {getImageManagerStore} from "@/js/State/Image/ImageStore.js";
     import {getNotificationsStore} from "@/js/State/UserInterface/ToastNotificationStore.js";
     import {NOTIFICATION_TYPE_SUCCESS} from "@/js/Constants.js";
+    import {getApiKeyStore} from "@/js/State/ApiKey/ApiKeyStore.js";
 
     export let isModalVisable = false;
     export let param;
     const imageManager = getImageManagerStore(); 
     const dispatcher = createEventDispatcher();
-    const notificationStore = getNotificationsStore(); 
-    let currentIndex = $param;
+    const notificationStore = getNotificationsStore();
+    let apiKeyStore = getApiKeyStore(); 
+    let currentIndex = $param.selectedIndex;
     let  imageArrayLength = $imageManager.images.length; 
+    let currentPage = 1;
     let isError = false;
-    let currentImage; 
+    let currentImage;
 
     
-    function showLoadingAnimation()
-    {
-        isError = true;
-    }
-    function imageLoaded()
-    {
-        isError = false;
-    }
     function closeModal() {
         dispatcher('modalClosed');
     }
-    function nextImage()
+   async function nextImage()
     {
-        if(currentIndex + 1 >= $imageManager.images.length ) 
+        
+        
+        if(currentIndex + 1 >= $imageManager.images.length )
         {
-            // TODO : fetch more images 
-            currentIndex = 0; 
+            if( $imageManager.images.length < $imageManager.limit) return;
+
+            currentIndex = 0;
+            imageManager.nextPage();
+            await imageManager.fetchImages($param.apiKey.key, $param.collectionName,$imageManager.limit,$imageManager.currentPage)
             return;
         }
-        
-        currentIndex += 1 ; 
+
+        currentIndex += 1 ;
     }
-    function previousImage()
+    async function previousImage()
     {
-        if(currentIndex - 1 <= 0 )
+        if(currentIndex - 1 < 0 )
         {
-            // TODO : fetch previous page
+            imageManager.previousPage();
+            await imageManager.fetchImages($param.apiKey.key, $param.collectionName,$imageManager.limit,$imageManager.currentPage)
             currentIndex =  $imageManager.images.length - 1;
             return;
         }
-        
+
         currentIndex -= 1;
     }
+    
     function sendNotification(message)
     {
         notificationStore.sendNotification(NOTIFICATION_TYPE_SUCCESS,message)
     }
-    
+
+
 </script>
 
 {#if isModalVisable }
@@ -108,9 +111,10 @@
 
                 <div class="w-[70%] flex justify-center items-center overflow-hidden">
                     {#key currentImage}
-                        <img src={ "https://"+$imageManager.images[currentIndex].imageUrl}  alt=" " class="max-w-full max-h-full h-full w-full object-contain rounded-xl overflow-auto">
-                        {#if isError}
-                                <DataFetchingPage></DataFetchingPage>
+                        {#if  $imageManager.images.length !== 0}
+                        <img src={ "https://"+$imageManager.images[currentIndex].imageUrl}   class="max-w-full max-h-full h-full w-full object-contain rounded-xl overflow-auto">
+                            {:else}
+                              <span class="text-2xl"> You reached end of collection imagaes. </span>
                         {/if}
                     {/key}
                 </div>

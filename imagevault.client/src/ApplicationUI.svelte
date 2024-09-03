@@ -14,6 +14,7 @@
     import BillingPage from "@/lib/Pages/Settings/Billing/BillingPage.svelte";
     import LoginPage from "@/lib/Pages/UserAuth/LoginPage.svelte";
     import {getContext} from "svelte";
+    import CollectionBrowser from "@/lib/Pages/Images/CollectionBrowser.svelte";
 
     const navbarStateStore = getNavBarStateStore();
     const navigation = getNavigationStore();
@@ -34,13 +35,14 @@
             <Route path="/" component={DashboardPage}></Route>
             <Route path="/api" component={ApiPage}></Route>
             <Route path="/images" component={ImagesPage}></Route>
+            <Route path="/collectionBrowser"  component={CollectionBrowser}></Route>
             <Route path="/settings/profile" component={ProfilePage}></Route>
             <Route path="/settings/billing"  component={BillingPage}></Route>
             <Route path="/login" component={LoginPage}></Route>
         </PageContent>
         <NavigationBar></NavigationBar>
     </div>
-</Router>
+</Router>s
 
 <style>
 
