@@ -8,6 +8,7 @@
     import {getAuthStore} from "@/js/State/Auth/AuthStore.js";
     import {get} from "svelte/store";
     import {validateColorScheme,validateEmail, validatePassword, validateName} from "@/js/Validation/UserProfileValidation.js";
+    import {DotLottieSvelte} from "@lottiefiles/dotlottie-svelte";
 
     let dataValidationStatus = {
          isFirstNameValid : true,
@@ -90,14 +91,12 @@
                 <div class="hero-content w-full py-12 bg-base-300">
                     <div class="text-center">
                         <h1 class="text-2xl font-semibold">ImageVault</h1>
-                        <div class="w-full h-full flex flex-col items-center justify-center">
-                            <LottiePlayer
+                        <div class="w-[62rem] h-full flex flex-col items-center justify-center">
+                            <DotLottieSvelte
                                     loop={true}
-                                    autoplay={false}
-                                    background=""
-                                    style="width: 32rem; margin-right: 1rem"
+                                    autoplay={true}
                                     src="https://lottie.host/a01f59c1-5f8a-49b1-b519-2bf3ea6653b2/9xoIpWGXxT.json">
-                            </LottiePlayer>
+                            </DotLottieSvelte>
                             <p>Already have account? <a class="link" href="/login" use:link> Login </a> </p>
                         </div>
                     </div>

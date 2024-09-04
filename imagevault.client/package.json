@@ -20,6 +20,7 @@
     "vite-plugin-mkcert": "^1.17.6"
   },
   "dependencies": {
+    "@lottiefiles/dotlottie-svelte": "^0.3.18",
     "@lottiefiles/svelte-lottie-player": "^0.1.4",
     "axios": "^1.7.4",
     "chance": "^1.1.11",

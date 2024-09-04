@@ -98,7 +98,7 @@ public class ImageController : ControllerBase
             var result = await _imageManager.DeleteImage(imageData.ApiKey,imageData.ImageKey,imageData.CollectionName);
 
             return result.IsSuccess
-                ? Ok(result.Value)
+                ? NoContent()
                 : BadRequest(result.Error);
         }
         catch (Exception e)

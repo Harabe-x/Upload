@@ -11,33 +11,37 @@
         XMark
     } from "svelte-hero-icons";
     import IconDropdown from "../../../Controls/Dropdowns/IconDropdown.svelte";
-    import DataFetchingPage from "@/lib/Pages/InfoPages/DataFetchingPage.svelte";
     import {onEscapeAction,onArrowLeftAction,onArrowRight} from "../../../../js/UserInterface/Actions/ModalActions.js";
     import {getImageManagerStore} from "@/js/State/Image/ImageStore.js";
     import {getNotificationsStore} from "@/js/State/UserInterface/ToastNotificationStore.js";
     import {NOTIFICATION_TYPE_SUCCESS} from "@/js/Constants.js";
     import {getApiKeyStore} from "@/js/State/ApiKey/ApiKeyStore.js";
+    import ModalWindow from "@/lib/Controls/Shared/ModalWindow.svelte";
+    import {writable} from "svelte/store";
 
     export let isModalVisable = false;
     export let param;
     const imageManager = getImageManagerStore(); 
     const dispatcher = createEventDispatcher();
     const notificationStore = getNotificationsStore();
-    let apiKeyStore = getApiKeyStore(); 
+    const imageDeleteStore = writable({ 
+        apiKey : $param.apiKey.key,
+        collection : $param.collectionName,
+        imageKey : "", 
+    })
+    let fileInfoStore = writable({});
+    
+    let apiKeyStore = getApiKeyStore();
     let currentIndex = $param.selectedIndex;
-    let  imageArrayLength = $imageManager.images.length; 
-    let currentPage = 1;
-    let isError = false;
     let currentImage;
-
+    let openDeleteModalFunction;
+    let openFileInfoModalFunction;
     
     function closeModal() {
         dispatcher('modalClosed');
     }
    async function nextImage()
     {
-        
-        
         if(currentIndex + 1 >= $imageManager.images.length )
         {
             if( $imageManager.images.length < $imageManager.limit) return;
@@ -87,7 +91,7 @@
                         <IconDropdown icon={EllipsisVertical}>
                             <li><button><Icon src={ArrowDownTray} class="w-4" />Download</button></li>
                             <li ><button><Icon src={ArrowUpOnSquare} class="w-4" />Share</button></li>
-                            <li><button><Icon src={Trash} class="w-4" />Delete</button></li>
+                            <li><button  on:click={() => { imageDeleteStore.update(state => { return {...state , imageKey:$imageManager.images[currentIndex].key }}) ; openDeleteModalFunction();  }} ><Icon src={Trash} class="w-4" />Delete</button></li>
                             <li><button><Icon src={InformationCircle} class="w-4" />File info</button></li>
                         </IconDropdown>
                     </div>
@@ -97,9 +101,9 @@
                         <IconButton icon={ArrowUpOnSquare}   iconStyle="w-5" flipIcons={true}></IconButton>
                         <IconButton icon={ArrowDownTray} iconStyle="w-5 sm:w-3" flipIcons={true} buttonStyle="bg-success text-primary-content">Download</IconButton>
                         <IconDropdown icon={EllipsisVertical}>
-                            <li><a><Icon src={Trash} class="w-4" />Delete</a></li>
-                            <li><a><Icon src={InformationCircle} class="w-4" />File info</a></li>
-                        </IconDropdown>
+                            <li><button  on:click={() => { imageDeleteStore.update(state => { return {...state , imageKey:$imageManager.images[currentIndex].key }}) ; openDeleteModalFunction();  }} ><Icon src={Trash} class="w-4" />Delete</button></li>
+                            <li><button on:click={() => { fileInfoStore.set($imageManager.images[currentIndex]); openFileInfoModalFunction(); }}><Icon src={InformationCircle} class="w-4" />File info</button></li>
+                        </IconDropdown> 
                     </div>
                 </div>
             </div>
@@ -132,3 +136,6 @@
         </div>
     </div>
 {/if}
+
+<ModalWindow bind:toggleModal={openDeleteModalFunction} param={imageDeleteStore} type="DeleteImageModal"></ModalWindow>
+<ModalWindow bind:toggleModal={openFileInfoModalFunction} param={fileInfoStore} type="ImageInfoModal"></ModalWindow>

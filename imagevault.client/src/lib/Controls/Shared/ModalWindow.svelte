@@ -6,6 +6,8 @@
     import ImageBrowserModal from "../../Pages/Images/Components/ImageBrowserModal.svelte";
     import AddCollectionModal from "../../Pages/Images/Components/AddCollectionModal.svelte";
     import { onMount } from "svelte";
+    import DeleteImageModal from "@/lib/Pages/Images/Components/DeleteImageModal.svelte";
+    import ImageInfoModal from "@/lib/Pages/Images/Components/ImageInfoModal.svelte";
     
     export let type; 
     export let param = null; 
@@ -20,6 +22,9 @@
         componentDictionary.set('AddImageModal',AddImageModal)
         componentDictionary.set('ImageBrowserModal',ImageBrowserModal)
         componentDictionary.set('AddCollectionModal',AddCollectionModal)
+        componentDictionary.set('DeleteImageModal',DeleteImageModal)
+        componentDictionary.set('ImageInfoModal',ImageInfoModal)
+        
     })
 
     

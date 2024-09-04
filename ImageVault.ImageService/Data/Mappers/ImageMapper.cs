@@ -16,7 +16,7 @@ public static class ImageMapper
     /// <returns></returns>
     public static ImageDto MapToImageDto(this Image image)
     {
-        return new ImageDto(image.Key, image.Url, image.Collection, image.Title, image.Description, image.ImageFormat,image.CreatedAt);
+        return new ImageDto(image.Key, image.Url, image.Collection, image.Title, image.Description, image.ImageFormat,image.CreatedAt,image.ImageSize);
     }
 
     /// <summary>

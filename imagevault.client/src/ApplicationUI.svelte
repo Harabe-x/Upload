@@ -15,6 +15,7 @@
     import LoginPage from "@/lib/Pages/UserAuth/LoginPage.svelte";
     import {getContext} from "svelte";
     import CollectionBrowser from "@/lib/Pages/Images/CollectionBrowser.svelte";
+    import NotFoundPage from "@/lib/Pages/InfoPages/NotFoundPage.svelte";
 
     const navbarStateStore = getNavBarStateStore();
     const navigation = getNavigationStore();
@@ -39,6 +40,8 @@
             <Route path="/settings/profile" component={ProfilePage}></Route>
             <Route path="/settings/billing"  component={BillingPage}></Route>
             <Route path="/login" component={LoginPage}></Route>
+            <Route path="*" component={NotFoundPage}></Route>
+
         </PageContent>
         <NavigationBar></NavigationBar>
     </div>

@@ -15,12 +15,12 @@
      import { getCollectionBrowserStore} from "@/js/State/Image/CollectionBrowserStore.js";
      import {navigate} from "svelte-routing";
      import PageHeaderNameStore from "@/js/Temp/PageHeaderNameStore.js";
+     import NoImagesYet from "@/lib/Pages/Images/Components/NoImagesYet.svelte";
      
      const imageManagerStore = getImageManagerStore(); 
      const apiKeyStore = getApiKeyStore();
      const collectionBrowser = getCollectionBrowserStore()
      const pageHeaderStore = PageHeaderNameStore()
-     
      let selectedImage = writable({ selectedIndex : 0, apiKey: "", collectionName:""  })
      let imgPages = 10; // Here will be method for fetching totalImgPages
      let imageModalToggleFunction;
@@ -106,19 +106,25 @@
           <div slot="titleControl" class="ml-auto">
                <IconButton icon={Plus} iconStyle="w-4" on:click={openAddImageDialog}>  Add Image </IconButton>
           </div>
-          <div class="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-10">
-               {#each $imageManagerStore.images as image (image.key)}
-                    <button on:click={() => { selectedImage.update((state) => ({ ...state, selectedIndex: $imageManagerStore.images.indexOf(image) , apiKey: $apiKeyStore.selectedKey, collectionName: image.collectionName  }));imageModalToggleFunction(); }}>
-                         <ImageFrame imgTitle={image.title} imgSrc={image.imageUrl}></ImageFrame>
-                    </button>
-                    
-               {/each}
-          </div>
-          {#if imgPages > 1}
-          <div class="flex flex-row items-center justify-center mr-4  mt-5">
-          <DataPaginator currentPage={$imageManagerStore.currentPage} on:navigatedToNextPage={nextPage} on:navigatedToPreviousPage={previousPage} ></DataPaginator>
-          </div>
-     {/if}
+
+
+          {#if $imageManagerStore.images.length !== 0}
+               <div class="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-10">
+                    {#each $imageManagerStore.images as image (image.key)}
+                         <button on:click={() => { selectedImage.update((state) => ({ ...state, selectedIndex: $imageManagerStore.images.indexOf(image) , apiKey: $apiKeyStore.selectedKey, collectionName: image.collectionName  }));imageModalToggleFunction(); }}>
+                              <ImageFrame imgTitle={image.title} imgSrc={image.imageUrl}></ImageFrame>
+                         </button>
+
+                    {/each}
+               </div>
+               <div class="flex flex-row items-center justify-center mr-4  mt-5">
+                    <DataPaginator currentPage={$imageManagerStore.currentPage} on:navigatedToNextPage={nextPage} on:navigatedToPreviousPage={previousPage} ></DataPaginator>
+               </div>
+          {:else}
+               <NoImagesYet> </NoImagesYet>
+          {/if}
+
+
      </Card> 
 </div>
 

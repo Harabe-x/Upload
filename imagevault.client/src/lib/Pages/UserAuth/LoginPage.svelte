@@ -8,6 +8,7 @@
     import { link } from 'svelte-routing'
     import {ArrowPath, Icon} from "svelte-hero-icons";
     import {checkIfUserIsLoggedIn} from "@/js/State/Auth/AuthHelpers.js";
+    import { DotLottieSvelte } from '@lottiefiles/dotlottie-svelte';
 
 
     let email;
@@ -74,14 +75,12 @@
                 <div class="hero-content w-full py-12 bg-base-300">
                     <div class="text-center">
                         <h1 class="text-2xl font-semibold">ImageVault</h1>
-                        <div class="w-full h-full flex flex-col items-center justify-center">
-                            <LottiePlayer
+                        <div class="w-[56rem] h-full flex flex-col items-center justify-center">
+                            <DotLottieSvelte
                                     loop={true}
                                     autoplay={true}
-                                    background="transparent"
-                                    style="width: 24rem; margin-right: 1rem"
                                     src="https://lottie.host/708d3e2c-2c70-4d28-8eae-7cff3c174380/UmvDwCf4xw.json">
-                            </LottiePlayer>
+                            </DotLottieSvelte>
                         </div>
                         <p>Don’t have an account yet? <a class="link" href="/register" use:link> Register </a> </p>
                     </div>

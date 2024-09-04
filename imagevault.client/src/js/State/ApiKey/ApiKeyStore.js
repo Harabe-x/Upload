@@ -95,9 +95,9 @@ export function getApiKeyStore() {
             const storeData = get(authStore);
 
             var parsedKey = key.toString();
-            
-             var response = await axios.delete(APIKEY_DELETE_ENDPOINT_URL, { headers: {"Authorization": `Bearer ${storeData.token}`}, data: {key} } );         
-             
+
+            var response = await axios.delete(APIKEY_DELETE_ENDPOINT_URL, { headers: {"Authorization": `Bearer ${storeData.token}`}, data: {key} } );
+
             if (response.status === HTTP_STATUS_UNAUTHORIZED) {
                 handleUnauthorized();
                 return;
@@ -138,8 +138,8 @@ export function getApiKeyStore() {
             notificationStore.sendNotification(NOTIFICATION_TYPE_ERROR, error.response.data.message);
         }
     }
-    
-    
+
+
     const selectKey = (key) => {
         apiKeyStore.update(state => ({
             ...state,

@@ -10,12 +10,13 @@ import {
     APIKEY_EDIT_ENDPOINT_URL,
     NOTIFICATION_TYPE_ERROR,
     NOTIFICATION_TYPE_SUCCESS,
-    UPLOAD_ENDPOINT_URL
+    UPLOAD_ENDPOINT_URL, HTTP_NO_CONTENT
 } from "@/js/Constants.js";
 import axios from "axios";  
 import { getAuthStore} from "@/js/State/Auth/AuthStore.js";
 import {getNotificationsStore} from "@/js/State/UserInterface/ToastNotificationStore.js";
 ;
+
 
 
 const imageStore = writable({
@@ -38,8 +39,6 @@ export function getImageManagerStore()
      const fetchImages = async (key,collection,limit, page ) => {
          try
          {
-             const storeData = get(authStore);
-
              const response = await axios.post(IMAGE_GET_PAGED_ENDPOINT_URL, { apiKey: key, collectionName: collection , page , limit }, {} );
 
              if (response.status !== HTTP_STATUS_OK)
@@ -58,14 +57,33 @@ export function getImageManagerStore()
          }
      }
      
-     const deleteImage = async (key,collection, imageKey ) => { 
-         
-     }
+     const deleteImage = async (key,collectionName, imageKey ) => {
+
+         try
+         {
+             const response = await axios.delete(IMAGE_DELETE_ENDPOINT_URL,{ data: { apiKey:key,collectionName, imageKey }} );
+
+             if (response.status !== HTTP_NO_CONTENT)
+             {
+                 notificationStore.sendNotification(NOTIFICATION_TYPE_ERROR, response.data)
+                 return; 
+             }
+             
+             const currentStoreData = get(imageStore)
+             await fetchImages(key,  collectionName, currentStoreData.limit, currentStoreData.currentPage)
+             
+             notificationStore.sendNotification(NOTIFICATION_TYPE_SUCCESS, "Image deleted successfully")
+         }
+         catch (error)
+         {
+             notificationStore.sendNotification(NOTIFICATION_TYPE_ERROR, "Image deleting failed")
+         }
+    }
+
      
      const fetchCollections = async (key) => { 
          try 
          {
-             const storeData = get(authStore);
 
              const response = await axios.post(COLLECTION_LIST_ENDPOINT_URL, { key }, {} );
              
@@ -88,7 +106,6 @@ export function getImageManagerStore()
      const addCollection = async (key,collectionName , collectionDescription) => {
          try
          {
-             const storeData = get(authStore);
 
              const response = await axios.post(COLLECTION_CREATE_ENDPOINT_URL, { apiKey:key,collectionName,collectionDescription  }, {} );
 
@@ -130,8 +147,11 @@ export function getImageManagerStore()
              {
                  notificationStore.sendNotification(NOTIFICATION_TYPE_ERROR, response.data)
              }
+
+             const currentStoreData = get(imageStore)
              
-             await fetchImages(key, collection,30,1)
+             
+             await fetchImages(key, collection,currentStoreData.limit,currentStoreData.currentPage)
              
              notificationStore.sendNotification(NOTIFICATION_TYPE_SUCCESS, "Uploaded image successfully")
              
@@ -147,16 +167,15 @@ export function getImageManagerStore()
             currentPage: state.currentPage + 1 
         })) 
      }
-     const previousPage = () => { 
-        imageStore.update((state) => {  
-            if(state.currentPage === 1) return state; 
-            
-            return { ...state, currentPage: state.currentPage - 1}
-        }); 
-     }
-     
+     const previousPage = () => {
+         imageStore.update((state) => {
+             if (state.currentPage === 1) return state;
 
-     
+             return {...state, currentPage: state.currentPage - 1}
+         });
+
+      }
+
     return { 
         subscribe : imageStore.subscribe, 
         fetchImages,

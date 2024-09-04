@@ -10,4 +10,4 @@ namespace ImageVault.ImageService.Data.Dtos.Image;
 /// <param name="Description">The description of the image.</param>
 /// <param name="ImageFormat">The format of the image (e.g., JPEG, PNG).</param>
 /// <param name="CreatedAt">The date and time when the image was created.</param>
-public record ImageDto(string Key, string ImageUrl, string CollectionName, string Title, string Description, string ImageFormat, DateTime CreatedAt);
+public record ImageDto(string Key, string ImageUrl, string CollectionName, string Title, string Description, string ImageFormat, DateTime CreatedAt, ulong fileSize);
