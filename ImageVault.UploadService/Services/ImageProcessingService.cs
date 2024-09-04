@@ -18,7 +18,7 @@ public class ImageProcessingService : IImageProcessingService
     {
         var fileExtension = Path.GetExtension(file.FileName);
 
-        if (fileExtension == ".jpg" || fileExtension == ".jpeg") return file.OpenReadStream();
+        if (fileExtension == ".webp") return file.OpenReadStream();
 
         using var image = await Image.LoadAsync(file.OpenReadStream());
 

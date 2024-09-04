@@ -7,7 +7,8 @@
     import ModalWindow from "../../../Controls/Shared/ModalWindow.svelte";
     import {onMount} from "svelte";
     import {getApiKeyStore} from "../../../../js/State/ApiKey/ApiKeyStore.js";
-    
+    import {formatBytes} from "@/js/Converters/ByteConverter.js";
+
     const tableRows = []
     let apiKeyStore = getApiKeyStore();
     let selectedTableRow;
@@ -63,7 +64,7 @@
                 <th class="bg-base-200">{index + 1}</th>
                 <td >{key.keyName}</td>
                 <td>{key.key}</td>
-                <td>{key.storageUsed} Bytes</td>
+                <td>{formatBytes(key.storageUsed)}</td>
                 <td>
                     <div class="flex flex-row gap-2">
                         <IconButton on:click={() => { selectKey(key); editModalToggleFunction(); }}  icon={Pencil} iconStyle="w-5">Edit</IconButton>

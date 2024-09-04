@@ -10,7 +10,7 @@
         Calendar,
         ClipboardDocumentList,
         Pencil,
-        ChatBubbleLeft, ChatBubbleLeftRight, ArrowsPointingOut, Server
+        ChatBubbleLeft, ChatBubbleLeftRight, ArrowsPointingOut, Server, Folder
     } from "svelte-hero-icons";
     import { getApiKeys } from "../../../../js/Temp/ApiKeysData";
     import {onEscapeAction} from "../../../../js/UserInterface/Actions/ModalActions.js";
@@ -18,6 +18,8 @@
     import {getImageManagerStore} from "@/js/State/Image/ImageStore.js";
     import ModalWindow from "@/lib/Controls/Shared/ModalWindow.svelte";
     import FileStat from "@/lib/Controls/Cards/FileStat.svelte";
+    import {formatBytes} from "@/js/Converters/ByteConverter.js";
+
     const imageManager = getImageManagerStore()
 
     const dispatcher = createEventDispatcher();
@@ -48,12 +50,12 @@
                 <div class="w-full h-full flex flex-col justify-center items-center ">
                     <div class=" flex flex-col w-full h-full  ">
                         <FileStat icon={Key} description="" title="Image Key" value={$param.key}></FileStat>
-                        <FileStat icon={DocumentText}  description=""  title="Image format" value={$param.imageFormat}></FileStat>
+                        <FileStat icon={DocumentText}  description=""  title="Image Format" value={$param.imageFormat}></FileStat>
                         <FileStat icon={Calendar}  description="" title="Created At" value={$param.createdAt}></FileStat>
-                        <FileStat icon={ClipboardDocumentList} description="" title="Collection Name" value={$param.collectionName}></FileStat>
+                        <FileStat icon={Folder} description="" title="Collection Name" value={$param.collectionName}></FileStat>
                         <FileStat icon={Pencil} description="" title="Image Title" value={$param.title}></FileStat>
                         <FileStat icon={Pencil}  description="" title="Description" value={$param.description}></FileStat>
-                        <FileStat icon={Server}  description="" title="File Size" value={$param.fileSize + " Bytes"}></FileStat>
+                        <FileStat icon={Server}  description="" title="File Size" value={formatBytes($param.fileSize)}></FileStat>
                     </div>
                 </div>
             </div>

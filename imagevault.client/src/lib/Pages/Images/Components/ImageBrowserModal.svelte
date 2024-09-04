@@ -92,7 +92,7 @@
                             <li><button><Icon src={ArrowDownTray} class="w-4" />Download</button></li>
                             <li ><button><Icon src={ArrowUpOnSquare} class="w-4" />Share</button></li>
                             <li><button  on:click={() => { imageDeleteStore.update(state => { return {...state , imageKey:$imageManager.images[currentIndex].key }}) ; openDeleteModalFunction();  }} ><Icon src={Trash} class="w-4" />Delete</button></li>
-                            <li><button><Icon src={InformationCircle} class="w-4" />File info</button></li>
+                            <li><button on:click={() => { fileInfoStore.set($imageManager.images[currentIndex]); openFileInfoModalFunction(); }}><Icon src={InformationCircle} class="w-4" />File info</button></li>
                         </IconDropdown>
                     </div>
 
