@@ -1,6 +1,6 @@
 namespace ImageVault.RequestMetricsService.Data.Dtos;
 
-public record RequestDto(
+public record Request(
     string UserId,
     DateTime TimeStamp,
     string Endpoint,
