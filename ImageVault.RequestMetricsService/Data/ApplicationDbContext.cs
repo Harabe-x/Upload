@@ -11,7 +11,9 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<Requests> Requests { get; set; }
 
-    public DbSet<UserRequestMetrics> UsersRequestMetrics { get; set; }
-
-    public DbSet<ApiKeyUsageMetric> ApiKeyResourcesUsageMetrics { get; set; }
+    public DbSet<AnonymousRequest> AnonymousRequests { get; set; }
+    
+    public DbSet<DailyUsageMetrics> UsersDailyUsageMetrics { get; set; }
+    
+    public DbSet<UsageMetrics> UserUsageMetrics { get; set; }
 }

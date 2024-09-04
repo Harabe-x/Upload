@@ -2,7 +2,7 @@ using System.Numerics;
 
 namespace ImageVault.RequestMetricsService.Data.Models;
 
-public class UserDailyResourceUsage
+public class DailyUsageMetrics
 {
     public string Id { get; set; }
     
@@ -15,8 +15,14 @@ public class UserDailyResourceUsage
     public uint TotalRequests { get; set; }
     
     public DateTime Date { get; set; }
+    
+    public string UsageMetricsId { get; set; }
 
-    public UserDailyResourceUsage()
+    public UsageMetrics UsageMetrics { get; set; }
+    
+    public ICollection<Requests> Requests { get; set; }
+
+    public DailyUsageMetrics()
     {
         Id = Guid.NewGuid().ToString(); 
         Date = DateTime.Today;

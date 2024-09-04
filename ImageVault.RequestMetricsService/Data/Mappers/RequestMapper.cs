@@ -5,7 +5,7 @@ namespace ImageVault.RequestMetricsService.Data.Mappers;
 
 public static class RequestMapper
 {
-    public static Requests MapRequestDtoToRequest(this RequestDto request)
+    public static Requests MapRequestDtoToRequest(this Dtos.Request request)
     {
         return new Requests
         {

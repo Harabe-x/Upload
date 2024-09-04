@@ -4,5 +4,5 @@ namespace ImageVault.RequestMetricsService.Data.Interfaces;
 
 public interface IRequestRepository
 {
-    Task<bool> AddRequest(RequestDto request);
+    Task<bool> AddRequest(Request request);
 }

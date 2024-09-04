@@ -20,7 +20,7 @@ public class RequestRepository : IRequestRepository
         _metricsRepository = metricsRepository; 
     }
 
-    public async Task<bool> AddRequest(RequestDto requestData)
+    public async Task<bool> AddRequest(Request requestData)
     {
         var request = requestData.MapRequestDtoToRequest();
 

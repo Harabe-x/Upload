@@ -1,6 +1,3 @@
 namespace ImageVault.RequestMetricsService.Data.Dtos;
 
-public class UsageMetrics
-{
-    
-}
+public record UsageMetrics(int TotalRequests, int TotalImageUploaded, int TotalStorageUsed);

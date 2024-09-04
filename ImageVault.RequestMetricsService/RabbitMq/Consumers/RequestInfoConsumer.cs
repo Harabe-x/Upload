@@ -59,7 +59,7 @@ public class RequestInfoConsumer : IRabbitMqConsumer
 
         try
         {
-            var requestObject = JsonSerializer.Deserialize<RequestDto>(jsonMessage);
+            var requestObject = JsonSerializer.Deserialize<Request>(jsonMessage);
 
 
             _logger.LogInformation(requestObject.ToString());

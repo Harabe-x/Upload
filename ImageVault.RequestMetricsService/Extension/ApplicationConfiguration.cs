@@ -18,12 +18,11 @@ public static class ApplicationConfiguration
 {
     public static void RegisterServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddScoped<IUserRequestMetricsRepository, UserRequestMetricsRepository>();
-        builder.Services.AddScoped<IRequestRepository, RequestRepository>();
-        builder.Services.AddSingleton<IRabbitMqConsumerList, RabbitMqConsumerList>();
-        builder.Services.AddSingleton<IRabbitMqListener, RabbitMqListener>();
-        builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
-        builder.Services.AddSingleton<RequestInfoConsumer>();
+        // builder.Services.AddScoped<IRequestRepository, RequestRepository>();
+        // builder.Services.AddSingleton<IRabbitMqConsumerList, RabbitMqConsumerList>();
+        // builder.Services.AddSingleton<IRabbitMqListener, RabbitMqListener>();
+        // builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
+        // builder.Services.AddSingleton<RequestInfoConsumer>();
     }
 
     public static void RegisterDbContext(this WebApplicationBuilder builder)

@@ -4,7 +4,7 @@ namespace ImageVault.RequestMetricsService.Data.Interfaces;
 
 public interface IUserRequestMetricsRepository
 {
-    public Task<bool> UpdateUserStatstics(RequestDto request);
+    public Task<bool> UpdateUserStatstics(Request request);
 
-    public Task<UserRequestMetricsDto> GetRequestMetrics(string userId);
+    public Task<UserRequestMetrics> GetRequestMetrics(string userId);
 }
