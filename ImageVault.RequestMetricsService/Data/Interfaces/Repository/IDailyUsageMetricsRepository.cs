@@ -7,7 +7,7 @@ public interface IDailyUsageMetricsRepository
 {
     Task<OperationResult<bool>> AddRequest(Request request);
 
-    Task<OperationResult<bool>> IncrementTotalUploadedImages();
+    Task<OperationResult<bool>> IncrementTotalUploadedImages(string userId);
 
-    Task<OperationResult<bool>> AddStorageUsage(uint bytesUsed);
+    Task<OperationResult<bool>> AddStorageUsage(uint bytesUsed, string userId);
 }

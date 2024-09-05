@@ -1,8 +1,8 @@
 namespace ImageVault.RequestMetricsService.Data.Models;
 
-public class Requests
+public class Request
 {
-    public Requests()
+    public Request()
     {
         Id = Guid.NewGuid().ToString();
     }
@@ -11,6 +11,10 @@ public class Requests
 
     public string UserId { get; set; }
 
+    public string DailyUsageMetricsId { get; set; }
+    
+    public DailyUsageMetrics DailyUsageMetrics { get; set;  }
+    
     public DateTime TimeStamp { get; set; }
 
     public string Endpoint { get; set; }

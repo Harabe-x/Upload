@@ -20,7 +20,7 @@ public class DailyUsageMetrics
 
     public UsageMetrics UsageMetrics { get; set; }
     
-    public ICollection<Requests> Requests { get; set; }
+    public ICollection<Request> Requests { get; set; }
 
     public DailyUsageMetrics()
     {

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ImageVault.RequestMetricsService.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -70,11 +70,11 @@ namespace ImageVault.RequestMetricsService.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DailyUsageMetricsId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     TimeStamp = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Endpoint = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Ip = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Method = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DailyUsageMetricsId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    Method = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -83,7 +83,8 @@ namespace ImageVault.RequestMetricsService.Migrations
                         name: "FK_Requests_UsersDailyUsageMetrics_DailyUsageMetricsId",
                         column: x => x.DailyUsageMetricsId,
                         principalTable: "UsersDailyUsageMetrics",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

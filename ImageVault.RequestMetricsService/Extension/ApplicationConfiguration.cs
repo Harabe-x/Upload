@@ -4,6 +4,7 @@ using Azure.Identity;
 using ImageVault.RequestMetricsService.Data;
 using ImageVault.RequestMetricsService.Data.Interfaces;
 using ImageVault.RequestMetricsService.Data.Interfaces.RabbitMq;
+using ImageVault.RequestMetricsService.Data.Models;
 using ImageVault.RequestMetricsService.RabbitMq;
 using ImageVault.RequestMetricsService.RabbitMq.Consumers;
 using ImageVault.RequestMetricsService.Repository;
@@ -18,11 +19,11 @@ public static class ApplicationConfiguration
 {
     public static void RegisterServices(this WebApplicationBuilder builder)
     {
-        // builder.Services.AddScoped<IRequestRepository, RequestRepository>();
-        // builder.Services.AddSingleton<IRabbitMqConsumerList, RabbitMqConsumerList>();
-        // builder.Services.AddSingleton<IRabbitMqListener, RabbitMqListener>();
-        // builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
-        // builder.Services.AddSingleton<RequestInfoConsumer>();
+        builder.Services.AddScoped<IDailyUsageMetricsRepository,DailyUsageMetricsRepository>();
+        builder.Services.AddSingleton<IRabbitMqConsumerList, RabbitMqConsumerList>();
+        builder.Services.AddSingleton<IRabbitMqListener, RabbitMqListener>();
+        builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
+        builder.Services.AddSingleton<RequestInfoConsumer>();
     }
 
     public static void RegisterDbContext(this WebApplicationBuilder builder)

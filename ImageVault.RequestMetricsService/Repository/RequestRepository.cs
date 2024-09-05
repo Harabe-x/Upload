@@ -22,13 +22,13 @@ public class RequestRepository : IRequestRepository
 
     public async Task<bool> AddRequest(Request requestData)
     {
-        var request = requestData.MapRequestDtoToRequest();
-
-        await _dbContext.Requests.AddAsync(request);
-
-        // even if user is unauthenticated it should count statistics for anon requests
-        await _metricsRepository.UpdateUserStatstics(requestData);
-        
+        // var request = requestData.MapToRequestModel();
+        //
+        // await _dbContext.Requests.AddAsync(request);
+        //
+        // // even if user is unauthenticated it should count statistics for anon requests
+        // await _metricsRepository.UpdateUserStatstics(requestData);
+        //
         return await SaveChanges();
     }
 

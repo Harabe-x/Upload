@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ImageVault.RequestMetricsService.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240904194031_init")]
-    partial class init
+    [Migration("20240905195439_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -82,12 +82,13 @@ namespace ImageVault.RequestMetricsService.Migrations
                     b.ToTable("UsersDailyUsageMetrics");
                 });
 
-            modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.Requests", b =>
+            modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.Request", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("DailyUsageMetricsId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Endpoint")
@@ -150,11 +151,15 @@ namespace ImageVault.RequestMetricsService.Migrations
                     b.Navigation("UsageMetrics");
                 });
 
-            modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.Requests", b =>
+            modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.Request", b =>
                 {
-                    b.HasOne("ImageVault.RequestMetricsService.Data.Models.DailyUsageMetrics", null)
+                    b.HasOne("ImageVault.RequestMetricsService.Data.Models.DailyUsageMetrics", "DailyUsageMetrics")
                         .WithMany("Requests")
-                        .HasForeignKey("DailyUsageMetricsId");
+                        .HasForeignKey("DailyUsageMetricsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DailyUsageMetrics");
                 });
 
             modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.DailyUsageMetrics", b =>

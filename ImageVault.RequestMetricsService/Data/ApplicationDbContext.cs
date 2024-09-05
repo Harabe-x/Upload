@@ -9,7 +9,7 @@ public class ApplicationDbContext : DbContext
     {
     }
 
-    public DbSet<Requests> Requests { get; set; }
+    public DbSet<Request> Requests { get; set; }
 
     public DbSet<AnonymousRequest> AnonymousRequests { get; set; }
     
