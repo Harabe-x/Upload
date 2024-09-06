@@ -15,11 +15,11 @@ public class RequestCollectorController : ControllerBase
 {
     private readonly ILogger<RequestCollectorController> _logger; 
     
-    private readonly IDailyUsageMetricsRepository _dailyMetricsRepository; 
+    private readonly IUsageCollectorRepository _collectorRepository; 
     
-    public RequestCollectorController(IDailyUsageMetricsRepository dailyMetricsRepository, ILogger<RequestCollectorController> logger)
+    public RequestCollectorController(IUsageCollectorRepository collectorRepository, ILogger<RequestCollectorController> logger)
     {
-        _dailyMetricsRepository = dailyMetricsRepository;
+        _collectorRepository = collectorRepository;
         _logger = logger;
     }
 
@@ -57,7 +57,7 @@ public class RequestCollectorController : ControllerBase
         {
             var request = CreateRequestDto();
             _logger.LogInformation(request.ToString());
-            await _dailyMetricsRepository.AddRequest(request);
+            await _collectorRepository.AddRequest(request);
         }
         catch (Exception e)
         {

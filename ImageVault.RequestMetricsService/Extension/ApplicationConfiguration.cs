@@ -19,7 +19,7 @@ public static class ApplicationConfiguration
 {
     public static void RegisterServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddScoped<IDailyUsageMetricsRepository,DailyUsageMetricsRepository>();
+        builder.Services.AddScoped<IUsageCollectorRepository,UsageCollectorRepository>();
         builder.Services.AddSingleton<IRabbitMqConsumerList, RabbitMqConsumerList>();
         builder.Services.AddSingleton<IRabbitMqListener, RabbitMqListener>();
         builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();

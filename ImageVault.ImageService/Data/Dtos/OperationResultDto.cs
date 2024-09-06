@@ -3,8 +3,6 @@ using ImageVault.ImageService.Data.Models;
 
 namespace ImageVault.ImageService.Data.Dtos;
 
-public record OperationResult();
-
 /// <summary>
 ///     A record that represents the status of the operation.
 /// </summary>

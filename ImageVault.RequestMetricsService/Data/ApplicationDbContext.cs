@@ -16,4 +16,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<DailyUsageMetrics> UsersDailyUsageMetrics { get; set; }
     
     public DbSet<UsageMetrics> UserUsageMetrics { get; set; }
+    
+    public DbSet<ApiKeyLogs> ApiKeyLogs { get; set; }
+    
+    public DbSet<ApiKeyLog> ApiKeyLogList { get; set; }
 }

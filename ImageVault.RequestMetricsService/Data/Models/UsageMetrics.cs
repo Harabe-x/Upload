@@ -11,10 +11,12 @@ public class UsageMetrics
     public uint TotalStorageUsed { get; set; }
 
     public uint TotalRequests { get; set; }
+
+    public ICollection<DailyUsageMetrics> DailyUsageMetrics { get; set; } 
     
-    public ICollection<DailyUsageMetrics> DailyUsageMetrics { get; set; }
-    
-    public UsageMetrics(string userId)
+    public DateTime? LastAggregationDate { get; set; } 
+
+    public UsageMetrics()
     {
         Id = Guid.NewGuid().ToString();
     }

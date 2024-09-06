@@ -47,6 +47,46 @@ namespace ImageVault.RequestMetricsService.Migrations
                     b.ToTable("AnonymousRequests");
                 });
 
+            modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.ApiKeyLog", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ApiKeyLogsId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ApiKeysLogId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApiKeyLogsId");
+
+                    b.ToTable("ApiKeyLogList");
+                });
+
+            modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.ApiKeyLogs", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ApiKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApiKeyLogs");
+                });
+
             modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.DailyUsageMetrics", b =>
                 {
                     b.Property<string>("Id")
@@ -119,6 +159,9 @@ namespace ImageVault.RequestMetricsService.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<DateTime?>("LastAggregationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<long>("TotalImageUploaded")
                         .HasColumnType("bigint");
 
@@ -135,6 +178,13 @@ namespace ImageVault.RequestMetricsService.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserUsageMetrics");
+                });
+
+            modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.ApiKeyLog", b =>
+                {
+                    b.HasOne("ImageVault.RequestMetricsService.Data.Models.ApiKeyLogs", null)
+                        .WithMany("Logs")
+                        .HasForeignKey("ApiKeyLogsId");
                 });
 
             modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.DailyUsageMetrics", b =>
@@ -157,6 +207,11 @@ namespace ImageVault.RequestMetricsService.Migrations
                         .IsRequired();
 
                     b.Navigation("DailyUsageMetrics");
+                });
+
+            modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.ApiKeyLogs", b =>
+                {
+                    b.Navigation("Logs");
                 });
 
             modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.DailyUsageMetrics", b =>

@@ -1,11 +1,10 @@
 using ImageVault.RequestMetricsService.Data.Dtos;
-using ImageVault.RequestMetricsService.Data.Models;
 
 namespace ImageVault.RequestMetricsService.Data.Interfaces;
 
 public interface IApiKeyLogsRepository
 {
-    Task<OperationResult<IEnumerable<ApiKeyLog>>> GetLogs(string apiKey,string limit, string page);
+    Task<OperationResult<IEnumerable<Data.Dtos.Log.ApiKeyLog>>> GetLogs(string apiKey,int limit,int page);
 
     Task<OperationResult<bool>> AddLog(string apiKey, string message);
 }

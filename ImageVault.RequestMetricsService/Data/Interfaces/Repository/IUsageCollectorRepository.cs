@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization.Infrastructure;
 
 namespace ImageVault.RequestMetricsService.Data.Interfaces;
 
-public interface IDailyUsageMetricsRepository
+public interface IUsageCollectorRepository
 {
     Task<OperationResult<bool>> AddRequest(Request request);
 

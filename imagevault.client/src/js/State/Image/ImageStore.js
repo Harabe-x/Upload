@@ -23,7 +23,7 @@ const imageStore = writable({
       collections : [], 
       images : [], 
       currentPage: 1,
-      limit : 5, 
+      limit : 16, 
       nextPageCallback : () => { }, 
       previousPageCallback : () => { },
     })

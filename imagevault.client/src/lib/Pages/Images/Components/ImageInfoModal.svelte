@@ -39,7 +39,6 @@
     
 </script>
 
-
 {#if isModalVisable}
     <div class="modal modal-open " use:onEscapeAction  on:escape={closeInfoModal}>
         <div class="bg-base-300  lg:w-1/2   lg:h-3/4 md:w-1/2 md:h-1/2 h-full w-full rounded-xl ">
