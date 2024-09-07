@@ -20,10 +20,12 @@ public static class ApplicationConfiguration
     public static void RegisterServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IUsageCollectorRepository,UsageCollectorRepository>();
+        builder.Services.AddScoped<IUsageMetricsRepository, UsageMetricsRepository>(); 
         builder.Services.AddSingleton<IRabbitMqConsumerList, RabbitMqConsumerList>();
         builder.Services.AddSingleton<IRabbitMqListener, RabbitMqListener>();
         builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
-        builder.Services.AddSingleton<RequestInfoConsumer>();
+        builder.Services.AddSingleton<ApiKeyLogConsumer>();
+        builder.Services.AddSingleton<ApiKeyUsageConsumer>();
     }
 
     public static void RegisterDbContext(this WebApplicationBuilder builder)

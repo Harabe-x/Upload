@@ -38,7 +38,7 @@ public static class ImageMapper
             Key = imageData.Key,
             ImageSize = imageData.ImageSize,
             ImageFormat = imageData.FileFormat,
-            Url = "dckyy64qykbap.cloudfront.net/" + imageData.Key
+            Url = "dym77sddfv05c.cloudfront.net/" + imageData.Key
         };
     }
 }

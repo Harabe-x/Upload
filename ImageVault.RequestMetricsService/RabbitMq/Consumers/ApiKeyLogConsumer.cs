@@ -1,6 +1,7 @@
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Text.Json;
-using ImageVault.RequestMetricsService.Data.Dtos;
+using ImageVault.RequestMetricsService.Data.Dtos.Log;
 using ImageVault.RequestMetricsService.Data.Interfaces;
 using ImageVault.RequestMetricsService.Extension;
 using RabbitMQ.Client;
@@ -8,20 +9,21 @@ using RabbitMQ.Client.Events;
 
 namespace ImageVault.RequestMetricsService.RabbitMq.Consumers;
 
-public class RequestInfoConsumer : IRabbitMqConsumer
+public class ApiKeyLogConsumer : IRabbitMqConsumer
 {
+ 
     private readonly IConfiguration _configuration;
 
     private readonly IRabbitMqConnection _connection;
 
     private readonly IServiceScopeFactory _factory;
 
-    private readonly ILogger<RequestInfoConsumer> _logger;
+    private readonly ILogger<ApiKeyLogConsumer> _logger;
 
     private IModel _channel;
 
-    public RequestInfoConsumer(IRabbitMqConnection connection, IConfiguration configuration,
-        ILogger<RequestInfoConsumer> logger, IServiceScopeFactory factory)
+    public ApiKeyLogConsumer(IRabbitMqConnection connection, IConfiguration configuration,
+        ILogger<ApiKeyLogConsumer> logger, IServiceScopeFactory factory)
     {
         _logger = logger;
         _connection = connection;
@@ -34,13 +36,13 @@ public class RequestInfoConsumer : IRabbitMqConsumer
     {
         _channel = _connection.Connection.CreateModel();
 
-        _channel.QueueDeclare(_configuration.GetRequestQueueName(), true, false);
+        _channel.QueueDeclare(_configuration.GetApiKeyLogQueueName(), true, false);
 
         var consumer = new AsyncEventingBasicConsumer(_channel);
 
         consumer.Received += HandleMessage;
 
-        _channel.BasicConsume(_configuration.GetRequestQueueName(), false, consumer);
+        _channel.BasicConsume(_configuration.GetApiKeyLogQueueName(), false, consumer);
     }
 
     public void Stop()
@@ -59,22 +61,17 @@ public class RequestInfoConsumer : IRabbitMqConsumer
 
         try
         {
-            var requestObject = JsonSerializer.Deserialize<Request>(jsonMessage);
+            var apiKeyLog = JsonSerializer.Deserialize<AddApiKeyLog>(jsonMessage);
 
 
-            _logger.LogInformation(requestObject.ToString());
+            _logger.LogInformation(apiKeyLog.ToString());
 
             using (var scope = _factory.CreateAsyncScope())
             {
-                var requestRepository = scope.ServiceProvider.GetService<IRequestRepository>();
+                var apiKeyLogsRepository = scope.ServiceProvider.GetService<IApiKeyLogsRepository>();
 
-                var result = await requestRepository.AddRequest(requestObject);
 
-                if (!result)
-                {
-                    _channel.BasicNack(args.DeliveryTag, true, false);
-                    return;
-                }
+                await apiKeyLogsRepository.AddLog(apiKeyLog.ApiKey, apiKeyLog.Message);
             }
 
             _channel.BasicAck(args.DeliveryTag, true);

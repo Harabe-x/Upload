@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using ImageVault.RequestMetricsService.Data.Interfaces;
+using ImageVault.RequestMetricsService.Data.Models;
 using ImageVault.RequestMetricsService.Extension;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,10 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace ImageVault.RequestMetricsService.Controllers;
 
 [Authorize]
+[Route("/api/v1/metrics")]
 [Controller]
 public class UsageMetricsController : ControllerBase
 {
-    
     private readonly ILogger<UsageMetricsController> _logger;
 
     private readonly IUsageMetricsRepository _metricsRepository; 
@@ -21,13 +22,13 @@ public class UsageMetricsController : ControllerBase
         _metricsRepository = metricsRepository; 
     }
 
-    [HttpPost]
+    [HttpPost("get")]
     public async Task<IActionResult> GetUsageMetrics()
     {
         try
         {
             var id = User.GetClaimValue(ClaimTypes.NameIdentifier);
-
+            
             var result = await _metricsRepository.GetTotalUsageMetrics(id);
 
             return result.IsSuccess
@@ -37,12 +38,12 @@ public class UsageMetricsController : ControllerBase
         catch (Exception e)
         {
             _logger.LogError(e.ToString());
-            return StatusCode(500, "Internal server error, please try again later.");
+            return StatusCode(500, new Error("Internal server error."));
         }
     }
 
-    [HttpPost]
-    public async Task<IActionResult> GetUsageStatisticsForLastDays([FromBody] int dayRange)
+    [HttpPost("get/{dayRange:int}")]
+    public async Task<IActionResult> GetUsageStatisticsForLastDays([FromRoute] int dayRange)
     {
         try 
         {
@@ -57,9 +58,7 @@ public class UsageMetricsController : ControllerBase
         catch (Exception e)
         {
             _logger.LogError(e.ToString());
-            return StatusCode(500, "Internal server error, please try again later.");
+            return StatusCode(500, new Error("Internal server error."));
         }
     }
-    
-    
 }

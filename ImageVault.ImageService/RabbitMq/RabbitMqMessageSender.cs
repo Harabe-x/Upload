@@ -1,10 +1,10 @@
 using System.Text;
 using System.Text.Json;
-using ImageVault.UploadService.Data.Interfaces.RabbitMq;
+using ImageVault.ImageService.Data.Dtos.Metrics;
+using ImageVault.ImageService.Data.Interfaces;
 using RabbitMQ.Client;
 
-namespace ImageVault.UploadService.RabbitMq;
-
+namespace ImageVault.ImageService.RabbitMq;
 
 /// <summary>
 /// <inheritdoc cref="IRabbitMqMessageSender"/>

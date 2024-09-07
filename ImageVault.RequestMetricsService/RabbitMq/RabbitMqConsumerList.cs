@@ -8,10 +8,9 @@ public class RabbitMqConsumerList : IRabbitMqConsumerList
 {
     private readonly List<IRabbitMqConsumer> _consumers;
 
-    public RabbitMqConsumerList(RequestInfoConsumer requestInfoConsumer)
+    public RabbitMqConsumerList(ApiKeyUsageConsumer apiKeyUsageConsumer, ApiKeyLogConsumer apiKeyLogConsumer)
     {
-        _consumers = new List<IRabbitMqConsumer>();
-        _consumers.Add(requestInfoConsumer);
+        _consumers = [ apiKeyLogConsumer, apiKeyUsageConsumer];
     }
 
     public IEnumerable<IRabbitMqConsumer> GetConsumers()

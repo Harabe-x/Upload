@@ -3,8 +3,10 @@ using Amazon.S3;
 using Amazon.S3.Model;
 using ImageVault.ImageService.Data;
 using ImageVault.ImageService.Data.Dtos;
+using ImageVault.ImageService.Data.Dtos.ApiKey;
 using ImageVault.ImageService.Data.Dtos.Collection;
 using ImageVault.ImageService.Data.Dtos.Image;
+using ImageVault.ImageService.Data.Dtos.Metrics;
 using ImageVault.ImageService.Data.Interfaces;
 using ImageVault.ImageService.Data.Interfaces.Amazon;
 using ImageVault.ImageService.Data.Interfaces.Image;
@@ -13,6 +15,7 @@ using ImageVault.ImageService.Data.Models;
 using ImageVault.ImageService.Extension;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace ImageVault.ImageService.Repository;
 
@@ -27,17 +30,20 @@ public class ImageManagerRepository : IImageManagerRepository
 
     private readonly IApiKeyRepository _apiKeyRepository;
 
+    private readonly IRabbitMqMessageSender _messageSender;
+    
     private IConfiguration _configuration;
 
     private IAmazonS3Connection _s3Connection; 
     
-    public ImageManagerRepository(ApplicationDbContext dbContext, ILogger<ImageManagerRepository> logger,IAmazonS3Connection s3Connection, IApiKeyRepository apiKeyRepository,IConfiguration configuration)
+    public ImageManagerRepository(ApplicationDbContext dbContext, ILogger<ImageManagerRepository> logger,IAmazonS3Connection s3Connection, IApiKeyRepository apiKeyRepository,IConfiguration configuration, IRabbitMqMessageSender messageSender)
     {
         _dbContext = dbContext;
         _logger = logger;                   
         _apiKeyRepository = apiKeyRepository;
         _configuration = configuration;
-        _s3Connection = s3Connection; 
+        _s3Connection = s3Connection;
+        _messageSender = messageSender; 
     }
     
     public async Task<OperationResultDto<bool>> AddImage(ImageDataDto imageData)
@@ -62,6 +68,9 @@ public class ImageManagerRepository : IImageManagerRepository
         collection.ImagesCollection.Add(image);
 
         collection.TotalImages += 1; 
+        
+        SendApiKeyUsageData((uint)image.ImageSize, image.UserId);
+        SendApiKeyLogMessage($"Image added, image key : {image.Key}", image.ApiKey);
 
         return await SaveChanges()
             ? new OperationResultDto<bool>(true,true,null)
@@ -78,6 +87,8 @@ public class ImageManagerRepository : IImageManagerRepository
             return new OperationResultDto<ImageDto>(null,false,new Error($"Collection named {collectionName} does not exists"));
         
         var image = collection.ImagesCollection.FirstOrDefault(x => x.Key == imageKey);
+
+        SendApiKeyLogMessage($"Image accessed key : {image.Key} ", image.ApiKey);
         
         return image != null 
             ? new OperationResultDto<ImageDto>(image.MapToImageDto(),true,null)
@@ -96,6 +107,8 @@ public class ImageManagerRepository : IImageManagerRepository
         
         var images = collection.ImagesCollection.Select(x => x.MapToImageDto());        
         
+        SendApiKeyLogMessage($"Images accessed, returned : {images.Count()} images ", apiKey);
+        
         return new OperationResultDto<IEnumerable<ImageDto>>(images.AsEnumerable(), true,null);
     }
 
@@ -112,9 +125,38 @@ public class ImageManagerRepository : IImageManagerRepository
         
        var selectedImages = collection.ImagesCollection.Skip(pageToSkip).Take(limit).Select(x => x.MapToImageDto());
 
+       SendApiKeyLogMessage($"Images accessed, returned : {selectedImages.Count()} images ", apiKey);
+       
         return new OperationResultDto<IEnumerable<ImageDto>>(selectedImages, true,null);
     }
 
+
+    public async Task<OperationResultDto<bool>> EditImage(string apiKey, string collectionName,string imageKey, string newImageTitle, string newImageDescription)
+    {
+        if(!ValidateAndSetDefaults(apiKey, ref collectionName,out var error,imageKey)) return new OperationResultDto<bool>(false, false, error);
+        
+        var collection = await GetCollection(apiKey, collectionName);
+        
+        if (collection == null)
+            return new OperationResultDto<bool>(false, false, new Error($"Collection named {collectionName} does not exists" ));
+       
+        var imageToEdit = collection.ImagesCollection.FirstOrDefault(x => x.Key == imageKey);
+
+        if (imageToEdit == null)
+            return new OperationResultDto<bool>(false, false, new Error("Image not found."));
+        
+        imageToEdit.Title = newImageTitle;
+        imageToEdit.Description = newImageDescription;
+
+        SendApiKeyLogMessage($"Images edited, key : {imageToEdit.Key}", apiKey);
+
+        
+        return await SaveChanges()
+            ? new OperationResultDto<bool>(true, true, null)
+            : new OperationResultDto<bool>(false, false, new Error("Error occurred while editing the image"));
+    }
+
+    
     public async Task<OperationResultDto<bool>> DeleteImage(string apiKey, string imageKey, string collectionName = "default")
     {
         if(!ValidateAndSetDefaults(apiKey, ref collectionName,out var error,imageKey)) return new OperationResultDto<bool>(false, false, error);
@@ -134,6 +176,9 @@ public class ImageManagerRepository : IImageManagerRepository
         
         collection.ImagesCollection.Remove(imageToRemove);
 
+        SendApiKeyLogMessage($"Images deleted, Key: {imageToRemove.Key} images ", apiKey);
+
+        
         return await SaveChanges()
             ? new OperationResultDto<bool>(true, true, null)
             : new OperationResultDto<bool>(false,false,new Error("An error occurred while deleting the image"));
@@ -149,32 +194,13 @@ public class ImageManagerRepository : IImageManagerRepository
             .Where(x => x.ApiKey == apiKey)
             .Select(x => x.MapToCollectionDto())
             .ToListAsync();
+        
+        SendApiKeyLogMessage($"Collections accessed, returned : {collections.Count} collections ", apiKey);
 
+        
         return collections != null
             ? new OperationResultDto<IEnumerable<ImageCollectionDto>>(collections, true, null)
             : new OperationResultDto<IEnumerable<ImageCollectionDto>>(null, false, new Error("Collection not found"));
-    }
-
-    public async Task<OperationResultDto<bool>> EditImage(string apiKey, string collectionName,string imageKey, string newImageTitle, string newImageDescription)
-    {
-        if(!ValidateAndSetDefaults(apiKey, ref collectionName,out var error,imageKey)) return new OperationResultDto<bool>(false, false, error);
-        
-        var collection = await GetCollection(apiKey, collectionName);
-        
-        if (collection == null)
-            return new OperationResultDto<bool>(false, false, new Error($"Collection named {collectionName} does not exists" ));
-       
-        var imageToEdit = collection.ImagesCollection.FirstOrDefault(x => x.Key == imageKey);
-
-        if (imageToEdit == null)
-            return new OperationResultDto<bool>(false, false, new Error("Image not found."));
-        
-        imageToEdit.Title = newImageTitle;
-        imageToEdit.Description = newImageDescription;
-
-        return await SaveChanges()
-            ? new OperationResultDto<bool>(true, true, null)
-            : new OperationResultDto<bool>(false, false, new Error("Error occurred while editing the image"));
     }
 
     public async Task<OperationResultDto<ImageCollection>> CreateCollection(string apiKey, string collectionName, string? description = default)
@@ -193,6 +219,9 @@ public class ImageManagerRepository : IImageManagerRepository
             TotalImages = 0
         };
 
+        SendApiKeyLogMessage($"Collection created, collection name :{collection.CollectionName} ", apiKey);
+
+        
         await _dbContext.ImageCollections.AddAsync(collection); 
         
         return await SaveChanges()
@@ -217,6 +246,9 @@ public class ImageManagerRepository : IImageManagerRepository
 
         _dbContext.ImageCollections.Update(collection);
 
+        SendApiKeyLogMessage($"Collection edited, collection name : {collection.CollectionName}  ", apiKey);
+
+        
         return await SaveChanges()
             ? new OperationResultDto<bool>(true, true, null)
             : new OperationResultDto<bool>(false, false, new Error("An error occurred while editing the collection"));
@@ -252,6 +284,9 @@ public class ImageManagerRepository : IImageManagerRepository
         
         _dbContext.ImageCollections.Remove(collection);
         
+        SendApiKeyLogMessage($"Collection deleted , collection name :{collection.CollectionName} ", apiKey);
+
+        
         return await SaveChanges()
             ? new OperationResultDto<bool>(true, true, null)
             : new OperationResultDto<bool>(false, false, new Error("An error occurred while editing the collection"));
@@ -264,7 +299,7 @@ public class ImageManagerRepository : IImageManagerRepository
             _dbContext.ImageCollections
                 .Include(imageCollection => imageCollection.ImagesCollection)
                 .FirstOrDefaultAsync(x => x.CollectionName == collectionName && apiKey == x.ApiKey);
-
+        
         return collection; 
     }
 
@@ -347,5 +382,20 @@ public class ImageManagerRepository : IImageManagerRepository
     {
         return await _dbContext.SaveChangesAsync() > 0; 
     }
+
+    private void SendApiKeyLogMessage(string message, string apiKey)
+    {
+        var addApiKeyLog = new AddApiKeyLog(message, apiKey);
+        
+        _messageSender.SendMessage(addApiKeyLog,_configuration.GetApiKeyLogQueueName());
+    }
+
+    private void SendApiKeyUsageData(uint bytesUsed, string userId)
+    {
+        var usageMetric = new AddUsageMetrics(userId, bytesUsed);
+         
+        _messageSender.SendMessage(usageMetric, _configuration.GetApiKeyResourceUsageQueue());
+    }
+    
 
 }

@@ -62,6 +62,17 @@ public static class ConfigurationExtension
         return configuration.GetSection("RabbitMq").GetSection("Exchanges")["ApiKeyExchange"] ??
                throw new NullReferenceException();
     }
+    
+    public static string? GetApiKeyLogQueueName(this IConfiguration configuration)
+    {
+        return configuration.GetSection("RabbitMq").GetSection("Queues")["ApiKeyLogQueue"];
+    }
+    
+    public static string? GetApiKeyResourceUsageQueue(this IConfiguration configuration)
+    {
+        return configuration.GetSection("RabbitMq").GetSection("Queues")["ApiKeyResourceUsageQueue"];
+    }
+
 
 
 }
