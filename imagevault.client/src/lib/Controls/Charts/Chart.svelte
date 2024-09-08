@@ -2,19 +2,20 @@
     import Chart from 'chart.js/auto'
     import { onMount } from 'svelte';
     
-    export let data;
     export let chartType;
-    export let color = 'text-green-500'; 
-
+    export let labels ;
+    export let values ;
+    export let chartLabel; 
     
-
-    data.datasets.borderColor = color;
     onMount(() => {
         new Chart(element, {
     type: chartType,
     data: {
-      labels: data.labels,
-      datasets: data.datasets
+      labels: labels,
+      datasets:[{
+          label : chartLabel, 
+          data : values
+      }]
 
     },
     options: {

@@ -287,6 +287,18 @@ static_resources:
                           default_value:
                             numerator: 100
                             denominator: HUNDRED
+                - match:
+                    prefix: "/api/v1/image/delete"
+                  route:
+                    prefix_rewrite: "/api/v1/image/delete"
+                    cluster: ImageService
+                    request_mirror_policies:
+                      - cluster: MetricsService
+                        runtime_fraction:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED
+
 
                 - match:
                     prefix: "/api/v1/metrics/get"
@@ -298,7 +310,25 @@ static_resources:
                         runtime_fraction:
                           default_value:
                             numerator: 100
-                            denominator: HUNDRED  
+                            denominator: HUNDRED
+                - match:
+                    prefix: "/api/v1/metrics/daily/get"
+                  route:
+                    prefix_rewrite: "/api/v1/metrics/daily/get"
+                    cluster: MetricsService
+                    request_mirror_policies:
+                      - cluster: MetricsService
+                        runtime_fraction:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED
+                - match:
+                    prefix: "/api/v1/logs/apikey/get"
+                  route:
+                    prefix_rewrite: "/api/v1/logs/apikey/get"
+                    cluster: MetricsService
+           
+                
   clusters:
   - name: AuthenticationService
     type: LOGICAL_DNS

@@ -109,8 +109,6 @@ public class ImageManagerRepository : IImageManagerRepository
         
         var images = collection.ImagesCollection.Select(x => x.MapToImageDto());        
         
-        SendApiKeyLogMessage($"Images accessed, returned : {images.Count()} images ", apiKey, collection.ImagesCollection.FirstOrDefault().UserId);
-        
         return new OperationResultDto<IEnumerable<ImageDto>>(images.AsEnumerable(), true,null);
     }
 
@@ -127,7 +125,6 @@ public class ImageManagerRepository : IImageManagerRepository
         
        var selectedImages = collection.ImagesCollection.Skip(pageToSkip).Take(limit).Select(x => x.MapToImageDto());
 
-       SendApiKeyLogMessage($"Images accessed, returned : {selectedImages.Count()} images ", apiKey,collection.ImagesCollection.FirstOrDefault().UserId);
        
         return new OperationResultDto<IEnumerable<ImageDto>>(selectedImages, true,null);
     }
@@ -178,7 +175,7 @@ public class ImageManagerRepository : IImageManagerRepository
         
         collection.ImagesCollection.Remove(imageToRemove);
 
-        SendApiKeyLogMessage($"Images deleted, Key: {imageToRemove.Key} images ", apiKey,imageToRemove.UserId);
+        SendApiKeyLogMessage($"Images deleted, Key: {imageToRemove.Key} images ", apiKey,imageToRemove.UserId ?? "");
 
         
         return await SaveChanges()
@@ -196,9 +193,6 @@ public class ImageManagerRepository : IImageManagerRepository
             .Where(x => x.ApiKey == apiKey)
             .Select(x => x.MapToCollectionDto())
             .ToListAsync();
-        
-        SendApiKeyLogMessage($"Collections accessed, returned : {collections.Count} collections ", apiKey,string.Empty);
-
         
         return collections != null
             ? new OperationResultDto<IEnumerable<ImageCollectionDto>>(collections, true, null)
@@ -248,7 +242,7 @@ public class ImageManagerRepository : IImageManagerRepository
 
         _dbContext.ImageCollections.Update(collection);
 
-        SendApiKeyLogMessage($"Collection edited, collection name : {collection.CollectionName}  ", apiKey, collection.ImagesCollection.FirstOrDefault().UserId);
+        SendApiKeyLogMessage($"Collection edited, collection name : {collection.CollectionName}  ", apiKey, collection.ImagesCollection.FirstOrDefault().UserId ?? "");
 
         
         return await SaveChanges()
@@ -286,7 +280,7 @@ public class ImageManagerRepository : IImageManagerRepository
         
         _dbContext.ImageCollections.Remove(collection);
         
-        SendApiKeyLogMessage($"Collection deleted , collection name :{collection.CollectionName} ", apiKey,collection.ImagesCollection.FirstOrDefault().UserId);
+        SendApiKeyLogMessage($"Collection deleted , collection name :{collection.CollectionName} ", apiKey,collection.ImagesCollection.FirstOrDefault().UserId?? "");
 
         
         return await SaveChanges()

@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using ImageVault.RequestMetricsService.Data.Dtos;
 using ImageVault.RequestMetricsService.Data.Interfaces;
 using ImageVault.RequestMetricsService.Data.Models;
 using ImageVault.RequestMetricsService.Extension;
@@ -42,14 +43,14 @@ public class UsageMetricsController : ControllerBase
         }
     }
 
-    [HttpPost("get/{dayRange:int}")]
-    public async Task<IActionResult> GetUsageStatisticsForLastDays([FromRoute] int dayRange)
+    [HttpPost("daily/get")]
+    public async Task<IActionResult> GetUsageStatisticsForLastDays([FromBody] GetDailyMetrics data)
     {
         try 
         {
             var id = User.GetClaimValue(ClaimTypes.NameIdentifier);
 
-            var result = await _metricsRepository.GetDailyUsageMetrics(id,dayRange);
+            var result = await _metricsRepository.GetDailyUsageMetrics(id,data.DayRange);
 
             return result.IsSuccess
                 ? Ok(result.Value)

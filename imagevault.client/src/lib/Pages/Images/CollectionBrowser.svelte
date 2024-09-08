@@ -34,9 +34,8 @@
 
     async function fetchNecessaryData()
     {
-        const apiStoreValue =   get(apiKeyStore)
-        await imageManagerStore.fetchCollections(apiStoreValue.selectedKey.key);
-        await imageManagerStore.fetchImages(apiStoreValue.selectedKey.key,$collectionBrowserStore.collectionName,$imageManagerStore.limit,1)
+        await imageManagerStore.fetchCollections($apiKeyStore.selectedKey.key);
+        await imageManagerStore.fetchImages($apiKeyStore.selectedKey.key,$collectionBrowserStore.collectionName,$imageManagerStore.limit,1)
     }
 
     async function nextPage()

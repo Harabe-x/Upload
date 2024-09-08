@@ -191,9 +191,7 @@ public class UsageCollectorRepository : IUsageCollectorRepository
             _logger.LogError("UserId in GetDailyUsageMetrics in UsageCollectorRepository is empty. It shouldn't be empty ");
             return null; 
         }
-
-        var usageMetrics = await GetUsageMetrics(userId);
-
+        
         var result = _dbContext.UsersDailyUsageMetrics.Include(x => x.Requests).FirstOrDefault(x => x.UserId == userId && x.Date == DateTime.Today); 
         
         return result == null

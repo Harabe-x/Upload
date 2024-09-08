@@ -37,7 +37,7 @@
             </div>
         </button>
         
-            <UserProfileDropdown image={MrFrost}>
+            <UserProfileDropdown>
                 <li on:click={logout}><a><Icon src={ArrowRightOnRectangle} class="w-4"/>Logout</a></li>
             </UserProfileDropdown>
     </div>

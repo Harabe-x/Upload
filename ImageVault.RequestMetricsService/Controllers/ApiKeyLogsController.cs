@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 namespace ImageVault.RequestMetricsService.Controllers;
 
 [Controller]
-[Route("/api/v1/logs/apikey/")]
+[Route("/api/v1/logs/apikey/get")]
 public class ApiKeyLogsController : ControllerBase
 {
 

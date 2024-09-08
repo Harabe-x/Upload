@@ -71,7 +71,7 @@
     {
         notificationStore.sendNotification(NOTIFICATION_TYPE_SUCCESS,message)
     }
-
+    
 
 </script>
 
@@ -89,7 +89,6 @@
                 <div class="flex items-center w-1/3 justify-end mr-3 gap-3 sm:gap-1">
                     <div class="block sm:hidden">
                         <IconDropdown icon={EllipsisVertical}>
-                            <li><button><Icon src={ArrowDownTray} class="w-4" />Download</button></li>
                             <li ><button><Icon src={ArrowUpOnSquare} class="w-4" />Share</button></li>
                             <li><button  on:click={() => { imageDeleteStore.update(state => { return {...state , imageKey:$imageManager.images[currentIndex].key }}) ; openDeleteModalFunction();  }} ><Icon src={Trash} class="w-4" />Delete</button></li>
                             <li><button on:click={() => { fileInfoStore.set($imageManager.images[currentIndex]); openFileInfoModalFunction(); }}><Icon src={InformationCircle} class="w-4" />File info</button></li>
@@ -99,7 +98,6 @@
                     <!-- Buttons and dropdown for larger screens (tablet and desktop) -->
                     <div class="hidden sm:flex items-center gap-1">
                         <IconButton icon={ArrowUpOnSquare}   iconStyle="w-5" flipIcons={true}></IconButton>
-                        <IconButton icon={ArrowDownTray} iconStyle="w-5 sm:w-3" flipIcons={true} buttonStyle="bg-success text-primary-content">Download</IconButton>
                         <IconDropdown icon={EllipsisVertical}>
                             <li><button  on:click={() => { imageDeleteStore.update(state => { return {...state , imageKey:$imageManager.images[currentIndex].key }}) ; openDeleteModalFunction();  }} ><Icon src={Trash} class="w-4" />Delete</button></li>
                             <li><button on:click={() => { fileInfoStore.set($imageManager.images[currentIndex]); openFileInfoModalFunction(); }}><Icon src={InformationCircle} class="w-4" />File info</button></li>

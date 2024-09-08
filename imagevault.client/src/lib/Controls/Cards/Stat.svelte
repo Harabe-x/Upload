@@ -17,7 +17,7 @@
 
 
 <div class="stats shadow">
-    <div class="stat bg-base-300">
+    <div class="stat bg-base-200">
         <div class="stat-figure">
             <Icon src={icon}  class="inline-block h-12 w-12 stroke-current" ></Icon>
          </div>

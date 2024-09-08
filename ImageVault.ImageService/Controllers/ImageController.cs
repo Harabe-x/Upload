@@ -40,6 +40,8 @@ public class ImageController : ControllerBase
     [HttpPost("get/paged")]
     public async Task<IActionResult> GetPagedImages([FromBody] GetPagedImages imageData)
     {
+        
+        _logger.LogInformation(imageData.ToString());
         try
         {
             var result = await _imageManager.GetPagedImages(imageData.ApiKey, imageData.Page,imageData.Limit, imageData.CollectionName);

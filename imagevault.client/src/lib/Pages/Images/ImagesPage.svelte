@@ -34,25 +34,23 @@
 
      async function fetchNecessaryData() 
      {
-          const apiStoreValue =   get(apiKeyStore)
-          await imageManagerStore.fetchCollections(apiStoreValue.selectedKey.key);
-          await imageManagerStore.fetchImages(apiStoreValue.selectedKey.key,"default",$imageManagerStore.limit,1)
+          await apiKeyStore.fetchKeys()
+          await imageManagerStore.fetchCollections($apiKeyStore.selectedKey.key);
+          await imageManagerStore.fetchImages($apiKeyStore.selectedKey.key,"default",$imageManagerStore.limit,1)
      }
      
      async function nextPage()
      {
           if($imageManagerStore.images.length < $imageManagerStore.limit) return; 
           
-          const apiStoreValue =   get(apiKeyStore)
           imageManagerStore.nextPage();
-          await imageManagerStore.fetchImages(apiStoreValue.selectedKey.key,"default",$imageManagerStore.limit,$imageManagerStore.currentPage)
+          await imageManagerStore.fetchImages($apiKeyStore.selectedKey.key,"default",$imageManagerStore.limit,$imageManagerStore.currentPage)
      }
 
      async function previousPage()
      {
-          const apiStoreValue =   get(apiKeyStore)
           imageManagerStore.previousPage();
-          await imageManagerStore.fetchImages(apiStoreValue.selectedKey.key,"default",$imageManagerStore.limit,$imageManagerStore.currentPage)
+          await imageManagerStore.fetchImages($apiKeyStore.selectedKey.key,"default",$imageManagerStore.limit,$imageManagerStore.currentPage)
      }
      
      function openAddImageDialog()

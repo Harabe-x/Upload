@@ -16,7 +16,7 @@
             <button on:click={toggleNavBar} class="btn btn-ghost bg-base-100  btn-circle z-50 top-0 right-0 mt-4 mr-2 absolute lg:hidden">
                     <Icon src={XMark} class="h-5 inline-block w-5"/>
                 </button>
-                <li class="mb-2 font-semibold text-xl"><a href="/app/welcome"> <Icon  class="mask mask-squircle w-10 text-blue-400" src={LockClosed}></Icon>  Imagevault </a> </li>
+                <li class="mb-2 font-semibold text-xl"><a> <Icon  class="mask mask-squircle w-10 text-blue-400" src={LockClosed}></Icon>  Imagevault </a> </li>
 
                 {#each navigationBarItems as menuItem }
                         {#if menuItem.SubItems !== undefined}

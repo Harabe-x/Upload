@@ -19,9 +19,6 @@ public class CollectionController : ControllerBase
         _logger = logger; 
     }
 
-
-
-
     [HttpPost("list")]
     public async Task<IActionResult> ListCollection([FromBody] ListCollections data)
     {

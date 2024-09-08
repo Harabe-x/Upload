@@ -13,24 +13,35 @@
     import DataFetchingPage from "@/lib/Pages/InfoPages/DataFetchingPage.svelte";
     import {get} from "svelte/store";
     import ApiKeySelector from "@/lib/Controls/Shared/ApiKeySelector.svelte";
+    import { getUsageStore} from "@/js/State/Metrics/UsageStore.js";
+    import {formatBytes} from "@/js/Converters/ByteConverter.js";
 
 
     const apiKeyStore = getApiKeys();
-
-    onMount(() => {
-        apiKeyStore.fetchKeys();
+    const usageStore = getUsageStore() 
+    
+    onMount(async () => {
+        await fetchData()
     })
 
-
-
-    const promise = getChartData();
-    const promise2 = getChartData();
+    let formatedBytes = "";
+    
+    async function fetchData()
+    { 
+         await usageStore.fetchDailyUsage(365)
+         await usageStore.fetchUsageMetrics()
+         formatedBytes = formatBytes($usageStore.UsageMetrics.totalStorageUsed);
+    }
+    
 </script>
+
+
+{#key $usageStore}
 
 
 <!-- Card section -->
 <PageTopMenu>
-    <div slot="leftSide">
+    <div slot="leftSide" class="hidden">
         <ApiKeySelector></ApiKeySelector>
     </div>
     <div slot="rightSide">
@@ -44,22 +55,22 @@
     <Stat titleTextColor="base-content" 
      icon={ServerStack} 
        title="Storage used"
-        value="21.4 GB"
-         description="Your value increased by  220%" >
+          value={formatedBytes}
+          description="Your value increased by  220%" >
          </Stat>
     <Stat icon={Photo} 
     title="Uploaded Images"
-     value="7 742"
+     value="{$usageStore.UsageMetrics.totalImageUploaded}"
       description="Your value increased by  220%" > 
     </Stat>
     <Stat icon={CloudArrowUp} 
       title="API requests"
-      value="13,436" 
+      value="{$usageStore.UsageMetrics.totalRequests}" 
       description="Api calls during selected time period">
      </Stat>
      <Stat icon={Banknotes} 
       title="Costs"
-      value="2 632 $" 
+      value="Unknown" 
       description="Costs for using the API during this time period">
      </Stat>
 
@@ -68,25 +79,12 @@
 <!-- Charts -->
 <div class="grid lg:grid-cols-2 mt-1 md:grid-cols-2 grid-cols-1 gap-6">
         <Card title="Uploaded Images">
-
-            {#await promise2}
-                <DataFetchingPage></DataFetchingPage>
-            {:then resolvedData}
-                <Chart data={resolvedData} chartType="line"></Chart>
-
-            {/await}
-            
+            <Chart chartType="line" chartLabel="Uploaded images" labels={$usageStore.DailyUsageMetrics.map((x) =>  x.date.slice(0,10))} values={$usageStore.DailyUsageMetrics.map((x) => x.totalImageUploaded)}   ></Chart>
         </Card>
-    
+
         <Card title="Number of requests">
-            {#await promise}
-                <DataFetchingPage></DataFetchingPage>
-
-                {:then resolvedData}
-                <Chart data={resolvedData} chartType="line"></Chart>
-
-            {/await}
+            <Chart chartType="line" chartLabel="Total Requests" labels={$usageStore.DailyUsageMetrics.map((x) => x.date.slice(0,10))} values={$usageStore.DailyUsageMetrics.map((x) => x.totalRequests)}   ></Chart>
         </Card>
-
 </div>
+    {/key}
     

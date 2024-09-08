@@ -57,8 +57,9 @@ public class UsageMetricsRepository : IUsageMetricsRepository
         var result = usageMetric.DailyUsageMetrics
             .OrderByDescending(x => x.Date)
             .Take(daysRange)
+            .OrderBy(x => x.Date)
             .Select(x => x.MapToDailyUsageMetric());
-
+        
         return new OperationResult<IEnumerable<DailyUsageMetric>>(result, true, null); 
     }
 
@@ -110,11 +111,13 @@ public class UsageMetricsRepository : IUsageMetricsRepository
 
     private async Task<bool> AggregateUsageData(UsageMetrics usageMetrics)
     {
-        if (usageMetrics.LastAggregationDate == DateTime.Today)
-        {
-            _logger.LogInformation("Data was already aggregated today.");
-            return true;
-        }
+        
+        //  i disabled it 
+        // if (usageMetrics.LastAggregationDate == DateTime.Today)
+        // {
+        //     _logger.LogInformation("Data was already aggregated today.");
+        //     return true;
+        // }
 
         uint totalUploadedImages = 0;
         uint totalStorageUsed = 0;
