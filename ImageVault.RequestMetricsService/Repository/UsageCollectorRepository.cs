@@ -69,6 +69,22 @@ public class UsageCollectorRepository : IUsageCollectorRepository
             : new OperationResult<bool>(false, false, new Error("Something went wrong while updating daily data usage"));
     }
 
+    public async Task<OperationResult<bool>> IncrementTotalRequests(string userId)
+    {
+        var dailyUsage = await GetDailyUsageMetrics(userId);
+        
+
+        dailyUsage.TotalRequests += 1;
+
+        _dbContext.UsersDailyUsageMetrics.Update(dailyUsage);
+
+        var result = await SaveChanges();
+        
+        return result
+            ? new OperationResult<bool>(true, true, null)
+            : new OperationResult<bool>(false, false, new Error("Error occured while incrementing total requests")); 
+    }
+
     public async Task<OperationResult<bool>> AddStorageUsage(uint bytesUsed,string userId)
     {
     

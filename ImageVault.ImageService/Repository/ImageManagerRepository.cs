@@ -69,9 +69,11 @@ public class ImageManagerRepository : IImageManagerRepository
 
         collection.TotalImages += 1; 
         
-        SendApiKeyUsageData((uint)image.ImageSize, image.UserId);
-        SendApiKeyLogMessage($"Image added, image key : {image.Key}", image.ApiKey);
+        SendApiKeyUsageData((uint)imageData.ImageSize, imageData.UserId);
+        SendApiKeyLogMessage($"Image added, image key : {image.Key}", image.ApiKey, image.ApiKey);
 
+        _logger.LogInformation($"Image added, image key : {image.Key}");
+        
         return await SaveChanges()
             ? new OperationResultDto<bool>(true,true,null)
             : new OperationResultDto<bool>(false,false,new Error("An error occurred while adding the image"));
@@ -88,7 +90,7 @@ public class ImageManagerRepository : IImageManagerRepository
         
         var image = collection.ImagesCollection.FirstOrDefault(x => x.Key == imageKey);
 
-        SendApiKeyLogMessage($"Image accessed key : {image.Key} ", image.ApiKey);
+        SendApiKeyLogMessage($"Image accessed key : {image.Key} ", image.ApiKey, image.UserId);
         
         return image != null 
             ? new OperationResultDto<ImageDto>(image.MapToImageDto(),true,null)
@@ -107,7 +109,7 @@ public class ImageManagerRepository : IImageManagerRepository
         
         var images = collection.ImagesCollection.Select(x => x.MapToImageDto());        
         
-        SendApiKeyLogMessage($"Images accessed, returned : {images.Count()} images ", apiKey);
+        SendApiKeyLogMessage($"Images accessed, returned : {images.Count()} images ", apiKey, collection.ImagesCollection.FirstOrDefault().UserId);
         
         return new OperationResultDto<IEnumerable<ImageDto>>(images.AsEnumerable(), true,null);
     }
@@ -125,7 +127,7 @@ public class ImageManagerRepository : IImageManagerRepository
         
        var selectedImages = collection.ImagesCollection.Skip(pageToSkip).Take(limit).Select(x => x.MapToImageDto());
 
-       SendApiKeyLogMessage($"Images accessed, returned : {selectedImages.Count()} images ", apiKey);
+       SendApiKeyLogMessage($"Images accessed, returned : {selectedImages.Count()} images ", apiKey,collection.ImagesCollection.FirstOrDefault().UserId);
        
         return new OperationResultDto<IEnumerable<ImageDto>>(selectedImages, true,null);
     }
@@ -148,7 +150,7 @@ public class ImageManagerRepository : IImageManagerRepository
         imageToEdit.Title = newImageTitle;
         imageToEdit.Description = newImageDescription;
 
-        SendApiKeyLogMessage($"Images edited, key : {imageToEdit.Key}", apiKey);
+        SendApiKeyLogMessage($"Images edited, key : {imageToEdit.Key}", apiKey, imageToEdit.UserId);
 
         
         return await SaveChanges()
@@ -176,7 +178,7 @@ public class ImageManagerRepository : IImageManagerRepository
         
         collection.ImagesCollection.Remove(imageToRemove);
 
-        SendApiKeyLogMessage($"Images deleted, Key: {imageToRemove.Key} images ", apiKey);
+        SendApiKeyLogMessage($"Images deleted, Key: {imageToRemove.Key} images ", apiKey,imageToRemove.UserId);
 
         
         return await SaveChanges()
@@ -195,7 +197,7 @@ public class ImageManagerRepository : IImageManagerRepository
             .Select(x => x.MapToCollectionDto())
             .ToListAsync();
         
-        SendApiKeyLogMessage($"Collections accessed, returned : {collections.Count} collections ", apiKey);
+        SendApiKeyLogMessage($"Collections accessed, returned : {collections.Count} collections ", apiKey,string.Empty);
 
         
         return collections != null
@@ -219,7 +221,7 @@ public class ImageManagerRepository : IImageManagerRepository
             TotalImages = 0
         };
 
-        SendApiKeyLogMessage($"Collection created, collection name :{collection.CollectionName} ", apiKey);
+        SendApiKeyLogMessage($"Collection created, collection name :{collection.CollectionName} ", apiKey ,string.Empty);
 
         
         await _dbContext.ImageCollections.AddAsync(collection); 
@@ -246,7 +248,7 @@ public class ImageManagerRepository : IImageManagerRepository
 
         _dbContext.ImageCollections.Update(collection);
 
-        SendApiKeyLogMessage($"Collection edited, collection name : {collection.CollectionName}  ", apiKey);
+        SendApiKeyLogMessage($"Collection edited, collection name : {collection.CollectionName}  ", apiKey, collection.ImagesCollection.FirstOrDefault().UserId);
 
         
         return await SaveChanges()
@@ -284,7 +286,7 @@ public class ImageManagerRepository : IImageManagerRepository
         
         _dbContext.ImageCollections.Remove(collection);
         
-        SendApiKeyLogMessage($"Collection deleted , collection name :{collection.CollectionName} ", apiKey);
+        SendApiKeyLogMessage($"Collection deleted , collection name :{collection.CollectionName} ", apiKey,collection.ImagesCollection.FirstOrDefault().UserId);
 
         
         return await SaveChanges()
@@ -383,9 +385,9 @@ public class ImageManagerRepository : IImageManagerRepository
         return await _dbContext.SaveChangesAsync() > 0; 
     }
 
-    private void SendApiKeyLogMessage(string message, string apiKey)
+    private void SendApiKeyLogMessage(string message, string apiKey, string userId)
     {
-        var addApiKeyLog = new AddApiKeyLog(message, apiKey);
+        var addApiKeyLog = new AddApiKeyLog(message, apiKey,userId);
         
         _messageSender.SendMessage(addApiKeyLog,_configuration.GetApiKeyLogQueueName());
     }
@@ -393,7 +395,7 @@ public class ImageManagerRepository : IImageManagerRepository
     private void SendApiKeyUsageData(uint bytesUsed, string userId)
     {
         var usageMetric = new AddUsageMetrics(userId, bytesUsed);
-         
+         _logger.LogInformation(usageMetric.ToString());
         _messageSender.SendMessage(usageMetric, _configuration.GetApiKeyResourceUsageQueue());
     }
     

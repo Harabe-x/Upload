@@ -64,6 +64,11 @@ public class RequestCollectorController : ControllerBase
             _logger.LogError(e.ToString()); 
         }
     }
+
+    public async Task CollectFallback()
+    {
+        await CollectRequest();
+    }
     
     /// <summary>
     ///  Creates Request object to send via AMQP

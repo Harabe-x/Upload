@@ -2,6 +2,7 @@ using System.Text;
 using ImageVault.ImageService.Amazon;
 using ImageVault.ImageService.Configuration;
 using ImageVault.ImageService.Data;
+using ImageVault.ImageService.Data.Dtos.Metrics;
 using ImageVault.ImageService.Data.Interfaces;
 using ImageVault.ImageService.Data.Interfaces.Amazon;
 using ImageVault.ImageService.Data.Interfaces.Image;
@@ -22,6 +23,7 @@ public static class ApplicationConfiguration
 
         builder.Services.AddScoped<IImageManagerRepository, ImageManagerRepository>();
         builder.Services.AddScoped<IApiKeyRepository, ApiKeyRepository>(); 
+        builder.Services.AddScoped<IRabbitMqMessageSender, RabbitMqMessageSender>();
         builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
         builder.Services.AddSingleton<IRabbitMqListener, RabbitMqListener>();
         builder.Services.AddSingleton<IRabbitMqConsumerList, RabbitMqConsumerList>();

@@ -58,21 +58,19 @@ public class ApiKeyUsageConsumer : IRabbitMqConsumer
 
     private async Task HandleMessage(object sender, BasicDeliverEventArgs args)
     {
-        var jsonMessage = Encoding.UTF8.GetString(args.Body.ToArray());
 
         try
         {
-            var usageMetrics = JsonSerializer.Deserialize<AddUsageMetrics>(jsonMessage);
-
-
+            var usageMetrics = await JsonSerializer.DeserializeAsync<AddUsageMetrics>(new MemoryStream(args.Body.ToArray()));
+            
             _logger.LogInformation(usageMetrics.ToString());
 
             using (var scope = _factory.CreateAsyncScope())
             {
                 var usageCollector = scope.ServiceProvider.GetService<IUsageCollectorRepository>();
-
+                
                 await usageCollector.AddStorageUsage(usageMetrics.BytesUsed,usageMetrics.UserId);
-
+                
                 await usageCollector.IncrementTotalUploadedImages(usageMetrics.UserId);
             }
 

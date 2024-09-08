@@ -1,5 +1,6 @@
 using ImageVault.RequestMetricsService.Configuration;
 using ImageVault.RequestMetricsService.Extension;
+using ImageVault.RequestMetricsService.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,7 @@ builder.AddCors();
 
 var app = builder.Build();
 
+app.UseMiddleware<AnonymousRequestLoggingMiddleware>();
 app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
@@ -23,4 +25,5 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.AddRabbitMqListener();
 app.UseHttpsRedirection();
+app.MapFallbackToController("CollectFallback", "RequestCollector");
 app.Run();

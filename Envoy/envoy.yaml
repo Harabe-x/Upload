@@ -31,140 +31,274 @@ static_resources:
             virtual_hosts:
             - name: local_service
               domains: ["*"]
-           
+              
               routes:
-              - match:
-                  prefix: "/api/v1/auth/login"
-                route:
-                  prefix_rewrite: /api/v1/auth/login
-                  cluster: AuthenticationService
-    
-              - match:
-                  prefix: "/api/v1/auth/register"
-                route:
-                  prefix_rewrite: /api/v1/auth/register
-                  cluster: AuthenticationService
-              
-              - match:
-                  prefix: "/api/v1/auth/pingauth"
-                route:
-                  prefix_rewrite: /api/v1/auth/pingauth
-                  cluster: AuthenticationService
-              
-              - match:
-                  prefix: "/api/v1/user/get"
-                route:
-                  prefix_rewrite: /api/v1/user/get
-                  cluster: UserService
-                  
-              - match:
-                  prefix: "/api/v1/user/edit"
-                route:
-                  prefix_rewrite: /api/v1/user/edit
-                  cluster: UserService
+                - match:
+                    prefix: "/api/v1/auth/login"
+                  route:
+                    prefix_rewrite: /api/v1/auth/login
+                    cluster: AuthenticationService
+                    request_mirror_policies:
+                      - cluster: MetricsService
+                        runtime_fraction:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED
+                        
+                - match:
+                    prefix: "/api/v1/auth/register"
+                  route:
+                    prefix_rewrite: /api/v1/auth/register
+                    cluster: AuthenticationService
+                    request_mirror_policies:
+                      - cluster: MetricsService
+                        runtime_fraction:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED
+                        
+                - match:
+                    prefix: "/api/v1/auth/pingauth"
+                  route:
+                    prefix_rewrite: /api/v1/auth/pingauth
+                    cluster: AuthenticationService
+                    request_mirror_policies:
+                      - cluster: MetricsService
+                        runtime_fraction:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED
+                        
+                - match:
+                    prefix: "/api/v1/user/get"
+                  route:
+                    prefix_rewrite: /api/v1/user/get
+                    cluster: UserService
+                    request_mirror_policies:
+                      - cluster: MetricsService
+                        runtime_fraction:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED
 
-              - match:
-                  prefix: "/api/v1/user/delete"
-                route:
-                  prefix_rewrite: /api/v1/user/delete
-                  cluster: UserService
+                - match:
+                    prefix: "/api/v1/user/edit"
+                  route:
+                    prefix_rewrite: /api/v1/user/edit
+                    cluster: UserService
+                    request_mirror_policies:
+                      - cluster: MetricsService
+                        runtime_fraction:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED
 
-              - match:
-                  prefix: "/api/v1/user/delete"
-                route:
-                  prefix_rewrite: /api/v1/user/delete
-                  cluster: UserService
-                  
-              - match:
-                  prefix: "/api/v1/apikey/get"
-                route:
-                  prefix_rewrite: /api/v1/apikey/list
-                  cluster: ApiKeyService
+                - match:
+                    prefix: "/api/v1/user/delete"
+                  route:
+                    prefix_rewrite: /api/v1/user/delete
+                    cluster: UserService
+                    request_mirror_policies:
+                      - cluster: MetricsService
+                        runtime_fraction:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED
+                        
 
-              - match:
-                  prefix: "/api/v1/apikey/list"
-                route:
-                  prefix_rewrite: /api/v1/apikey/list
-                  cluster: ApiKeyService
+                - match:
+                    prefix: "/api/v1/user/delete"
+                  route:
+                    prefix_rewrite: /api/v1/user/delete
+                    cluster: UserService
+                    request_mirror_policies:
+                      - cluster: MetricsService
+                        runtime_fraction:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED
+                        
 
-              - match:
-                  prefix: "/api/v1/apikey/add"
-                route:
-                  prefix_rewrite: /api/v1/apikey/add
-                  cluster: ApiKeyService
+                - match:
+                    prefix: "/api/v1/apikey/get"
+                  route:
+                    prefix_rewrite: /api/v1/apikey/list
+                    cluster: ApiKeyService
+                    request_mirror_policies:
+                      - cluster: MetricsService
+                        runtime_fraction:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED
+                        
 
-              - match:
-                  prefix: "/api/v1/apikey/edit"
-                route:
-                  prefix_rewrite: /api/v1/apikey/edit
-                  cluster: ApiKeyService
-                  
-              - match:
-                  prefix: "/api/v1/apikey/delete"
-                route:
-                  prefix_rewrite: /api/v1/apikey/delete
-                  cluster: ApiKeyService
-              
-              - match:
-                  prefix: "/api/v1/upload"
-                route:
-                  prefix_rewrite: /api/v1/upload
-                  cluster: UploadService
-              - match:
-                  prefix: "/api/v1/collection/list"
-                route:
-                  prefix_rewrite: "/api/v1/collection/list"
-                  cluster: ImageService
-            
-              - match:
-                  prefix: "/api/v1/collection/create"
-                route:
-                  prefix_rewrite: "/api/v1/collection/create"
-                  cluster: ImageService
-            
-              - match:
-                  prefix: "/api/v1/collection/edit"
-                route:
-                  prefix_rewrite: "/api/v1/collection/edit"
-                  cluster: ImageService
-            
-              - match:
-                  prefix: "/api/v1/collection/delete"
-                route:
-                  prefix_rewrite: "/api/v1/collection/delete"
-                  cluster: ImageService
-            
-              - match:
-                  prefix: "/api/v1/image/get"
-                route:
-                  prefix_rewrite: "/api/v1/image/get"
-                  cluster: ImageService
-            
-              - match:
-                  prefix: "/api/v1/image/get/paged"
-                route:
-                  prefix_rewrite: "/api/v1/image/get/paged"
-                  cluster: ImageService
-            
-              - match:
-                  prefix: "/api/v1/image/get/all"
-                route:
-                  prefix_rewrite: "/api/v1/image/get/all"
-                  cluster: ImageService
-            
-              - match:
-                  prefix: "/api/v1/image/edit"
-                route:
-                  prefix_rewrite: "/api/v1/image/edit"
-                  cluster: ImageService
-            
-              - match:
-                  prefix: "/api/v1/image/delete"
-                route:
-                  prefix_rewrite: "/api/v1/image/delete"
-                  cluster: ImageService
+                - match:
+                    prefix: "/api/v1/apikey/list"
+                  route:
+                    prefix_rewrite: /api/v1/apikey/list
+                    cluster: ApiKeyService
+                    request_mirror_policies:
+                      - cluster: MetricsService
+                        runtime_fraction:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED
 
-  
+                - match:
+                    prefix: "/api/v1/apikey/add"
+                  route:
+                    prefix_rewrite: /api/v1/apikey/add
+                    cluster: ApiKeyService
+                    request_mirror_policies:
+                      - cluster: MetricsService
+                        runtime_fraction:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED
+
+                - match:
+                    prefix: "/api/v1/apikey/edit"
+                  route:
+                    prefix_rewrite: /api/v1/apikey/edit
+                    cluster: ApiKeyService
+                    request_mirror_policies:
+                      - cluster: MetricsService
+                        runtime_fraction:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED
+
+                - match:
+                    prefix: "/api/v1/apikey/delete"
+                  route:
+                    prefix_rewrite: /api/v1/apikey/delete
+                    cluster: ApiKeyService
+                    request_mirror_policies:
+                      - cluster: MetricsService
+                        runtime_fraction:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED
+
+                - match:
+                    prefix: "/api/v1/upload"
+                  route:
+                    prefix_rewrite: /api/v1/upload
+                    cluster: UploadService
+                    request_mirror_policies:
+                      - cluster: MetricsService
+                        runtime_fraction:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED
+
+                - match:
+                    prefix: "/api/v1/collection/list"
+                  route:
+                    prefix_rewrite: "/api/v1/collection/list"
+                    cluster: ImageService
+                    request_mirror_policies:
+                      - cluster: MetricsService
+                        runtime_fraction:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED
+
+                - match:
+                    prefix: "/api/v1/collection/create"
+                  route:
+                    prefix_rewrite: "/api/v1/collection/create"
+                    cluster: ImageService
+                    request_mirror_policies:
+                      - cluster: MetricsService
+                        runtime_fraction:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED
+
+                - match:
+                    prefix: "/api/v1/collection/edit"
+                  route:
+                    prefix_rewrite: "/api/v1/collection/edit"
+                    cluster: ImageService
+                    request_mirror_policies:
+                      - cluster: MetricsService
+                        runtime_fraction:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED
+
+                - match:
+                    prefix: "/api/v1/collection/delete"
+                  route:
+                    prefix_rewrite: "/api/v1/collection/delete"
+                    cluster: ImageService
+                    request_mirror_policies:
+                      - cluster: MetricsService
+                        runtime_fraction:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED
+
+                - match:
+                    prefix: "/api/v1/image/get"
+                  route:
+                    prefix_rewrite: "/api/v1/image/get"
+                    cluster: ImageService
+                    request_mirror_policies:
+                      - cluster: MetricsService
+                        runtime_fraction:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED
+
+                - match:
+                    prefix: "/api/v1/image/get/paged"
+                  route:
+                    prefix_rewrite: "/api/v1/image/get/paged"
+                    cluster: ImageService
+                    request_mirror_policies:
+                      - cluster: MetricsService
+                        runtime_fraction:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED
+
+                - match:
+                    prefix: "/api/v1/image/get/all"
+                  route:
+                    prefix_rewrite: "/api/v1/image/get/all"
+                    cluster: ImageService
+                    request_mirror_policies:
+                      - cluster: MetricsService
+                        runtime_fraction:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED
+
+                - match:
+                    prefix: "/api/v1/image/edit"
+                  route:
+                    prefix_rewrite: "/api/v1/image/edit"
+                    cluster: ImageService
+                    request_mirror_policies:
+                      - cluster: MetricsService
+                        runtime_fraction:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED
+
+                - match:
+                    prefix: "/api/v1/metrics/get"
+                  route:
+                    prefix_rewrite: "/api/v1/metrics/get"
+                    cluster: MetricsService
+                    request_mirror_policies:
+                      - cluster: MetricsService
+                        runtime_fraction:
+                          default_value:
+                            numerator: 100
+                            denominator: HUNDRED  
   clusters:
   - name: AuthenticationService
     type: LOGICAL_DNS
@@ -225,7 +359,7 @@ static_resources:
         - endpoint:
             address:
               socket_address:
-                address: imagevault.metricsservice
+                address: imagevault.requestmetricsservice
                 port_value: 2106
   - name: ApiKeyService
     type: LOGICAL_DNS

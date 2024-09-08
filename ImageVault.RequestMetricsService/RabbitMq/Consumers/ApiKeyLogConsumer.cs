@@ -57,21 +57,24 @@ public class ApiKeyLogConsumer : IRabbitMqConsumer
 
     private async Task HandleMessage(object sender, BasicDeliverEventArgs args)
     {
-        var jsonMessage = Encoding.UTF8.GetString(args.Body.ToArray());
-
         try
         {
-            var apiKeyLog = JsonSerializer.Deserialize<AddApiKeyLog>(jsonMessage);
-
-
+            var apiKeyLog = await JsonSerializer.DeserializeAsync<AddApiKeyLog>(new MemoryStream(args.Body.ToArray()));
+            
             _logger.LogInformation(apiKeyLog.ToString());
 
             using (var scope = _factory.CreateAsyncScope())
             {
                 var apiKeyLogsRepository = scope.ServiceProvider.GetService<IApiKeyLogsRepository>();
-
-
+                _logger.LogInformation(apiKeyLog.ToString());
+                
                 await apiKeyLogsRepository.AddLog(apiKeyLog.ApiKey, apiKeyLog.Message);
+
+                if (!string.IsNullOrWhiteSpace(apiKeyLog.UserId))
+                {
+                    var usageCollectorRepository = scope.ServiceProvider.GetService<IUsageCollectorRepository>();
+                    await usageCollectorRepository.IncrementTotalRequests(apiKeyLog.UserId);
+                }
             }
 
             _channel.BasicAck(args.DeliveryTag, true);

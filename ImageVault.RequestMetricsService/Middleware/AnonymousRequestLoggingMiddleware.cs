@@ -30,7 +30,7 @@ public class AnonymousRequestLoggingMiddleware
         /// <param name="anonymousRequestRepository">Repository that handles adding request to the database</param>
         public async Task InvokeAsync(HttpContext context, IAnonymousRequestRepository anonymousRequestRepository)
         {
-            if (context.Request.Headers.Count == 0)
+            if (context.Request.Headers.Authorization.Count == 0)
             {
                 var request = CreateAnonymousRequest(context);
                 await anonymousRequestRepository.AddAnonymousRequest(request);

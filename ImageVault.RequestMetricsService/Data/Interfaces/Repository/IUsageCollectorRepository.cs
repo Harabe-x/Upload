@@ -9,5 +9,7 @@ public interface IUsageCollectorRepository
 
     Task<OperationResult<bool>> IncrementTotalUploadedImages(string userId);
 
+    Task<OperationResult<bool>> IncrementTotalRequests(string userId); 
+
     Task<OperationResult<bool>> AddStorageUsage(uint bytesUsed, string userId);
 }
