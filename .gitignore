@@ -12,4 +12,5 @@ node_modules/
 # SECRETS 
 super_secret/
 .env*
+*.env
 AuthenticationService
