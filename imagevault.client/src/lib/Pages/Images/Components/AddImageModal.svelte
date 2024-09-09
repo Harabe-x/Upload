@@ -13,7 +13,7 @@
     let description = '';
     let collectionName = ''; 
     let image; 
-    let useCompression = true;
+    let useCompression = false;
     let isAddImageButtonDisabled = false; 
   
   

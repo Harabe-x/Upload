@@ -32,6 +32,8 @@
 
 
 </script>
+
+
 <Router>
     <Route path="/login" component={LoginPage}></Route>
     <Route path="/register" component={RegisterPage}></Route>

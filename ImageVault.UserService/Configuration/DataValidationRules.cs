@@ -16,30 +16,26 @@ public static class DataValidationRules
     /// <param name="validationService"></param>
     public static void AddRules(IDataValidationService validationService)
     {
-        validationService.AddCustomValidationRule<string>("ValidateName", str => { return str.All(char.IsLetter); });
+
+
+        validationService.AddCustomValidationRule<string?>("ValidateName",
+            str => { return str != null && str.All(chr => char.IsLetter(chr)); });
         validationService.AddCustomValidationRule<string>("ValidateApplicationColorSchema",
-            str => Enum.IsDefined(typeof(ApplicationColorSchemas), str));
+            str => Enum.IsDefined(typeof(ApplicationColorSchemas), str.ToString().ToLower()));
 
-        validationService.AddCustomValidationRule<string>("ValidatePassword", str =>
+        validationService.AddCustomValidationRule<UserData>("ValidateUserData", data =>
         {
-            return str.Length > 7 && str.Any(chr => !char.IsLetterOrDigit(chr)) &&
-                   str.Any(chr => char.IsDigit(chr));
+            return validationService.ValidateData("ValidateName", data.FirstName)
+                   && validationService.ValidateData("ValidateName", data.LastName)
+                   && validationService.ValidateData("ValidateApplicationColorSchema", data.DataTheme);
         });
-
-        validationService.AddCustomValidationRule<UserData>("ValidateUserDataDto", userData =>
+        
+        
+        validationService.AddCustomValidationRule<UpdateUser>("ValidateUserUpdateData", data =>
         {
-            return validationService.ValidateData("ValidateName", userData.FirstName)
-                   && validationService.ValidateData("ValidateName", userData.LastName)
-                   && validationService.ValidateData("ValidateApplicationColorSchema", userData.DataTheme);
-        });
-
-        validationService.AddCustomValidationRule<string>("ValidateApiKeyName",
-            apiKeyName => { return !string.IsNullOrEmpty(apiKeyName) && apiKeyName.Length > 0; });
-
-        validationService.AddCustomValidationRule<decimal>("ValidateKeyStorageCapacity", storage =>
-        {
-            const decimal maxStorageCapacity = 10000;
-            return storage > 0 && storage < maxStorageCapacity;
+            return validationService.ValidateData("ValidateName", data.FirstName)
+                   && validationService.ValidateData("ValidateName", data.LastName)
+                   && validationService.ValidateData("ValidateApplicationColorSchema", data.DataTheme);
         });
     }
 }

@@ -6,8 +6,8 @@ const navigationMenuItems = [
     { Title:'Images',Icon:Photo,Url:'/app/images'  },
     { Title:'Documentation',Icon:Document, SubItems: [
             { Title:'Getting started',Icon:RocketLaunch,Url:'/app/settings/billing'},
-            { Title:'Api key management\n',Icon:Key,Url:'/settings/profile'},
-            { Title:'Endpoints',Icon:ComputerDesktop,Url:'/app/settings/profile'},
+            { Title:'Api key management\n',Icon:Key,Url:'/app/settings/billing'},
+            { Title:'Endpoints',Icon:ComputerDesktop,Url:'/app/settings/billing'},
         ]  },
     { Title:'Settings',Icon:Cog, SubItems: [
         { Title:'Profile & Preferences',Icon:User,Url:'/app/settings/profile'},

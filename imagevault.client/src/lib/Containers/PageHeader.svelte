@@ -4,7 +4,6 @@
     import {Icon, Bars3, Sun, Moon, Bell, ArrowRightOnRectangle, ArrowDownTray} from "svelte-hero-icons";
     import BadgeMenuItem from "../Controls/MenuItems/BadgeMenuItem.svelte";
     import UserProfileDropdown from '../Controls/Dropdowns/UserProfileDropdown.svelte'
-    import MrFrost from '../../assets/117171438_10157804750272880_5668855721113743083_n.jpg'
     import {toggleNavBar } from '../../js/Temp/NavbarStateStore'
     import {getAuthStore} from "@/js/State/Auth/AuthStore.js";
 

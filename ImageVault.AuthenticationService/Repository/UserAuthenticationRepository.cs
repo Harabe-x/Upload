@@ -50,9 +50,16 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
         if (!_validationService.ValidateData("ValidateRegisterData",account))
             return new OperationResult<AuthenticationResult>(null, false, new Error("Invalid user data"));
 
-        var user = account.MapUser();
+        var user = await _userManager.FindByEmailAsync(account.Email);
 
-        var identityResult = await _userManager.CreateAsync(user, account.Password);
+        if (user != null)
+        {
+            return new OperationResult<AuthenticationResult>(null, false, new Error("User already exist"));
+        }
+            
+        var userAccount = account.MapUser();
+
+        var identityResult = await _userManager.CreateAsync(userAccount, account.Password);
 
         if (!identityResult.Succeeded)
         {
@@ -63,15 +70,15 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
                 new Error("The provided data was invalid"));
         }
 
-        var addingRoleResult = await _userManager.AddToRoleAsync(user, "User");
+        var addingRoleResult = await _userManager.AddToRoleAsync(userAccount, "User");
 
         if (!addingRoleResult.Succeeded)
             return new OperationResult<AuthenticationResult>(null, false,
                 new Error("Sorry, something went wrong ..."));
 
-        _rabbitMqMessageSender.SendMessage(account.MapToUserData(user.Id), _configuration.GetUserQueueName());
+        _rabbitMqMessageSender.SendMessage(account.MapToUserData(userAccount.Id), _configuration.GetUserQueueName());
 
-        return new OperationResult<AuthenticationResult>(await CreateAuthenticationResultDto(user), true, null);
+        return new OperationResult<AuthenticationResult>(await CreateAuthenticationResultDto(userAccount), true, null);
     }
 
     public async Task<OperationResult<AuthenticationResult>> LoginUser(Login login)
@@ -98,6 +105,8 @@ public class UserAuthenticationRepository : IUserAuthenticationRepository
     {
         var role = await _userManager.GetRolesAsync(user);
 
-        return new AuthenticationResult(user.Email, _jwtTokenService.CreateToken(user, role.FirstOrDefault()));
+        var desiredRole = role.FirstOrDefault();
+        
+        return new AuthenticationResult(user.Email, _jwtTokenService.CreateToken(user,desiredRole ?? "User" ));
     }
 }

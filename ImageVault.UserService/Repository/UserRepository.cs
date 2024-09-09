@@ -38,9 +38,9 @@ public class UserRepository : IUserRepository
         return new OperationResult<UserData>(userDataDto, true, null);
     }
 
-    public async Task<OperationResult<UserData>> AddUser([FromBody] UserData userData, string id)
+    public async Task<OperationResult<UserData>> AddUser(UserData userData, string id)
     {
-        if (!_validationService.ValidateData("ValidateUserDataDto", userData))
+        if (!_validationService.ValidateData("ValidateUserData", userData))
             return new OperationResult<UserData>
                 (null, false, new Error("Data validation failed"));
 
@@ -59,7 +59,7 @@ public class UserRepository : IUserRepository
     
     public async Task<OperationResult<UserData>> UpdateUser(UpdateUser newUserData, string id)
     {
-        if (!_validationService.ValidateData("ValidateUserDataDto", newUserData))
+        if (!_validationService.ValidateData("ValidateUserUpdateData", newUserData))
             return new OperationResult<UserData>(null, false, new Error("Data validation failed"));
 
         var user = await GetUserFromDatabase(id); 

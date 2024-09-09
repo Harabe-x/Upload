@@ -37,7 +37,7 @@ public static class UserMapper
             LastName = user.LastName,
             ProfilePictureUrl = user.ProfilePictureUrl,
             Email = user.Email,
-            ColorSchema = Enum.Parse<ApplicationColorSchemas>(user.DataTheme)
+            ColorSchema = Enum.Parse<ApplicationColorSchemas>(user.DataTheme.ToLower())
         };
     }
 }

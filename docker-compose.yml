@@ -57,8 +57,20 @@ services:
       - ./certs:/https
     env_file:
           - "ImageVault.RequestMetricsService/.env"
-
-
+  
+  
+  authenticationservice.db:
+    build: postgres/
+    container_name: authenticationservice.db
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"  
+    volumes:
+      - authenticationServiceDb:/var/lib/postgresql/data 
+      
   sqlserver:
     build: MsSqlServer/
     ports:
@@ -108,3 +120,5 @@ volumes:
     external: true
   msSqlServer:
     external: true
+  authenticationServiceDb : 
+    external: true 

@@ -91,10 +91,6 @@
                {#each $imageManagerStore.collections as collection (collection.id)}
                     <CollectionCard on:click={() => { collectionBrowser.set(collection); navigate("/app/collectionBrowser")}}  collection={{CollectionName: collection.collectionName}} imgSrc="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"> </CollectionCard>
                {/each}
-
-               <div class="flex items-center">
-                     <IconButton  buttonStyle="ml-auto" flipIcons={true} icon={ArrowRight} iconStyle="w-4"> See all collections </IconButton>     
-               </div>
              </div>
           </Card>
 </div>    

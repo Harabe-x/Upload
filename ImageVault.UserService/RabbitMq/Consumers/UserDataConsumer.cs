@@ -64,10 +64,16 @@ public class UserDataConsumer : IRabbitMqConsumer
         var userRepository = scope.ServiceProvider.GetService<IUserRepository>();        
         try
         {
+            
             var userData = JsonSerializer.Deserialize<UserData>(json);
 
+            _logger.LogInformation(userData.ToString());
+            
             var result = await userRepository.AddUser(userData, userData.Id);
 
+            _logger.LogInformation(result.ToString());
+            
+            
             if (result.IsSuccess) _channel.BasicAck(args.DeliveryTag, false);
         }
         catch (Exception e)

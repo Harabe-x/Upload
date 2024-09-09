@@ -65,12 +65,18 @@ export function getAuthStore() {
 
         async register( firstName, lastName,email, password) {
             try {
-                const response = await axios.post(REGISTER_ENDPOINT_URL, { firstName, lastName, email, password });
+                const response = await axios.post(REGISTER_ENDPOINT_URL, { firstName, lastName, email, password, dataTheme:"Dark", profilePictureUrl:"" });
 
                 if (response.status !== HTTP_STATUS_OK) return;
 
-                    await this.login(email, password);
-                } catch (error) {
+                this.set({token: response.data.token, isLoggedIn: true});
+
+                const userDataStore = getUserDataStore();
+
+                await  userDataStore.fetchUserData();
+
+
+            } catch (error) {
                 notificationStore.sendNotification(NOTIFICATION_TYPE_ERROR, error.message);
             }
         },

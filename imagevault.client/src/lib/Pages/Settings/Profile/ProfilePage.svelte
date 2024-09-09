@@ -27,7 +27,7 @@
     let firstName;
     let lastName;
     let preferedColorSchema = "";
-
+    let language = "English";
     onMount(async () => {
         themeChange(false);
         await setUserData();
@@ -99,13 +99,35 @@
         <TextInput bind:value={firstName} label="First Name" placeholder="Your first name" isError={!dataValidationStatus.isFirstNameValid} errorMessage="First name is invalid"   />
         <TextInput bind:value={lastName}  label="Last Name" placeholder="Your last name" isError={!dataValidationStatus.isLastNameValid} errorMessage="Last name is invalid"   />
         <TextInput bind:value={email} disabled="true" label="Email" placeholder="email@example.com"  />
-        <FIleInput label="Profile Picture"> </FIleInput>
   </div>
     <div  class="divider" ></div>
 
-    <div  class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <TextInput label="Language" placeholder="English"  />
-    </div>
+
+    <Card title="Preferences">
+
+        <div  class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <SelectInput bind:value={preferedColorSchema} on:change={updateTheme} title="Application Theme" data-choose-theme>
+                <option use:addThemeAction  value="light"> Light </option>
+                <option use:addThemeAction  value="dark"> Dark </option>
+                <option use:addThemeAction  value="cupcake"> Cupcake </option>
+                <option use:addThemeAction  value="dracula"> Dracula </option>
+                <option use:addThemeAction  value="black"> Black </option>
+                <option use:addThemeAction  value="nord"> Nord </option>
+                <option use:addThemeAction  value="aqua"> Aqua </option>
+                <option use:addThemeAction value="lemonade"> Lemonade </option>
+            </SelectInput>
+
+            <label>
+                <div class="flex flex-col">
+                    <span class="text-xs"> Application Language</span>
+                    <select disabled title="Application Language" class="select select-bordered mt-6">
+                        <option selected> English </option>
+                    </select>
+                </div>
+            </label>
+        </div>
+
+    </Card>
 
     <div class="mt-16"> <button on:click={updateUserData} class="btn btn-primary float-right w-36">Update</button></div>
 </Card>
@@ -113,24 +135,3 @@
 
 
 
-<Card title="Preferences">
-
-    <div  class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <SelectInput bind:value={preferedColorSchema} on:change={updateTheme} title="Application Theme" data-choose-theme>
-            <option use:addThemeAction  value="light"> Light </option>
-            <option use:addThemeAction  value="dark"> Dark </option>
-            <option use:addThemeAction  value="cupcake"> Cupcake </option>
-            <option use:addThemeAction  value="dracula"> Dracula </option>
-            <option use:addThemeAction  value="black"> Black </option>
-            <option use:addThemeAction  value="nord"> Nord </option>
-            <option use:addThemeAction  value="aqua"> Aqua </option>
-            <option use:addThemeAction value="lemonade"> Lemonade </option>
-        </SelectInput>
-
-        <SelectInput title="Application Language">
-            <option selected={true}> English </option>
-        </SelectInput>
-    </div>
-
-    <div class="mt-16"> <button class="btn btn-primary float-right w-36">Save</button></div>
-</Card>

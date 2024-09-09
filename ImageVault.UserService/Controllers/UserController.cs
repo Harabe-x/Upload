@@ -19,9 +19,12 @@ public class UserController : ControllerBase
 {
     private readonly IUserRepository _userRepository;
 
-    public UserController(IUserRepository userRepository)
+    private readonly ILogger<UserController> _logger;
+    
+    public UserController(IUserRepository userRepository, ILogger<UserController>  logger)
     {
         _userRepository = userRepository;
+        _logger = logger;
     }
 
     /// <summary>
@@ -40,8 +43,9 @@ public class UserController : ControllerBase
             
             return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            _logger.LogError(e.ToString());
             return StatusCode(500, new Error("Internal server error"));
         }
     }
@@ -64,8 +68,9 @@ public class UserController : ControllerBase
 
             return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            _logger.LogError(e.ToString());
             return StatusCode(500, new Error("Internal server error"));
         }
     }
@@ -86,8 +91,9 @@ public class UserController : ControllerBase
 
             return result ? NoContent() : BadRequest();
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            _logger.LogError(e.ToString());
             return StatusCode(500, new Error("Internal server error"));
         }
     }
