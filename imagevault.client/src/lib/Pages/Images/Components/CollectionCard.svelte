@@ -23,7 +23,7 @@
     }
 </script>
 
-<div class="carousel-item w-full h-full sm:w-full  lg:w-1/3  rounded-xl  cursor-pointer relative">
+<div class="carousel-item  h-full w-full  lg:w-1/3  rounded-xl  cursor-pointer relative">
     {#if displayImage}
         <button on:click={dispatchEvent}>
             <img
@@ -38,7 +38,7 @@
         </div>
     {:else}
         <button class="carousel-item max-h-full h-full w-full"  on:click={dispatchEvent}>
-            <div class="flex flex-col  justify-center items-center max-h-full h-full w-full bg-base-300 rounded-md  max-w-[60%] lg:max-w-full md:max-w-full ">
+            <div class="flex flex-col  justify-center items-center max-h-full h-full w-full bg-base-300 rounded-md   lg:max-w-full md:max-w-full ">
                 <span class="font-semibold ">{collection.CollectionName}</span>
             </div>
         </button>

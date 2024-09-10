@@ -14,6 +14,4 @@ const checkIfUserIsLoggedIn = (callback) => {
 
     return true;
 }
-
-
 export { checkIfUserIsLoggedIn }

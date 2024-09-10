@@ -42,7 +42,7 @@
 
         const store = get(authStore)
 
-        if (!store.IsLoggedIn) {
+        if (!store.isLoggedIn) {
             isRegistering = false;
             return;
         }
@@ -87,6 +87,8 @@
                     </button>
                 </div>
             </div>
+            <p class="lg:hidden md:hidden text-center text-sm">Already have account? <a class="link" href="/login" use:link> Login </a> </p>
+
             <div class="hero min-h-full rounded-l-xl bg-base-200 hidden sm:block">
                 <div class="hero-content w-full py-12 bg-base-300">
                     <div class="text-center">

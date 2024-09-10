@@ -70,6 +70,7 @@
                     </button>
                 </div>
             </div>
+            <p class="lg:hidden md:hidden text-center text-sm">Don’t have an account yet? <a class="link" href="/register" use:link> Register </a> </p>
 
             <div class="hero min-h-full rounded-l-xl bg-base-200 hidden sm:block">
                 <div class="hero-content w-full py-12 bg-base-300">
