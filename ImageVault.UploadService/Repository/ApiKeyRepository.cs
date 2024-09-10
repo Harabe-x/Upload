@@ -1,3 +1,4 @@
+using Amazon.S3.Model.Internal.MarshallTransformations;
 using ImageVault.UploadService.Data;
 using ImageVault.UploadService.Data.Dtos;
 using ImageVault.UploadService.Data.Interfaces.Upload;
@@ -36,7 +37,8 @@ public class ApiKeyRepository : IApiKeyRepository
         var key = new ApiKey()
         {
             Key = apiKey.Key,
-            UserId = apiKey.UserId
+            UserId = apiKey.UserId,
+            TotalBytesUsed = 0
         };
 
         
@@ -78,6 +80,38 @@ public class ApiKeyRepository : IApiKeyRepository
        
         _dbContext.ApiKeys.Remove(key);
         
+        return await SaveChanges()
+            ? new OperationResultDto<bool>(true, true, null)
+            : new OperationResultDto<bool>(false, false, new Error("Something went wrong."));
+    }
+
+  
+    public async Task<OperationResultDto<bool>> CheckIfUserCanUploadPhoto(string apiKey,long bytesUsed)
+    {
+        const long bytesLimit = 5000000; 
+        
+        var key = await _dbContext.ApiKeys.FirstOrDefaultAsync(x => x.Key == apiKey);
+
+        if (key == null) return new OperationResultDto<bool>(false, false, new Error("This api key does not exists"));
+
+        var allKeys = await _dbContext.ApiKeys.Where(x => x.UserId == key.UserId).ToListAsync();
+
+        var totalBytesUsedByUser = allKeys.Sum(x => (long)x.TotalBytesUsed);
+        totalBytesUsedByUser += bytesUsed;
+        
+        return totalBytesUsedByUser > bytesLimit
+        ?  new OperationResultDto<bool>(false,false , new Error("API key data consumption exceeds 5,000,000 bytes")) 
+        :  new OperationResultDto<bool>(true, true, null);
+    }
+
+    public async Task<OperationResultDto<bool>> AddUsage(string apiKey, ulong bytesUsed)
+    {
+        var key = await _dbContext.ApiKeys.FirstOrDefaultAsync(x => x.Key == apiKey);
+
+        key.TotalBytesUsed += bytesUsed;
+
+        _dbContext.ApiKeys.Update(key);
+
         return await SaveChanges()
             ? new OperationResultDto<bool>(true, true, null)
             : new OperationResultDto<bool>(false, false, new Error("Something went wrong."));

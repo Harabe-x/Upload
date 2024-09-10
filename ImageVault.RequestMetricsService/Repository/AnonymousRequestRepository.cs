@@ -21,7 +21,7 @@ public class AnonymousRequestRepository : IAnonymousRequestRepository
             Ip = request.Ip,
             Endpoint = request.Endpoint,
             Method = request.Method,
-            TimeStamp = request.TimeStamp
+            TimeStamp = request.TimeStamp.ToUniversalTime()
         };
 
         await _dbContext.AnonymousRequests.AddAsync(anonymousRequest);

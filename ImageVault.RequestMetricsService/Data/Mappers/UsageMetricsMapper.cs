@@ -13,7 +13,7 @@ public static class UsageMetricsMapper
    
    public static DailyUsageMetric MapToDailyUsageMetric(this DailyUsageMetrics metrics)
    {
-      return new DailyUsageMetric(metrics.TotalRequests,metrics.TotalImageUploaded,metrics.TotalStorageUsed,metrics.Date);
+      return new DailyUsageMetric(metrics.TotalRequests,metrics.TotalImageUploaded,metrics.TotalStorageUsed,metrics.Date.ToUniversalTime());
    }
 
 }

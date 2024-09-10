@@ -36,7 +36,6 @@ public  static class ApplicationConfiguration
         builder.Services.AddScoped<IRabbitMqMessageSender, RabbitMqMessageSender>();
         builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
         builder.Services.AddScoped<IAdminUserRepository, AdminUserRepository>();
-        builder.Services.AddHostedService<ServicesTokenProvider>();
         var validator = new DataValidationService();
         DataValidationRules.AddRules(validator);
         builder.Services.AddSingleton<IDataValidationService>(validator);
@@ -114,9 +113,9 @@ public  static class ApplicationConfiguration
     {
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseSqlServer(EnvironmentVariables.GetDatabaseConnectionString());
+            options.UseNpgsql(EnvironmentVariables.GetDatabaseConnectionString());
         });
-
+    
 
         builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
         {

@@ -9,6 +9,8 @@ public class ApiKey
     [Required] public string UserId { get; set; }
     
     [Required] public string Key { get; set; }
+    
+    public ulong TotalBytesUsed { get; set; }
 
     public ApiKey()
     {

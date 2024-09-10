@@ -29,8 +29,7 @@ services:
       - ./certs:/https  
     env_file:
       - "ImageVault.AuthenticationService/.env"
-  
-  
+
   imagevault.userservice:
     image: ${DOCKER_REGISTRY-}imagevaultuserservice
     build:
@@ -43,7 +42,6 @@ services:
       - ./certs:/https
     env_file:
           - "ImageVault.UserService/.env"
-
 
   imagevault.requestmetricsservice:
     image: ${DOCKER_REGISTRY-}imagevaultrequestmetricsservice
@@ -62,25 +60,62 @@ services:
   authenticationservice.db:
     build: postgres/
     container_name: authenticationservice.db
-    environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: mydatabase
+    env_file: 
+     - "postgres/token.env"
     ports:
-      - "5432:5432"  
+      - "5431:5431"  
     volumes:
-      - authenticationServiceDb:/var/lib/postgresql/data 
-      
-  sqlserver:
-    build: MsSqlServer/
+    - tokenservice:/var/lib/postgresql/data 
+  userservice.db:
+    build: postgres/
+    container_name: userservice.db
+    env_file:
+      - "postgres/userservice.env"
     ports:
-      - "1433:1433"
-    environment:
-      ACCEPT_EULA: "Y"
-      MSSQL_SA_PASSWORD: "TestPassword1!"
+      - "5433:5433"
     volumes:
-      - msSqlServer:/var/opt/mssql
+      - userservice:/var/lib/postgresql/data
 
+  apikeyservice.db:
+    build: postgres/
+    container_name: apikeyservice.db
+    env_file:
+      - "postgres/apikeyservice.env"
+    ports:
+      - "5434:5434"
+    volumes:
+      - apikeyservice:/var/lib/postgresql/data
+  
+  imageservice.db:
+    build: postgres/
+    container_name: imageservice.db
+    env_file:
+      - "postgres/imageservice.env"
+    ports:
+      - "5435:5435"
+    volumes:
+      - imageservice:/var/lib/postgresql/data
+  
+  metricsservice.db:
+    build: postgres/
+    container_name: metricsservice.db
+    env_file:
+      - "postgres/metricsservice.env"
+    ports:
+      - "5436:5436"
+    volumes:
+      - metricsservice:/var/lib/postgresql/data
+  
+  uploadservice.db:
+    build: postgres/
+    container_name: uploadservice.db
+    env_file:
+      - "postgres/uploadservice.env"
+    ports:
+      - "5437:5437"
+    volumes:
+      - uploadservice:/var/lib/postgresql/data
+  
   imagevault.apikeyservice:
     image: ${DOCKER_REGISTRY-}imagevaultapikeyservice
     build:
@@ -92,7 +127,6 @@ services:
     env_file:
        - "ImageVault.ApiKeyService/.env"
     
- 
   imagevault.uploadservice:
     image: ${DOCKER_REGISTRY-}imagevaultuploadservice
     build:
@@ -120,5 +154,15 @@ volumes:
     external: true
   msSqlServer:
     external: true
-  authenticationServiceDb : 
-    external: true 
+  tokenservice : 
+    external: true
+  userservice:
+    external: true
+  apikeyservice:
+      external: true
+  imageservice:
+      external: true
+  metricsservice:
+      external: true
+  uploadservice:
+      external: true  

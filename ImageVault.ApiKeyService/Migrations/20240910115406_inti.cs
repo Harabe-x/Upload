@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace ImageVault.ImageService.Migrations
+namespace ImageVault.ApiKeyService.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedApiKey : Migration
+    public partial class inti : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,9 +14,11 @@ namespace ImageVault.ImageService.Migrations
                 name: "ApiKeys",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Key = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    KeyName = table.Column<string>(type: "text", nullable: false),
+                    Key = table.Column<string>(type: "text", nullable: false),
+                    StorageUsed = table.Column<decimal>(type: "numeric(20,0)", nullable: false)
                 },
                 constraints: table =>
                 {

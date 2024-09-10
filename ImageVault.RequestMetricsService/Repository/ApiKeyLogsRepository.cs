@@ -35,7 +35,7 @@ public class ApiKeyLogsRepository : IApiKeyLogsRepository
         var apiKeyLog = new ApiKeyLog()
         {
             Message = message, 
-            TimeStamp = DateTime.Now,
+            TimeStamp = DateTime.Now.ToUniversalTime(),
             ApiKeysLogId = apiKeyLogs.Id
         };
         

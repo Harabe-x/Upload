@@ -39,6 +39,6 @@ public class Image
     public Image()
     {
         Id = Guid.NewGuid().ToString();
-        CreatedAt = DateTime.Now;
+        CreatedAt = DateTime.Now.ToUniversalTime();
     }
 }

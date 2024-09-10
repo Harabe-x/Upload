@@ -15,7 +15,7 @@ public static class RequestMapper
             Endpoint = request.Endpoint,
             Method = request.Method,
             Ip = request.Ip,
-            TimeStamp = request.TimeStamp,
+            TimeStamp = request.TimeStamp.ToUniversalTime(),
             DailyUsageMetricsId = usageMetrics.Id,
             DailyUsageMetrics =usageMetrics,
         };

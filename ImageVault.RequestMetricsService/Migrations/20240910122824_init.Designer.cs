@@ -3,17 +3,17 @@ using System;
 using ImageVault.RequestMetricsService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace ImageVault.RequestMetricsService.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240905195439_Init")]
-    partial class Init
+    [Migration("20240910122824_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,42 +21,82 @@ namespace ImageVault.RequestMetricsService.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.8")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.AnonymousRequest", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Endpoint")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Ip")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Method")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("TimeStamp")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
                     b.ToTable("AnonymousRequests");
                 });
 
+            modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.ApiKeyLog", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ApiKeyLogsId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ApiKeysLogId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApiKeyLogsId");
+
+                    b.ToTable("ApiKeyLogList");
+                });
+
+            modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.ApiKeyLogs", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ApiKey")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApiKeyLogs");
+                });
+
             modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.DailyUsageMetrics", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<long>("TotalImageUploaded")
                         .HasColumnType("bigint");
@@ -69,11 +109,11 @@ namespace ImageVault.RequestMetricsService.Migrations
 
                     b.Property<string>("UsageMetricsId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -85,30 +125,30 @@ namespace ImageVault.RequestMetricsService.Migrations
             modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.Request", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("DailyUsageMetricsId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Endpoint")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Ip")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Method")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("TimeStamp")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -120,7 +160,10 @@ namespace ImageVault.RequestMetricsService.Migrations
             modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.UsageMetrics", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastAggregationDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<long>("TotalImageUploaded")
                         .HasColumnType("bigint");
@@ -133,11 +176,18 @@ namespace ImageVault.RequestMetricsService.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.ToTable("UserUsageMetrics");
+                });
+
+            modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.ApiKeyLog", b =>
+                {
+                    b.HasOne("ImageVault.RequestMetricsService.Data.Models.ApiKeyLogs", null)
+                        .WithMany("Logs")
+                        .HasForeignKey("ApiKeyLogsId");
                 });
 
             modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.DailyUsageMetrics", b =>
@@ -160,6 +210,11 @@ namespace ImageVault.RequestMetricsService.Migrations
                         .IsRequired();
 
                     b.Navigation("DailyUsageMetrics");
+                });
+
+            modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.ApiKeyLogs", b =>
+                {
+                    b.Navigation("Logs");
                 });
 
             modelBuilder.Entity("ImageVault.RequestMetricsService.Data.Models.DailyUsageMetrics", b =>

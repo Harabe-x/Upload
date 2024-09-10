@@ -55,7 +55,6 @@ public class UsageMetricsRepository : IUsageMetricsRepository
             return new OperationResult<IEnumerable<DailyUsageMetric>>(new List<DailyUsageMetric>(), true, null);
 
         var result = usageMetric.DailyUsageMetrics
-            .OrderByDescending(x => x.Date)
             .Take(daysRange)
             .OrderBy(x => x.Date)
             .Select(x => x.MapToDailyUsageMetric());
@@ -133,7 +132,7 @@ public class UsageMetricsRepository : IUsageMetricsRepository
         usageMetrics.TotalRequests = totalRequests;
         usageMetrics.TotalStorageUsed = totalStorageUsed;
         usageMetrics.TotalImageUploaded = totalUploadedImages;
-        usageMetrics.LastAggregationDate = DateTime.Today;
+        usageMetrics.LastAggregationDate = DateTime.Today.ToUniversalTime();
 
         _dbContext.UserUsageMetrics.Update(usageMetrics);
 

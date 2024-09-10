@@ -62,13 +62,21 @@ public class ImageUploadRepository : IImageUploadRepository
                 return new OperationResultDto<ImageUploadResult>(null, false,
                     new Error("Currently we don't accept file "));
 
+            var verdict = await _apiKeyRepository.CheckIfUserCanUploadPhoto(apiKey.Key, imageToUploadData.Image.Length);
+
+            if (!verdict.IsSuccess) return new OperationResultDto<ImageUploadResult>(null, false, new Error("")); 
+
             var request = await CreatePutObjectRequest(imageToUploadData, apiKey.UserId);
 
             await _s3Connection.S3Client.PutObjectAsync(request);
 
+            
+            
             if (!ulong.TryParse(request.Metadata["Size"], out var imageSize))
                 _logger.LogCritical($"Parsing file size from metadata failed in {typeof(ImageUploadRepository)}");
 
+            _apiKeyRepository.AddUsage(apiKey.Key, imageSize);
+            
             var fileFormat = imageToUploadData.UseCompression ? ".webp" : _imageProcessingService.GetFileFormat(imageToUploadData.Image);
             
             SendRabbitMqMessages(apiKey.UserId, imageSize, apiKey.Key,request.Key,imageToUploadData.CollectionName,imageToUploadData.Title,imageToUploadData.Description,fileFormat);

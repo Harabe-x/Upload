@@ -23,7 +23,7 @@ public static class ApplicationConfiguration
         builder.Services.AddScoped<IUsageCollectorRepository,UsageCollectorRepository>();
         builder.Services.AddScoped<IUsageMetricsRepository, UsageMetricsRepository>();
         builder.Services.AddScoped<IAnonymousRequestRepository, AnonymousRequestRepository>();
-        builder.Services.AddSingleton<IApiKeyLogsRepository, ApiKeyLogsRepository>();
+        builder.Services.AddScoped<IApiKeyLogsRepository, ApiKeyLogsRepository>();
         builder.Services.AddSingleton<IRabbitMqConsumerList, RabbitMqConsumerList>();
         builder.Services.AddSingleton<IRabbitMqListener, RabbitMqListener>();
         builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
@@ -35,7 +35,7 @@ public static class ApplicationConfiguration
     {
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseSqlServer(EnvironmentVariables.GetDatabaseConnectionString());
+            options.UseNpgsql(EnvironmentVariables.GetDatabaseConnectionString());
         });
     }
 

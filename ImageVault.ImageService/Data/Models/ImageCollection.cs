@@ -24,7 +24,7 @@ public class ImageCollection
     public ImageCollection()
     {
         Id = Guid.NewGuid().ToString();
-        CreatedAt = DateTime.Now;
+        DateTime.Now.ToUniversalTime();
     }
     
 }

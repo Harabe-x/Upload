@@ -1,4 +1,3 @@
-using Microsoft.Identity.Client;
 
 namespace ImageVault.AuthenticationService.Configuration;
 

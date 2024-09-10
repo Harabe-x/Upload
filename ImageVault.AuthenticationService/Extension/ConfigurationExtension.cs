@@ -1,4 +1,3 @@
-using Azure.Identity;
 
 namespace ImageVault.AuthenticationService.Configuration;
 

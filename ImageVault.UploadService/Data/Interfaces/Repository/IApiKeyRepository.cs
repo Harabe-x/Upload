@@ -43,4 +43,8 @@ public interface IApiKeyRepository
     /// An <see cref="OperationResultDto{T}"/> containing a boolean value indicating whether the API key was successfully deleted.
     /// </returns>
     Task<OperationResultDto<bool>> DeleteKey(Data.Dtos.ApiKey.ApiKey apiKey);
+
+    Task<OperationResultDto<bool>> CheckIfUserCanUploadPhoto(string apiKey, long bytesUsed);
+
+    Task<OperationResultDto<bool>> AddUsage(string apiKey, ulong bytesUsed);
 }

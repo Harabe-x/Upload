@@ -7,6 +7,6 @@ public static class ApiKeyMapper
 {
     public static Data.Dtos.Log.ApiKeyLog MapToApiKeyLog(this Data.Models.ApiKeyLog apiKeyLog)
     {
-        return new Data.Dtos.Log.ApiKeyLog(apiKeyLog.Message, apiKeyLog.TimeStamp); 
+        return new Data.Dtos.Log.ApiKeyLog(apiKeyLog.Message, apiKeyLog.TimeStamp.ToUniversalTime()); 
     }
 } 

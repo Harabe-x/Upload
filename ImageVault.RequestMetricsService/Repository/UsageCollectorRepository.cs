@@ -123,7 +123,7 @@ public class UsageCollectorRepository : IUsageCollectorRepository
             TotalRequests = 0,
             TotalImageUploaded = 0,
             TotalStorageUsed = 0,
-            Date = DateTime.Today
+            Date = DateTime.Today.ToUniversalTime()
         };
 
         usageMetrics.DailyUsageMetrics.Add(dailyUsage);
@@ -192,7 +192,7 @@ public class UsageCollectorRepository : IUsageCollectorRepository
             return null; 
         }
         
-        var result = _dbContext.UsersDailyUsageMetrics.Include(x => x.Requests).FirstOrDefault(x => x.UserId == userId && x.Date == DateTime.Today); 
+        var result = _dbContext.UsersDailyUsageMetrics.Include(x => x.Requests).FirstOrDefault(x => x.UserId == userId && x.Date == DateTime.Today.ToUniversalTime()); 
         
         return result == null
             ? await CreateDailyUsageMetrics(userId)

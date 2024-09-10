@@ -4,7 +4,6 @@ using System.Text.Json;
 using ImageVault.RequestMetricsService.Data.Dtos;
 using ImageVault.RequestMetricsService.Data.Interfaces;
 using ImageVault.RequestMetricsService.Extension;
-using ImageVault.RequestMetricsService.Migrations;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 

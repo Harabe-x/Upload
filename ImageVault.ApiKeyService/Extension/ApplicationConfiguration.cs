@@ -38,7 +38,7 @@ public static class ApplicationConfiguration
     {
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseSqlServer(EnvironmentVariables.GetDatabaseConnectionString());
+            options.UseNpgsql(EnvironmentVariables.GetDatabaseConnectionString());
         });
     }
 

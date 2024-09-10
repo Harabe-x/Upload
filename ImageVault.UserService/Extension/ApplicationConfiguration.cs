@@ -26,7 +26,7 @@ public static class ApplicationConfiguration
     {
         var validator = new DataValidationService();
         DataValidationRules.AddRules(validator);
-
+        
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddSingleton<IDataValidationService>(validator);
         builder.Services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
@@ -41,7 +41,7 @@ public static class ApplicationConfiguration
     {
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseSqlServer(EnvironmentVariables.GetDatabaseConnectionString());
+            options.UseNpgsql(EnvironmentVariables.GetDatabaseConnectionString());
         });
 
     }
