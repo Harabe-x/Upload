@@ -3,7 +3,7 @@ import './app.css'
 import App from './App.svelte'
 
 //axios defaults
-axios.defaults.baseURL = 'http://localhost:10000/api/v1/';
+axios.defaults.baseURL = 'http://imagevault.tech/api/v1/';
 
 
 
