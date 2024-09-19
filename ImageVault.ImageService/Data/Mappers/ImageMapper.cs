@@ -38,7 +38,7 @@ public static class ImageMapper
             Key = imageData.Key,
             ImageSize = imageData.ImageSize,
             ImageFormat = imageData.FileFormat,
-            Url = "dym77sddfv05c.cloudfront.net/" + imageData.Key
+            Url = "cdn.imagevault.tech/" + imageData.Key
         };
     }
 }
